@@ -339,7 +339,7 @@
 |------|------|--------|
 | 🏭 Athanor | ✅ MVP | 多页面 Streamlit + Qdrant + LLM问答 |
 | ⚗️ Alembic | 📋 规划 | B站下载 + CC字幕 + LLM文档化 |
-| 🔬 Crucible | 📋 规划 | 架构设计 + NLI选型 + D-S融合方案 |
+| 🔬 Crucible | 📋 骨架 | Pipeline 架构 + 8核心模块 + Streamlit UI |
 | ✨ Elixir | 💭 远期 | — |
 | 🤖 Homunculus | 💭 远期 | — |
 
@@ -386,7 +386,7 @@
 | ⚛️ OpusMagnum · 巨作 / GreatWork | — | shiyao222333-afk/opus-magnum | `D:\opus\` |
 | 🏭 Athanor · 熔知 / MindForge | 知炬/KnowledgeForge | shiyao222333-afk/athanor | `D:\knowledge-forge\` |
 | ⚗️ Alembic · 馏析 / DeepDistill | VideoForge | shiyao222333-afk/alembic | `D:\video-forge\` |
-| 🔬 Crucible · 炼真 / TrialFire | VeritaForge | 待创建 | 待定 |
+| 🔬 Crucible · 炼真 / TrialFire | VeritaForge | shiyao222333-afk/crucible | `D:\crucible\` |
 | ✨ Elixir · 凝华 / PureDrop | — | 远期 | 远期 |
 | 🤖 Homunculus · 化形 / FormWeaver | — | 远期 | 远期 |
 
