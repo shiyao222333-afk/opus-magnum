@@ -30,15 +30,16 @@
 
 ---
 
-## 四人公司蓝图
+## 一人公司蓝图
 
-| 项目 | Emoji | 功能 | GitHub | 本地路径 |
-|------|-------|------|--------|----------|
-| **OpusMagnum** | ⚛️ | 总指挥部（本仓库）| [shiyao222333-afk/opus-magnum](https://github.com/shiyao222333-afk/opus-magnum) | `D:\opus-magnum\` |
-| **Athanor · 熔知** | 🏭 | 知识库引擎 | [shiyao222333-afk/athanor](https://github.com/shiyao222333-afk/athanor) | `D:\knowledge-forge\` |
-| **Alembic · 馏析** | ⚗️ | 视频→知识提炼 | [shiyao222333-afk/alembic](https://github.com/shiyao222333-afk/alembic) | `D:\video-forge\` |
-| **Crucible · 炼真** | 🔬 | 跨源矛盾检测 | [shiyao222333-afk/crucible](https://github.com/shiyao222333-afk/crucible) | `D:\crucible\` |
-| **Elixir · 凝华** | ✨ | 内容发布 | 远期 | 远期 |
+| 项目 | Emoji | 功能 | GitHub | 本地路径 | 状态 |
+|------|-------|------|--------|----------|:--:|
+| **OpusMagnum** | ⚛️ | 总指挥部（本仓库）| [shiyao222333-afk/opus-magnum](https://github.com/shiyao222333-afk/opus-magnum) | `D:\opus-magnum\` | 🚧 |
+| **Athanor · 熔知** | 🏭 | 知识引擎 (MindForge) | [shiyao222333-afk/athanor](https://github.com/shiyao222333-afk/athanor) | `D:\knowledge-forge\` | ✅ v0.4.1 |
+| **Alembic · 馏析** | ⚗️ | 视频→知识提炼 (DeepDistill) | [shiyao222333-afk/alembic](https://github.com/shiyao222333-afk/alembic) | `D:\video-forge\` | 🚧 |
+| **Crucible · 炼真** | 🔬 | 跨源矛盾检测 (TrialFire) | [shiyao222333-afk/crucible](https://github.com/shiyao222333-afk/crucible) | `D:\crucible\` | 🔮 |
+| **Elixir · 凝华** | ✨ | 内容发布 (PureDrop) | 远期 | 远期 | 🔮 |
+| **Homunculus · 化形** | 🤖 | 自动化 (FormWeaver) | 远期 | 远期 | 🔮 |
 
 > 完整蓝图见 [BLUEPRINT.md](../opus/BLUEPRINT.md)（在 `shiyao222333-afk/opus` 仓库）
 
@@ -116,7 +117,7 @@ GITHUB_TOKEN=ghp_xxxxxxxxxx
 **核心原则**：
 - 统一认证：`X-Api-Key` 请求头
 - 统一数据格式：JSON，符合 `schemas/` 目录下的 Schema
-- 统一端口分配：Athanor 8501 / Alembic 8502 / Crucible 8503 / OpusMagnum 8500
+- 统一端口分配：Athanor 8080 (NiceGUI) / Alembic 8502 / Crucible 8503 / OpusMagnum 8500
 
 ---
 
@@ -136,7 +137,7 @@ D:\opus-magnum\
 │   └── settings.py         # 全局配置（项目地址、API Key）
 ├── core/                    # 核心逻辑层
 │   ├── github_client.py     # GitHub API 封装
-│   ├── health_check.py      # 服务健康检测
+│   ├── health_check.py      # 服务健康检测（Athanor 8080 NiceGUI）
 │   ├── project_hub.py      # 项目连接器客户端
 │   └── dashboard.py        # 仪表盘数据聚合
 ├── pages/                   # Streamlit 多页 UI
@@ -154,10 +155,12 @@ D:\opus-magnum\
 
 | 层 | 技术 | 理由 |
 |---|------|------|
-| 前端 | **Streamlit** | 与 Athanor/Alembic 统一，快速迭代 |
+| 前端 | **Streamlit** | 快速迭代，持续可用 |
 | 数据 | **pandas** | 表格展示 |
 | 外部 API | **PyGithub** | 读取 GitHub Issues |
 | 项目间调用 | **requests** | HTTP REST 客户端 |
+
+> **注**: Athanor 已从 Streamlit 迁移到 NiceGUI 3.13 (SPA)，OpusMagnum 自身仍保持 Streamlit。
 
 ---
 
