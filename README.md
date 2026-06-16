@@ -24,7 +24,7 @@
 ├──────────┤
 │  调用各子项目的 API（按统一规范）          │
 ├──────────┤
-│  🏭 Athanor  │  ⚗️ Alembic  │  🔬 Crucible  │
+│  🏭 Athanor  │  ⚗️ Alembic  │  🔬 Crucible (信任聚合+矛盾检测)  │
 └──────────┘
 ```
 
@@ -37,7 +37,7 @@
 | **OpusMagnum** | ⚛️ | 总指挥部（本仓库）| [shiyao222333-afk/opus-magnum](https://github.com/shiyao222333-afk/opus-magnum) | `D:\opus-magnum\` | 🚧 |
 | **Athanor · 熔知** | 🏭 | 知识引擎 (MindForge) | [shiyao222333-afk/athanor](https://github.com/shiyao222333-afk/athanor) | `D:\knowledge-forge\` | ✅ v0.4.1 |
 | **Alembic · 馏析** | ⚗️ | 视频→知识提炼 (DeepDistill) | [shiyao222333-afk/alembic](https://github.com/shiyao222333-afk/alembic) | `D:\video-forge\` | 🚧 |
-| **Crucible · 炼真** | 🔬 | 跨源矛盾检测 (TrialFire) | [shiyao222333-afk/crucible](https://github.com/shiyao222333-afk/crucible) | `D:\crucible\` | 🔮 |
+| **Crucible · 炼真** | 🔬 | 信任聚合 + 跨源矛盾检测 (TrialFire) | [shiyao222333-afk/crucible](https://github.com/shiyao222333-afk/crucible) | `D:\crucible\` | 🔮 |
 | **Elixir · 凝华** | ✨ | 内容发布 (PureDrop) | 远期 | 远期 | 🔮 |
 | **Homunculus · 化形** | 🤖 | 自动化 (FormWeaver) | 远期 | 远期 | 🔮 |
 
