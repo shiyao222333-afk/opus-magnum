@@ -1,7 +1,7 @@
 # Workflow · 项目管理流程 — 流程框图
 
 > 展示 Phase Pre-flight → Phase 5 全链路数据流。
-> 对应 SKILL.md v2.6。
+> 对应 SKILL.md v2.7。
 
 ---
 
@@ -71,7 +71,7 @@ flowchart TB
 
     P5 --> Done([✅ 完成])
 
-    PausePlanning -->|用户说"开始"| P1_5
+    PausePlanning -->|用户说开始| P1_5
 
     %% 样式
     style Chat fill:#e0e0e0,stroke:#999
@@ -175,4 +175,4 @@ flowchart TB
 
 ---
 
-> **版本**: v1 | **对应 SKILL.md**: v2.6 | **更新日期**: 2026-06-17
+> **版本**: v1 | **对应 SKILL.md**: v2.7 | **更新日期**: 2026-06-17

@@ -43,8 +43,8 @@ class Settings:
         # 各子项目
         self.athanor = ProjectConfig(
             name="Athanor · 熔知",
-            port=int(get_env("ATHANOR_PORT", "8501")),
-            url=get_env("ATHANOR_URL", "http://localhost:8501"),
+            port=int(get_env("ATHANOR_PORT", "8080")),
+            url=get_env("ATHANOR_URL", "http://localhost:8080"),
         )
         self.alembic = ProjectConfig(
             name="Alembic · 馏析",

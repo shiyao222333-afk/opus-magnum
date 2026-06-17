@@ -22,7 +22,7 @@
 
 ## 当前重心
 
-流程骨架稳定 (v2.6)。当前重心：**推广使用** — 确保所有 OpusMagnum 子项目（Athanor/Alembic/Crucible）统一使用此流程。
+流程骨架稳定 (v2.7)。当前重心：**推广使用** — 确保所有 OpusMagnum 子项目（Athanor/Alembic/Crucible）统一使用此流程。
 
 ## 边界
 

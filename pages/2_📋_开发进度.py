@@ -55,9 +55,7 @@ if not tasks:
     labels = ["🏭 Athanor", "⚗️ Alembic", "🔬 Crucible", "⚛️ OpusMagnum"]
     for col, url, label in zip(cols, urls, labels):
         with col:
-            if st.button(f"➕ {label}", use_container_width=True):
-                import webbrowser
-                webbrowser.open(url)
+            st.markdown(f"[➕ {label}]({url})")
 
 else:
     # 统计卡片

@@ -22,4 +22,4 @@ python-dateutil>=2.9.0
 python-dotenv>=1.0.0
 
 # --- （可选）更好的 HTTP 客户端 ---
-httpx>=0.27.0
+# httpx>=0.27.0  # 暂未使用，按需启用

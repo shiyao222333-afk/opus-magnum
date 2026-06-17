@@ -15,17 +15,24 @@
 
 它不重复各子项目的功能，而是**连接、聚合、调度**：
 
-```
-┌──────────┐
-│         OpusMagnum · 总指挥部              │
-│  ┌────────┐  ┌────────┐  ┌────────┐  │
-│  │ 总仪表盘│  │ 开发进度│  │ 项目连接│  │
-│  └────────┘  └────────┘  └────────┘  │
-├──────────┤
-│  调用各子项目的 API（按统一规范）          │
-├──────────┤
-│  🏭 Athanor  │  ⚗️ Alembic  │  🔬 Crucible (信任聚合+矛盾检测)  │
-└──────────┘
+```mermaid
+flowchart TB
+    OM["⚛️ OpusMagnum · 总指挥部"]
+    OM --> Dash["🏠 总仪表盘<br/>健康检测 + GitHub 同步"]
+    OM --> Progress["📋 开发进度<br/>跨仓库 Issue 聚合"]
+    OM --> Hub["🔗 项目连接器<br/>API 连通性测试"]
+
+    OM --> Athanor["🏭 Athanor · 熔知<br/>知识引擎 :8080"]
+    OM --> Alembic["⚗️ Alembic · 馏析<br/>视频→知识 :8502"]
+    OM --> Crucible["🔬 Crucible · 炼真<br/>信任聚合+矛盾检测 :8503"]
+
+    style OM fill:#8A2BE2,color:#fff,stroke:#6a1b9a
+    style Dash fill:#cce5ff,stroke:#0275d8
+    style Progress fill:#cce5ff,stroke:#0275d8
+    style Hub fill:#cce5ff,stroke:#0275d8
+    style Athanor fill:#d4edda,stroke:#28a745
+    style Alembic fill:#d4edda,stroke:#28a745
+    style Crucible fill:#d4edda,stroke:#28a745
 ```
 
 ---
@@ -35,7 +42,7 @@
 | 项目 | Emoji | 功能 | GitHub | 本地路径 | 状态 |
 |------|-------|------|--------|----------|:--:|
 | **OpusMagnum** | ⚛️ | 总指挥部（本仓库）| [shiyao222333-afk/opus-magnum](https://github.com/shiyao222333-afk/opus-magnum) | `D:\opus-magnum\` | 🚧 |
-| **Workflow** | 📐 | 项目管理流程（方法论）| [workflow/](workflow/) | `~/.workbuddy/skills/` | ✅ v2.6 |
+| **Workflow** | 📐 | 项目管理流程（方法论）| [workflow/](workflow/) | `~/.workbuddy/skills/` | ✅ v2.7 |
 | **Athanor · 熔知** | 🏭 | 知识引擎 (MindForge) | [shiyao222333-afk/athanor](https://github.com/shiyao222333-afk/athanor) | `D:\knowledge-forge\` | ✅ v0.4.1 |
 | **Alembic · 馏析** | ⚗️ | 视频→知识提炼 (DeepDistill) | [shiyao222333-afk/alembic](https://github.com/shiyao222333-afk/alembic) | `D:\video-forge\` | 🚧 |
 | **Crucible · 炼真** | 🔬 | 信任聚合 + 跨源矛盾检测 (TrialFire) | [shiyao222333-afk/crucible](https://github.com/shiyao222333-afk/crucible) | `D:\crucible\` | 🔮 |
@@ -47,7 +54,7 @@
 
 ---
 
-## 项目管理流程 (Workflow v2.6)
+## 项目管理流程 (Workflow v2.7)
 
 OpusMagnum 所有子项目统一使用一套**标准化项目管理流程**：
 
@@ -114,9 +121,9 @@ GITHUB_TOKEN=ghp_xxxxxxxxxx
 ### 🏠 总仪表盘
 
 打开首页即可看到：
-- 各子项目**是否在线**（自动 ping）
-- 各 GitHub 仓库的 **Issue 数 / Stars**
-- 所有项目的**未完成任务**（自动从 GitHub Issues 同步）
+- 各子项目**是否在线**（自动 ping `/health` 端点）
+- 各 GitHub 仓库的 **Issues 数 / Stars / Forks / 最后提交**
+- 当前配置连接的所有子项目状态一览
 
 ### 📋 开发进度
 
@@ -150,7 +157,9 @@ GITHUB_TOKEN=ghp_xxxxxxxxxx
 ```
 opus-magnum/
 ├── BLUEPRINT.md            # 项目宪法（一人公司愿景+五器工坊）
+├── FLOWCHART.md            # 流程框图（总指挥部数据流 Mermaid 图）
 ├── README.md               # 本文件
+├── .env.example            # 环境变量模板（复制为 .env 使用）
 ├── api_spec.md             # 项目间通信规范（核心文档）
 ├── workflow/               # 📐 项目管理流程
 │   ├── BLUEPRINT.md        #   流程宪法

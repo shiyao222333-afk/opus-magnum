@@ -24,7 +24,7 @@ API Key 各项目统一从环境变量 `OPUS_API_KEY` 读取，默认值：`opus
 | 项目 | 端口 | 说明 |
 |------|------|------|
 | OpusMagnum | `8500` | 总指挥部 |
-| Athanor | `8501` | 知识库引擎 |
+| Athanor | `8080` | 知识库引擎 (NiceGUI) |
 | Alembic | `8502` | 视频→知识提炼 |
 | Crucible | `8503` | 矛盾检测 |
 | Elixir（远期）| `8504` | 内容发布 |

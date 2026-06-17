@@ -94,17 +94,40 @@ st.subheader("⚡ 快速操作")
 col_a, col_b, col_c = st.columns(3)
 
 with col_a:
-    if st.button("➕ 打开 Athanor 建 Issue", use_container_width=True):
-        import webbrowser
-        webbrowser.open("https://github.com/shiyao222333-afk/athanor/issues/new")
+    st.markdown(
+        "[➕ 打开 Athanor 建 Issue](https://github.com/shiyao222333-afk/athanor/issues/new)",
+        unsafe_allow_html=False,
+    )
 
 with col_b:
-    if st.button("🔗 查看 API 规范", use_container_width=True):
-        st.info("api_spec.md — 项目间通信规范")
+    with st.expander("📖 API 规范速查"):
+        st.markdown("""
+| 项目 | 端点 | 用途 |
+|------|------|------|
+| Athanor | `GET /health` | 健康检查 |
+| Athanor | `POST /api/documents/ingest` | 入库文档 |
+| Athanor | `GET /api/documents/search` | 搜索知识库 |
+| Alembic | `POST /api/videos/submit` | 提交视频任务 |
+| Alembic | `GET /api/videos/{id}/status` | 查询进度 |
+| Crucible | `POST /api/scan` | 触发检测 |
+| Crucible | `GET /api/reports/latest` | 获取最新报告 |
+
+认证方式：所有请求带 `X-Api-Key` 请求头。
+        """)
 
 with col_c:
-    if st.button("📖 查看蓝图", use_container_width=True):
-        st.info("BLUEPRINT.md — 完整一人公司蓝图")
+    with st.expander("🧭 开发路线"):
+        st.markdown("""
+| 阶段 | 项目 | 状态 |
+|------|------|:--:|
+| Phase 1 地基 | 🏭 Athanor | ✅ MVP |
+| Phase 1 地基 | ⚗️ Alembic | 📋 骨架 |
+| Phase 1 地基 | 🔬 Crucible | 📋 骨架 |
+| Phase 2 摄取 | Alembic v0.1 | B站→字幕→文档 |
+| Phase 3 验证 | Crucible v0.1 | 矛盾检测 |
+| Phase 4 输出 | Elixir | 远期 |
+| Phase 5 自动化 | Homunculus | 远期 |
+        """)
 
 # ─── 页脚 ────────────────────────────────────────────
 st.divider()

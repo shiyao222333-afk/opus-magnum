@@ -383,7 +383,7 @@
 
 | 新名 | 旧名 | 仓库 | 路径 |
 |------|------|------|------|
-| ⚛️ OpusMagnum · 巨作 / GreatWork | — | shiyao222333-afk/opus-magnum | `D:\opus\` |
+| ⚛️ OpusMagnum · 巨作 / GreatWork | — | shiyao222333-afk/opus-magnum | `D:\opus-magnum\` |
 | 🏭 Athanor · 熔知 / MindForge | 知炬/KnowledgeForge | shiyao222333-afk/athanor | `D:\knowledge-forge\` |
 | ⚗️ Alembic · 馏析 / DeepDistill | VideoForge | shiyao222333-afk/alembic | `D:\video-forge\` |
 | 🔬 Crucible · 炼真 / TrialFire | VeritaForge | shiyao222333-afk/crucible | `D:\crucible\` |

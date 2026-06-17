@@ -32,7 +32,7 @@ def render_sidebar() -> None:
         st.divider()
 
         # 外部链接
-        st.markdown("🔗 [Athanor 知识库](http://localhost:8501)")
+        st.markdown("🔗 [Athanor 知识库](http://localhost:8080)")
         st.markdown("🔗 [Alembic 视频提炼](http://localhost:8502)")
         st.markdown("🔗 [Crucible 矛盾检测](http://localhost:8503)")
         st.divider()

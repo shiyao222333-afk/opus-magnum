@@ -21,7 +21,7 @@ def _headers() -> dict:
 def athanor_ingest_document(doc: dict) -> dict:
     """
     推送文档到 Athanor 知识库。
-    调用：POST http://localhost:8501/api/documents/ingest
+    调用：POST http://localhost:8080/api/documents/ingest
     """
     url = settings.athanor.endpoint("/api/documents/ingest")
     try:
@@ -34,7 +34,7 @@ def athanor_ingest_document(doc: dict) -> dict:
 def athanor_search(query: str, kb_name: str = "default", limit: int = 5) -> list:
     """
     在 Athanor 知识库搜索。
-    调用：GET http://localhost:8501/api/documents/search?q=...
+    调用：GET http://localhost:8080/api/documents/search?q=...
     """
     url = settings.athanor.endpoint("/api/documents/search")
     params = {"q": query, "kb_name": kb_name, "limit": limit}
