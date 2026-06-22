@@ -13,6 +13,11 @@
 
 ## [Unreleased]
 
+### Added — 2026-06-23
+- ✨ 项目管理流程skill文件添加到workflow/skills/目录（SKILL.md + SKILL-CHEATSHEET.md）
+- ✨ 项目管理流程成为OpusMagnum项目级skill，之后更新都基于此
+- ✨ 团队成员共享同一套项目管理规范
+
 ### Changed — 2026-06-19
 - 🔄 蓝图重写：新增核心原则 / 当前重心 / 边界 / 验收标准 / 管理方法 5 章节
 - 🔄 命名体系重构：炼金四阶段替代旧器具名
