@@ -17,6 +17,8 @@
 - ✨ 一人公司战略白皮书创建（`strategy/vision.md`）— 8 模块规划结论浓缩，作为巨作思想指导
 - ✨ 凝华（Rubedo）GitHub 仓库正式创建（shiyao222333-afk/rubedo）
 - ✨ 凝华 v0.1 — 时间记录工具（tkinter 版，5 阶段计时，接单/沟通/画2D/效果图/修改交付）
+- ✨ 战略雷达自动化 — 每日 AI 新闻扫描 → 项目匹配 → 研究队列追加（`research-queue.md`）
+- ✨ OpusMagnum 新增「超级收纳」职能 — 不匹配现有项目但和副业/赚钱相关的战略情报归入巨作储备
 
 ### Changed — 2026-06-23
 - 🔄 README + BLUEPRINT 更新：Citrinitas v0.7.0 → v0.8.0，Rubedo 状态「规划中」→「🚧 v0.1」
