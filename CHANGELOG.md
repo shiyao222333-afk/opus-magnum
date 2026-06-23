@@ -13,6 +13,14 @@
 
 ## [Unreleased]
 
+### Fixed — 2026-06-23
+- 🐛 Citrinitas config 页面 500 错误修复 — `ui.slider` 在 NiceGUI 3.13.0 不支持 `label` 参数，改用独立 `ui.markdown`
+- 🐛 Citrinitas v0.8.0 R1-R3 代码未提交问题 — 审核队列/死信队列/Hub 页面代码已合入 main
+
+### Refactored — 2026-06-23
+- ♻️ 全项目命名统一：Nigredo 23 文件 + Albedo 15 文件旧名替换（Alembic→Nigredo, Athanor→Citrinitas, Crucible→Albedo, Elixir→Rubedo）
+- ♻️ Rubedo 仓库克隆到本地 `D:\rubedo\`，时间记录工具可用
+
 ### Added — 2026-06-23
 - ✨ 一人公司战略白皮书创建（`strategy/vision.md`）— 8 模块规划结论浓缩，作为巨作思想指导
 - ✨ 凝华（Rubedo）GitHub 仓库正式创建（shiyao222333-afk/rubedo）
