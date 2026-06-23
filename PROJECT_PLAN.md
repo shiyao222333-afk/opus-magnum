@@ -6,8 +6,8 @@
 
 ## 当前状态
 
-- 当前版本：**v0.2.0**（Nigredo v0.1 落地中）
-- 下一个版本：**v0.3.0**（Citrinitas 代码重构 → OpusMagnum 蓝图同步）
+- 当前版本：**v0.3.0**（战略白皮书 + 凝华启动 + 熔知 v0.8.0 同步）
+- 下一个版本：**v0.4.0**（Nigredo v0.1 管道跑通）
 - 活跃任务：**Nigredo v0.1 管道跑通**（B站→字幕→文档）
 - Git 状态：main 分支，已推送 GitHub
 
@@ -67,10 +67,10 @@
 
 | 项目 | 状态 | 交付物 |
 |------|------|--------|
-| 🏭 Citrinitas | ✅ MVP | 多页面 Streamlit + Qdrant + LLM问答 |
+| 🏭 Citrinitas | ✅ v0.8.0 | 混合检索（BM25+向量）+ 重排序 + ACORN + 审核队列 UI 全线完成 |
 | ⚗️ Nigredo | 📋 骨架 | B站下载 + CC字幕 + LLM文档化 |
 | 🔬 Albedo | 📋 骨架 | Pipeline 架构 + 8核心模块 + Streamlit UI |
-| ✨ Rubedo | 💭 远期 | — |
+| ✨ Rubedo | 🚧 v0.1 | 仓库已创建，时间记录工具（tkinter版）已上线 |
 | 🤖 Homunculus | 💭 远期 | — |
 
 ### Phase 2 — 摄取（下个迭代）

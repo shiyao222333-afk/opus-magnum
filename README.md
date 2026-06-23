@@ -22,9 +22,10 @@ flowchart TB
     OM --> Progress["📋 开发进度<br/>跨仓库 Issue 聚合"]
     OM --> Hub["🔗 项目连接器<br/>API 连通性测试"]
 
-    OM --> Citrinitas["🏭 Citrinitas · 熔知<br/>知识引擎 :8080"]
+    OM --> Citrinitas["🏭 Citrinitas · 熔知<br/>知识引擎 v0.8.0 :8080"]
     OM --> Nigredo["⚗️ Nigredo · 馏析<br/>视频→知识 :8502"]
     OM --> Albedo["🔬 Albedo · 炼真<br/>信任聚合+矛盾检测 :8503"]
+    OM --> Rubedo["✨ Rubedo · 凝华<br/>副业SOP自动化 v0.1"]
 
     style OM fill:#8A2BE2,color:#fff,stroke:#6a1b9a
     style Dash fill:#cce5ff,stroke:#0275d8
@@ -33,6 +34,7 @@ flowchart TB
     style Citrinitas fill:#d4edda,stroke:#28a745
     style Nigredo fill:#d4edda,stroke:#28a745
     style Albedo fill:#d4edda,stroke:#28a745
+    style Rubedo fill:#d4edda,stroke:#28a745
 ```
 
 ---
@@ -43,13 +45,14 @@ flowchart TB
 |------|-------|------|--------|----------|:--:|
 | **OpusMagnum** | ⚛️ | 总指挥部（本仓库）| [shiyao222333-afk/opus-magnum](https://github.com/shiyao222333-afk/opus-magnum) | `D:\opus-magnum\` | 🚧 |
 | **Workflow** | 📐 | 项目管理流程（方法论）| [workflow/](workflow/) | `~/.workbuddy/skills/` | ✅ v3.1 |
-| **Citrinitas · 熔知** | 🏭 | 知识引擎 | [shiyao222333-afk/citrinitas](https://github.com/shiyao222333-afk/citrinitas) | `D:\citrinitas\` | ✅ v0.7.0 |
+| **Citrinitas · 熔知** | 🏭 | 知识引擎 | [shiyao222333-afk/citrinitas](https://github.com/shiyao222333-afk/citrinitas) | `D:\citrinitas\` | ✅ v0.8.0 |
 | **Nigredo · 馏析** | ⚗️ | 视频→知识提炼 | [shiyao222333-afk/nigredo](https://github.com/shiyao222333-afk/nigredo) | `D:\nigredo\` | 🚧 |
 | **Albedo · 炼真** | 🔬 | 信任聚合 + 跨源矛盾检测 | [shiyao222333-afk/albedo](https://github.com/shiyao222333-afk/albedo) | `D:\albedo\` | 🔮 |
-| **Rubedo · 凝华** | ✨ | AI辅助副业SOP自动化平台（共用工具层 + SOP独特工具层） | 规划中 | 规划中 | 📋 |
+| **Rubedo · 凝华** | ✨ | AI辅助副业SOP自动化平台（共用工具层 + SOP独特工具层） | [shiyao222333-afk/rubedo](https://github.com/shiyao222333-afk/rubedo) | `D:\rubedo\` | 🚧 v0.1 |
 
 > 完整蓝图见 [BLUEPRINT.md](BLUEPRINT.md)
 > 项目管理流程见 [workflow/](workflow/)
+> 一人公司战略见 [strategy/vision.md](strategy/vision.md)
 
 ---
 
