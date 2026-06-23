@@ -25,6 +25,15 @@
 - 🔄 Mermaid 架构图新增 Rubedo 节点
 - 🔄 项目仓库映射表：Rubedo 从「远期」更新为实际 GitHub 链接
 
+### Fixed — 2026-06-23
+- 🐛 **命名统一**：Nigredo README 旧名 Alembic → Nigredo，Athanor → Citrinitas，Crucible → Albedo，Elixir → Rubedo
+- 🐛 **命名统一**：Albedo README 旧名 Crucible → Albedo，Athanor → Citrinitas，Alembic → Nigredo，Elixir → Rubedo
+- 🐛 蓝图重写：确立「模仿成功者」核心战略 + Citrinitas 为中央枢纽（非管道一环）
+- 🐛 路线图调整：当前重心从 Nigredo 改为 Citrinitas 稳定化 → Route C 赚钱线
+- 🐛 战略白皮书附录：2026-06-23 战略校准记录（发现三大问题 + 六项决策）
+- 🐛 Nigredo 重新定位：从通用"内容提炼"改为"学习模仿引擎"
+- 🐛 Albedo 重新定位：从通用"矛盾检测"改为"知识净化器·虚假信息过滤"
+
 ## [v0.2.1] - 2026-06-23
 
 ### Added
