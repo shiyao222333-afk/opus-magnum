@@ -1,7 +1,7 @@
 # Workflow · 项目管理流程 — 流程框图
 
 > 展示 Phase Pre-flight → Phase 5 全链路数据流。
-> 对应 SKILL.md v5.0。
+> 对应 SKILL.md v6.0（文件拆分版：SKILL.md <100行 + DEBUG.md + EXECUTION.md + REFERENCE.md）。
 
 ---
 
@@ -205,4 +205,4 @@ flowchart TB
 
 ---
 
-> **版本**: v2 | **对应 SKILL.md**: v5.0 | **更新日期**: 2026-07-04
+> **版本**: v3 | **对应 SKILL.md**: v6.0（文件拆分版） | **更新日期**: 2026-07-04
