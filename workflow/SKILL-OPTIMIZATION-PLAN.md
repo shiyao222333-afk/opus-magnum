@@ -330,7 +330,7 @@ Clawdbot 的三文件架构：
 | 12 | ✅ FLOWCHART.md 同步更新流程图 | FLOWCHART.md | 第一批 | — |
 | 13 | ✅ SKILL.md 新增「调试注入器」（C1） | SKILL.md | 第二批 | S7 |
 | 14 | ✅ SKILL.md 新增「长对话检查点」（C2） | SKILL.md | 第二批 | S7 |
-| 15 | SKILL.md 新增「前端任务验证规则」（D1） | SKILL.md | 第三批 | — |
+| 15 | ✅ SKILL.md 新增「前端任务验证规则」（D1） | SKILL.md | 第三批 | — |
 
 ---
 
