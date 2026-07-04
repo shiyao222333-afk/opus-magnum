@@ -1,6 +1,6 @@
 # SKILL 优化计划 — 提示词工程角度
 
-> 创建于：2026-07-04 | 状态：🔄 第一批执行中（12/15 任务完成）
+> 创建于：2026-07-04 | 状态：✅ 第一批完成（12/12）| 第二批待执行（2/2）| 第三批待执行（1/1）
 
 ---
 
@@ -328,8 +328,8 @@ Clawdbot 的三文件架构：
 | 10 | ✅ SKILL.md 结尾加「执行检查清单」（S2） | SKILL.md | 第一批 | S2 |
 | 11 | ✅ SKILL.md 用 CRITICAL/MUST/NEVER 分级（S3） | SKILL.md | 第一批 | S3 |
 | 12 | ✅ FLOWCHART.md 同步更新流程图 | FLOWCHART.md | 第一批 | — |
-| 13 | SKILL.md 新增「调试注入器」（C1） | SKILL.md | 第二批 | S7 |
-| 14 | SKILL.md 新增「长对话检查点」（C2） | SKILL.md | 第二批 | S7 |
+| 13 | ✅ SKILL.md 新增「调试注入器」（C1） | SKILL.md | 第二批 | S7 |
+| 14 | ✅ SKILL.md 新增「长对话检查点」（C2） | SKILL.md | 第二批 | S7 |
 | 15 | SKILL.md 新增「前端任务验证规则」（D1） | SKILL.md | 第三批 | — |
 
 ---
