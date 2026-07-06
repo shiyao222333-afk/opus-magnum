@@ -2,7 +2,8 @@
 
 > 疑难 Bug 多轮未修复时，按此模板建一个临时记录文件，每次失败追加一条。
 > 位置：`<项目>/.workbuddy/memory/BUGLOG-<主题>-<MMDD>.md`
-> 解决后精简为 `BUGLOG-<主题>-<MMDD>-FIXED.md` 归档（同目录）。
+> 解决后精简为 `BUGLOG-<主题>-<MMDD>-FIXED.md`，**双写归档**（见 bug-triage SKILL.md「归档位置」）：
+>   ① 项目文件夹 `<项目>/.workbuddy/memory/`  ② 巨作统一管理 `D:/opus-magnum/docs/bug-triage-cases/`
 
 ---
 
@@ -57,4 +58,4 @@
 - 方向A（×轮）、方向B（×轮）...
 ```
 
-> 归档后：把「教训」提练进 bug-triage 的 `ANTI-PATTERNS.md` 或你的长期记忆，让下次直接跳过这些坑。
+> 归档即终点：归档文件本身就是沉淀，不再修改 bug-triage 的 skill 文件（SKILL 文件保持固定，详见 SKILL.md）。

@@ -43,9 +43,9 @@ emoji: 🐞
 └─ 直至修复成功（诊断达标 + 你验收）
    ↓
 [收敛] 标记关闭 → 精简(留症状/根因/方案/教训)
-        → 归档 <项目>/.workbuddy/memory/BUGLOG-<主题>-<MMDD>-FIXED.md
+        → 双写归档（见下方「归档位置」）
    ↓
-[沉淀] 教训提练进本 skill「踩坑库」/ 长期记忆
+归档即终点 — 不再修改本 skill 文件（见下方「SKILL 文件保持固定」）
 ```
 
 ---
@@ -76,3 +76,25 @@ emoji: 🐞
 ---
 
 > 本 skill 与项目管理流程配套：PM `EXECUTION.md` Phase 0.5 要求在存在 `BUGLOG-*.md` 时先读精简记录，避免重试已排除方向。
+
+---
+
+## 归档位置（双写）
+
+归档文件（`BUGLOG-<主题>-<MMDD>-FIXED.md`）必须同时存在两处：
+
+1. **项目文件夹**：`<项目>/.workbuddy/memory/BUGLOG-<主题>-<MMDD>-FIXED.md`
+   （跟随项目走，PM 流程 Phase 0.5 重开任务时自动读到）
+2. **巨作统一管理目录**：`D:/opus-magnum/docs/bug-triage-cases/BUGLOG-<主题>-<MMDD>-FIXED.md`
+   （跨项目集中管理，作为疑难 Bug 案例库，便于横向检索同类坑）
+
+两处内容一致，任一即可作为证据。新建案例前先确认巨作目录存在（没有就 `mkdir`）。
+
+---
+
+## SKILL 文件保持固定
+
+- 本 skill（SKILL.md / DEBUG-LOG-TEMPLATE.md / ANTI-PATTERNS.md）是**方法论、相对固定**。
+- **收敛步骤不再包含「提练教训进 skill 踩坑库」**——那是错的：每次 bug 修复都去改 skill 文件，会让 skill 不稳定、无限膨胀。
+- **归档文件（BUGLOG-FIXED）本身就是沉淀载体**，足够。教训写在归档文件里即可，不要再回写 skill。
+- 只有在「新建 skill」或「大修本流程」时才动 skill 文件，不是每次 bug 收敛都动。
