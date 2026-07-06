@@ -13,6 +13,11 @@
 
 ## [Unreleased]
 
+### Added — 2026-07-07
+- ✨ 新增 `bug-triage` skill（疑难杂症处理流程）— 多轮 Bug 未修复时启用，用临时错误记录文件 + 假设银行 + 诊断工具强制转向
+- ✨ PM `EXECUTION.md` Phase 0.5 增加「存在 BUGLOG-*.md 先读精简记录」规则；`SKILL.md` 文件索引加 bug-triage 指针
+- 🔄 `workflow/BLUEPRINT.md` 版本号 v5.0 → v6.0（与 SKILL.md 对齐）
+
 ### Fixed — 2026-06-23
 - 🐛 Citrinitas config 页面 500 错误修复 — `ui.slider` 在 NiceGUI 3.13.0 不支持 `label` 参数，改用独立 `ui.markdown`
 - 🐛 Citrinitas v0.8.0 R1-R3 代码未提交问题 — 审核队列/死信队列/Hub 页面代码已合入 main

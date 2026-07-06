@@ -23,7 +23,7 @@
 
 ## 当前重心
 
-流程 v5.0 已落地（U 型注意力优化 + 调试协议 + 分级加载 + 三条路径）。当前重心：**推广使用** — 确保所有 OpusMagnum 子项目（Citrinitas / Nigredo / Albedo / Rubedo）统一使用此流程。
+流程 v6.0 已落地（U 型注意力优化 + 调试协议 + 分级加载 + 三条路径 + bug-triage 救援子协议）。当前重心：**推广使用** — 确保所有 OpusMagnum 子项目（Citrinitas / Nigredo / Albedo / Rubedo）统一使用此流程。
 
 ## 边界
 

@@ -62,6 +62,7 @@
 | 场景 | 读哪个文件 |
 |------|-----------|
 | 调试 Bug | `DEBUG.md`（完整调试协议） |
+| 多轮未修复的疑难 Bug | `bug-triage`（疑难杂症处理流程：记录文件 + 假设银行 + 诊断） |
 | 执行功能/重构 | `EXECUTION.md`（Phase 2~5 完整规则） |
 | 场景 SOP / Gate 格式 / Commit 格式 | `SKILL-CHEATSHEET.md` |
 | 审查协议 / 提问规则 / 沟通规则 / Git 规范 / 版本号 | `REFERENCE.md` |

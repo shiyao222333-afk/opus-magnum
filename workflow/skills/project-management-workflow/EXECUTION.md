@@ -16,6 +16,8 @@
 
 改前 MUST 先 Read / Grep / Glob 代码，理解项目结构和现有实现。NEVER 未探索就动手。
 
+**疑难 Bug 续接**：若项目 `.workbuddy/memory/` 下存在 `BUGLOG-*.md`（尤其 `-FIXED.md` 精简记录），MUST 先读，避免重试已排除方向。需要系统排查多轮未修复的 Bug 时，启用 `bug-triage` 流程。
+
 ---
 
 ## Phase 1：任务拆解
