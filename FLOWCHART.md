@@ -30,6 +30,7 @@ flowchart TB
     Hub --> AthAPI[Athanor /search]
     Hub --> AleAPI[Alembic /health]
     Hub --> CruAPI[Crucible /health]
+    Hub --> AluAPI[Aludel /health]
 
     style Start fill:#8A2BE2,color:#fff
     style NoToken fill:#fff3cd,stroke:#f0ad4e
@@ -71,7 +72,7 @@ flowchart TB
 |:--:|------|------|------|------|
 | P_DASHBOARD | 总仪表盘 | dashboard_df | 在线状态卡片 + Issue 数 | Streamlit st.metric + st.dataframe |
 | P_PROGRESS | 开发进度 | issues_df | 跨仓库 Issue 表格 | 按仓库分组 → 筛选 Open/Closed |
-| P_HUB | 项目连接器 | settings | API 连通性测试结果 | 手动触发 → athanor_search / alembic_health / crucible_health |
+| P_HUB | 项目连接器 | settings | API 连通性测试结果 | 手动触发 → athanor_search / alembic_health / crucible_health / aludel_health |
 
 ---
 
@@ -94,6 +95,7 @@ flowchart TB
 | P_HUB → AthAPI | 用户点击"搜索 Athanor" | — |
 | P_HUB → AleAPI | 用户点击"Ping Alembic" | — |
 | P_HUB → CruAPI | 用户点击"Ping Crucible" | — |
+| P_HUB → AluAPI | 用户点击"Ping Aludel" | — |
 
 ---
 
@@ -104,9 +106,10 @@ flowchart TB
 | Athanor | `http://localhost:8080/health` | 健康检测 | 仪表盘显示离线 |
 | Athanor | `http://localhost:8080/api/search` | 项目连接器 | 连接器搜索失败 |
 | Alembic | `http://localhost:8502/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
-| Crucible | `http://localhost:8503/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
+| Crucible | `http://localhost:8501/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
+| Aludel | `http://localhost:8765/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
 | GitHub API | `api.github.com` | Issues + Stats 同步 | 仪表盘回退到健康检测 |
 
 ---
 
-> **版本**: v1 | **对应 BLUEPRINT.md**: v1 | **更新日期**: 2026-06-17
+> **版本**: v1.1 | **更新日期**: 2026-07-12
