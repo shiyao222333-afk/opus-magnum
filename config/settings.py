@@ -53,13 +53,13 @@ class Settings:
         )
         self.albedo = ProjectConfig(
             name="Albedo · 炼真",
-            port=int(get_env("CRUCIBLE_PORT", "8503")),
-            url=get_env("CRUCIBLE_URL", "http://localhost:8503"),
+            port=int(get_env("CRUCIBLE_PORT", "8501")),
+            url=get_env("CRUCIBLE_URL", "http://localhost:8501"),
         )
         self.rubedo = ProjectConfig(
             name="Rubedo · 凝华",
-            port=int(get_env("ELIXIR_PORT", "8504")),
-            url=get_env("ELIXIR_URL", "http://localhost:8504"),
+            port=int(get_env("ALUDEL_PORT", "8765")),
+            url=get_env("ALUDEL_URL", "http://localhost:8765"),
         )
 
         # GitHub
@@ -68,6 +68,7 @@ class Settings:
         self.citrinitas_repo = get_env("ATHANOR_REPO", "shiyao222333-afk/citrinitas")
         self.nigredo_repo = get_env("ALEMBIC_REPO", "shiyao222333-afk/nigredo")
         self.albedo_repo = get_env("CRUCIBLE_REPO", "shiyao222333-afk/albedo")
+        self.rubedo_repo = get_env("ALUDEL_REPO", "shiyao222333-afk/rubedo")
         self.opus_repo = get_env("OPUSMAGNUM_REPO", "shiyao222333-afk/opus-magnum")
 
         # 日志

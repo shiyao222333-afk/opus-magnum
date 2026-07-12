@@ -124,9 +124,8 @@ with col_c:
 | Phase 1 地基 | ⚗️ Nigredo | 📋 骨架 |
 | Phase 1 地基 | 🔬 Albedo | 📋 骨架 |
 | Phase 2 摄取 | Nigredo v0.1 | B站→字幕→文档 |
-| Phase 3 验证 | Albedo v0.1 | 矛盾检测 |
-| Phase 4 输出 | Rubedo | 远期 |
-| Phase 5 自动化 | Homunculus | 远期 |
+| Phase 3 验证 | Albedo v0.1 | 认知精炼（验真+提质） |
+| Phase 4 输出 | Rubedo | 📋 v0.2.0 进行中 |
         """)
 
 # ─── 页脚 ────────────────────────────────────────────

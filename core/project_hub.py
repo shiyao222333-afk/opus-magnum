@@ -116,13 +116,9 @@ def crucible_get_latest_report() -> dict:
 
 def get_project_summary(project: ProjectConfig) -> dict:
     """
-    通用方法：调用任意项目的 /health 端点，返回状态摘要。
-    用于仪表盘展示。
+    通用方法：检测任意项目的健康状态，返回状态摘要。
+    用于仪表盘展示。复用 health_check（含 TCP 端口兜底，
+    兼容 Streamlit / NiceGUI 等不提供 /health 端点的框架）。
     """
-    try:
-        resp = requests.get(project.endpoint("/health"), timeout=3)
-        if resp.status_code == 200:
-            return {"online": True, **resp.json()}
-        return {"online": False, "status": f"http_{resp.status_code}"}
-    except Exception:
-        return {"online": False, "status": "offline"}
+    from core.health_check import check_health
+    return check_health(project)

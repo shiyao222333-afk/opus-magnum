@@ -11,12 +11,23 @@
 
 ---
 
-## [Unreleased]
+## [0.4.0] - 2026-07-12
 
 ### Added — 2026-07-07
 - ✨ 新增 `bug-triage` skill（疑难杂症处理流程）— 多轮 Bug 未修复时启用，用临时错误记录文件 + 假设银行 + 诊断工具强制转向
 - ✨ PM `EXECUTION.md` Phase 0.5 增加「存在 BUGLOG-*.md 先读精简记录」规则；`SKILL.md` 文件索引加 bug-triage 指针
 - 🔄 `workflow/BLUEPRINT.md` 版本号 v5.0 → v6.0（与 SKILL.md 对齐）
+
+### Changed — 2026-07-09
+- 🔄 **M0-5 依赖授权清理（实现）**：移除 LGPL 的 `pygithub`，`core/github_client.py` 改用 `requests` 直接调 GitHub REST API（保持 `list_issues`/`list_all_issues`/`get_repo_summary` 接口与返回结构不变，`requirements.txt` 删 `pygithub` 行）；Citrinitas 侧移除 AGPL 的 `ebooklib`（自写纯标准库 `utils/file_handler/epub_reader.py` 平替，零授权依赖），`chardet` 切到 MIT 的 `charset_normalizer`。闭源核心零拷贝授权包袱。
+
+### Changed — 2026-07-11
+- 🔄 **路线图与蓝图刷新（v0.3.0 → v0.4.0）**：`PROJECT_PLAN.md` 重写为覆盖整个巨作的详细路线图（阶段 0 整合地基✅ / 阶段 1 前半打通 M1-M4🔴 / 阶段 2 后半接入⚪ / 阶段 3 收费商业化⚪ / 阶段 4 战略雷达与规模化🟡），修正残留旧名 Athanor/Alembic/Crucible 引用；`BLUEPRINT.md`「当前重心」改为前半部分整合、战略雷达标注已自动化上线、补后半部分待阶段 2 接入说明、修正 SKILL.md 版本号 v6.0→v4.0。
+
+### Fixed — 2026-07-11
+- 🐛 **P0-1 炼真端口错配**：`config/settings.py` 中 `albedo` 端口默认值 8503 → 8501（与 `albedo/run.bat` 实际监听端口一致）；`.env.example` 的 `CRUCIBLE_URL`/`CRUCIBLE_PORT` 同步改为 8501。修复后总指挥部「炼真」状态灯与「项目连接器」Ping 才能连到真实运行的 8501。
+- 🐛 **P0-2 健康检测误报（状态灯永远红）**：`core/health_check.py` 的 `check_health` 改为「HTTP GET /health 优先，失败则退化到 TCP 端口连通性探测」——馏析(Streamlit)/炼真(NiceGUI) 即使不提供 /health 端点，只要端口在监听即判在线；`format_health_badge` 兼容 `latency_ms=None`。同步让 `core/project_hub.py` 的 `get_project_summary` 与 `pages/3_🔗_项目连接器.py` 的 Ping 按钮复用 `check_health`，三处状态判断逻辑统一。
+- 🐛 **P0-3 `.env.example` 仓库名旧名**：`ATHANOR_REPO`/`ALEMBIC_REPO`/`CRUCIBLE_REPO` 的示例值 athanor/alembic/crucible → citrinitas/nigredo/albedo（与真实 GitHub 仓库一致）。照模板新建环境时 GitHub 同步不再因仓库名错误而失败。
 
 ### Fixed — 2026-06-23
 - 🐛 Citrinitas config 页面 500 错误修复 — `ui.slider` 在 NiceGUI 3.13.0 不支持 `label` 参数，改用独立 `ui.markdown`

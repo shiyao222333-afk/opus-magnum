@@ -21,7 +21,7 @@
 ### 🟡 关注
 
 - [ ] **【Sakana Fugu — 多 Agent 编排封装成单 API】** | 来源：https://x.com/berryxia/status/2069090959938466298 | 🎯 Rubedo 凝华
-  研究方向：多 Agent 系统封装成"单入口/单出口"，与「非必要不用大模型」原则一致。参考架构是否适用于未来的 Homunculus 自动化模块？
+  研究方向：多 Agent 系统封装成"单入口/单出口"，与「非必要不用大模型」原则一致。参考架构是否适用于未来的自动化编排模块？
 
 - [ ] **【Oak — 专为 AI Agent 设计的 Git 替代品】** | 来源：Show HN | 🎯 Rubedo 凝华
   研究方向：BLAKE3 内容哈希 + 内容定义分块，专为 Claude Code/Cursor 等 AI 编码工具设计。对用 AI 辅助开发的项目管理是否有价值？
@@ -522,4 +522,290 @@
 
 - [ ] **【支付宝阿宝 AI 助手 — 8 亿用户级的 AI 服务分发窗口，应从「了解」升级为「探索」】** | 来源：https://www.ithome.com/0/971/469.htm | 🎯 OpusMagnum 巨作
   首次扫描列入 ⚪了解，二次扫描升级为 💡探索。支付宝级平台开放 AI 助手入口，以对话方式安排办事（查公积金→自动匹配小程序），所有资金变动需用户确认。8 亿用户级别的「AI 服务分发窗口」——一人公司可开发阿宝小程序/技能，进入支付宝生态变现。评估阿宝的技能/插件接入接口和开放能力。
+
+---
+
+## 2026-07-08
+
+> 数据源：aihot 精选 18 条（24h，7/6-7/7）+ WebSearch 7 组（副业/一人公司/开源工具/AI设计/小红书/平台红利）| 去重对照 6/23-7/03 全部条目 | 匹配项目 4 个 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【tokhub.me — 向阳乔木开源 API 中转站监测网站，真实充值调用监控稳定性，Docker 一键部署】** | 来源：https://aihot.virxact.com/items/cmr9apy0u02hxslsmxllfd51t | 🎯 Rubedo 凝华
+  研究方向：通过真实充值调用监控各家 API 稳定性，也可作公司内部 Token/网关统一管理，解决选型头疼问题。这直接服务于 Athanor 当前的「摄入管线稳定性修复」重心——用看板提前发现单一 API 抖动，避免管线中断；同时统一网关降低多模型调用成本。本周可试：Docker 一键部署 tokhub，接入 Athanor 现有 API key，跑一周稳定性看板。
+
+- [ ] **【小红书变现真相 2026 — 网创资源平台实测对比 + 变现通用避坑】** | 来源：https://www.sohu.com/a/1045944588_122652693 | 🎯 Rubedo 凝华
+  研究方向：3 天前的实测文，从资源覆盖/时效性/落地性/便捷性/稳定性五维度拆解主流网创资源平台，并整理小红书变现行业通用避坑。SSS 作为效果图设计师，小红书内容变现是最直接的起号路径——本周研究「资源平台 + 小红书变现」组合打法，对照已收录的小红书 MCP Skills 全集，设计 SSS 的小红书起号→私域转化 SOP。
+
+### 🟡 关注
+
+- [ ] **【Fun-ASR-Realtime — 通义实验室实时语音识别，单模型 30 语言 16 方言，百毫秒级延迟】** | 来源：https://aihot.virxact.com/items/cmr8tzbde00jjsllsayhpgjqg | 🎯 Nigredo 馏析
+  研究方向：流式延迟百毫秒级，API 上阿里云百炼，单模型覆盖多语多方言。Nigredo 馏析的语音转文字管线可直接评估——是否替代或补充现有转写引擎（通义/讯飞/飞书妙记），尤其多语种/方言场景。关注 API 定价与本地部署可行性。
+
+- [ ] **【OpenClaw 登陆 HuggingFace 本地应用 — 一键部署完全本地、无云端、无密钥 Agent】** | 来源：https://aihot.virxact.com/items/cmr9jbw7a0085ihe85luucw73 | 🎯 Rubedo 凝华
+  研究方向：可选任意 GGUF/MLX 模型，复制设置即得本地工具调用 Agent，隐私敏感场景零云端零密钥。对 Rubedo「桌面自动化 + 私域运营」是低成本隐私方案——评估能否承载本地 RPA/自动化任务，避开云端 Agent 的数据合规风险。
+
+- [ ] **【「三周前，我不小心创办了一家小公司」— 父亲为自闭症儿子开发沟通应用，AI 图像 + 声音克隆找到 PMF】** | 来源：https://aihot.virxact.com/items/cmr83ashr0189sl04hhietwtx | 🎯 Rubedo 凝华 + 💡 OpusMagnum 巨作
+  研究方向：一人公司真实 PMF 案例——用 AI 图像生成 + 声音克隆解决被忽视的细分需求，意外跑通。对照 SSS「找被忽视的行业 know-how 需求」路径，研究其「需求发现→MVP→PMF」三段式，能否复用到 Athanor/Rubedo 的垂直知识库方向（军工行业 know-how 正是最被大厂做不重的细分）。
+
+- [ ] **【GitHub 开源盘点：AI Agent 基础设施 + 端侧自托管工具爆发式增长（odysseus 等）】** | 来源：http://www.mynw.cn/news/1087812.html | 🎯 Rubedo 凝华
+  研究方向：1 天前的周度盘点，AI Agent 基础设施和端侧自托管工具爆发，重点提及 odysseus（本地...）。这与 OpenClaw/OpenScience 同属「低成本开源自托管」趋势——评估这些端侧工具能否构成 Rubedo 的零成本执行底座，降低对云端 API 的依赖与成本。
+
+### ⚪ 了解
+
+- [ ] **【OpenScience — Apache 2.0 开源 AI 科研工作台，本地运行自带密钥，npm 安装即用】** | 来源：https://aihot.virxact.com/items/cmr8reau2005fslvpmqjll6du | 🎯 Rubedo 凝华
+  了解：覆盖多学科、支持任意模型切换的本地科研工作台，数据不出本机。对「低成本自托管 AI 工具链」是补充选项——当前优先级低，标记备查，等 Rubedo 需要本地知识/研究工作台时评估。
+
+- [ ] **【Claude Fable 5 下线前必跑的 8 个实战 Prompt — 提升构建速度、降 token 开销、可迁移 API 计费】** | 来源：https://aihot.virxact.com/items/cmr8j9weh02kxsl0dy08683oe | 🎯 Rubedo 凝华
+  了解：含自主实验、工作模式固化等 8 个实战 Prompt，强调迁至 API 计费后降 token 开销。对 SSS 用 Claude Code 推进 Athanor 是直接的提示词降本参考——了解其「工作模式固化」思路，看能否沉淀为 Rubedo 的 SOP Skill。
+
+### 💡 探索
+
+- [ ] **【斯坦福数据：AI 颠覆初级程序员就业，22-25 岁开发者就业降 19%、入门岗减 28%】** | 来源：https://aihot.virxact.com/items/cmr96dq8400pdslsmu56r8muy | 🎯 OpusMagnum 巨作
+  值得关注：智能体编程兴起使「初级程序员」头衔消亡，编程变为基本能力。对一人公司是宏观结构利好——技能洼地被 AI 填平，单人产出逼近专业水准（呼应 Fable 5 RLI 16.1%）。但低端代工市场被压缩，必须往「AI 做不到的专业品味 + 行业 know-how」升级。这是巨作层面的战略储备信号：一人公司的护城河不在「会写代码」，而在「行业判断 + 客户资源 + 审美」。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：Apple APMs 安全对齐（纯学术）、Tomer Tunguz AI 世界观（观点无应用）、Meta 伪装未成年（安全丑闻）、AT&T 专利法令/语料版税（政策观点）、Runway 巴黎办公室（大企业布局）、SK 海力士 IPO（大企业）、NVIDIA Kyber 延迟（算力供给）、扎克伯格千兆瓦集群（大企业）、欧盟 Chat Control（监管无变现）、Google 隐私默认训练 AI（平台变更但无赚钱窗口）、SGLang DSpark（已在 6/28 覆盖）
+> - ✅ 保留：tokhub.me（Agent 稳定性监测）、Fun-ASR-Realtime（Nigredo 语音）、OpenClaw（本地 Agent）、父亲小公司（一人公司 PMF）、GitHub 开源盘点（端侧自托管）、OpenScience（自托管工作台）、Claude Fable 5 Prompt（提示词降本）、小红书变现真相（内容变现）、斯坦福就业数据（宏观结构）
+> - 🆕 与 6/23-7/03 去重对照：全部 9 条均未在历史队列中出现
+> - 🔍 今日 24h 精选 18 条中 9 条（50%）通过一人公司过滤，剔除率 50%，偏大企业/学术/监管；WebSearch 补充 2 条新鲜内容（小红书变现 3 天前、GitHub 盘点 1 天前）
+
+> 📡 **补充扫描（WebSearch 7 天精选兜底）** | 数据源：WebSearch 6 组（AI工具/副业/一人公司/平台红利/RAG-OCR/数字人/Claude替代）| 去重对照 6/23-7/07 全部条目（含本轮已写入 2026-07-08 段）| 新增 5 条 | 🕐 08:50
+
+### 🔴 本周可试（补充）
+
+- [ ] **【阿里 7/10 起全面禁用 Claude 全系（含 Claude Code），推荐自研 Qoder 替代】** | 来源：https://finance.sina.com.cn/roll/2026-07-03/doc-inifpyyq2334050.shtml | 🎯 Rubedo 凝华
+  研究方向：阿里将 Claude 列入「高风险软件」并 7/10 全面禁用（含 Sonnet/Opus/Fable 模型与 Claude Code），推荐自研 Qoder 作平替——直接戳中 SSS 当前用 Claude Code 推进 Athanor 的命门。立即制定国产编码 Agent 预案（Qoder/豆包 Trae/千问），评估迁移成本与功能缺口，避免「断供」式单点依赖。
+
+### 🟡 关注（补充）
+
+- [ ] **【腾讯混元 Hy3 正式发布 — Agent 能力跃升，256K 上下文，MoE 2950 亿】** | 来源：https://www.tencent.com/zh-cn/articles/2202386.html | 🎯 Citrinitas 熔知
+  研究方向：国产 MoE 模型，256K 长上下文 + 原生 Agent 工具调用，正好补 Claude 被禁后的「长文档摄入 / 知识检索」需求。评估 Hy3 能否作为 Citrinitas 熔知的国产 LLM 底座（RAG 问答、长文解析），对比 Claude 的月成本与合规优势。
+
+- [ ] **【美团 LongCat-2.0 开源 — 1.6T 权重 + 推理引擎 + 国产芯片适配】** | 来源：https://finance.sina.com.cn/tech/roll/2026-07-06/doc-inifwmvt8661077.shtml | 🎯 Citrinitas 熔知
+  研究方向：美团开源全系权重、推理引擎与核心文档，华为昇腾/摩尔线程/沐曦已完成适配。1.6T 全量需大显存，但「开源 + 国产芯片」路线为低成本私有化 LLM 推理提供战略选项。重点跟踪后续蒸馏版 / 小参数版本，评估能否作为 Citrinitas 自托管推理底座（规避 API 断供 + 数据不出域）。
+
+- [ ] **【AI 数字人直播 7/15 起必须全程显著标识，否则重罚】** | 来源：http://www.rhkb.cn/news/841995 | 🎯 Rubedo 凝华
+  研究方向：监管正式落地——境内 AI 拟人互动（直播带货等商业场景）须全程显著标注「AI」身份，7/15 生效。若 SSS 未来做数字人内容 / 销售陪谈，须把「身份标识」做成合规前置项；同时「标识合规 + 真人背书」反而能建立信任壁垒。对照 Nigredo 数字人管线调整 SOP，避免踩线。
+
+### ⚪ 了解（补充）
+
+- [ ] **【5 款开源 AI 视频转写工具实测盘点（klipa 横评）】** | 来源：https://klipa.ai/en/blog/open-source-ai-video-transcription-tools_688 | 🎯 Nigredo 馏析
+  研究方向：近期开源视频转写工具横向评测，覆盖 Whisper 系与新晋方案。Nigredo 摄入管线依赖转写引擎，对照清单评估是否引入多引擎 fallback（实时 vs 离线精转），尤其针对中文长视频 / 方言 / 说话人分离场景提升稳定性——降低对单一转写服务的依赖。
+
+> 📡 补充筛选：以上 5 条来自 aihot 24h 窗口之外的 7 天精选，均与本轮已写入的 2026-07-08 段不重复；阿里 Claude 禁为 7/3 事件、Hy3/LongCat 为 7/6 发布、数字人标识 7/15 生效在即、klipa 为 7/4 横评——均为补充扫描首次收录，无历史重复。
+
+## 2026-07-10
+
+> 数据源：aihot 精选 23 条（24h，7/9-7/10）+ WebSearch 4 组（副业/小红书红利/低成本开源/AI设计接单）| 去重对照 6/23-7/08 全部条目 | 匹配项目 4 个 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【ChatGPT Sites — 想法一步变可发布网站，OpenAI 官方上线】** | 来源：https://x.com/OpenAIDevs/status/2075331020090687666 | 🎯 Rubedo 凝华
+  研究方向：输入一个想法即生成可分享的实时网站，无需写代码。这是「想法→产品→获客」最短路径的官方版——对照 Athanor/Rubedo 的 MVP 公开验证：能否把知识库 Demo / 自动化案例快速做成可分享网页，挂到小红书/私域引流？本周试做一个 Rubedo 能力展示页，验证「零代码建站→获客」闭环。
+
+### 🟡 关注
+
+- [ ] **【colibrì — 纯 C 实现，消费级 25GB 内存电脑跑通 744B 参数 GLM-5.2】** | 来源：https://github.com/JustVugg/colibri | 🎯 Citrinitas 熔知
+  研究方向：int4 量化后常驻内存仅 9.9GB、流式加载磁盘专家，把「本地跑超大模型」的门槛压到一台普通电脑。这对 Citrinitas 熔知是低成本自托管推理底座的强心针——继续跟踪蒸馏/小参数版，评估能否替代云端 API（规避断供 + 数据不出域 + 边际成本趋零），与 7/08 收录的 LongCat/Hy3 国产自托管路线互补。
+
+- [ ] **【社交媒体 AI 内容泛滥实测：LinkedIn 超 40% 长文为 AI 写作】** | 来源：https://www.pangram.com/blog/ai-in-your-feed | 🎯 Rubedo 凝华
+  研究方向：Pangram 扫描 100 万帖发现整体 AI 率 13.8%、LinkedIn 长文 40%+ 完全 AI 生成。内容通胀正在全平台发生——这对 Rubedo「小红书自动化+私域」是双刃剑：批量 AI 内容越泛滥，平台越倾向给「真人背书 + 显式标注 + 独特人设」的内容流量倾斜。立即复核 SSS 的小红书 SOP：把「真人审稿 + AI 协作者标识 + 行业 know-how 独家性」做成不可复制的护城河。
+
+- [ ] **【微软 Flint — 给 AI 智能体的可视化语言，一句话生成 46 种美观图表】** | 来源：https://microsoft.github.io/flint-chart | 🎯 Rubedo 凝华
+  研究方向：用人类可编辑的 spec（数据 + 语义类型 + 图表类型）让 Agent 自动推导坐标轴/配色/布局，渲染到 Vega-Lite/ECharts/Chart.js，并提供 MCP 服务器接入智能体工作流，已开源。SSS 作为效果图设计师，图表/信息图自动化是高频需求——评估 Flint 能否嵌入 Nigredo/Rubedo 的「报告/方案可视化」流水线，把「说一句话出一张专业图表」做成对外交付能力。
+
+### ⚪ 了解
+
+- [ ] **【Mistral Studio — 把提示词和技能当生产资产管理：版本/回滚/审计/标签推送】** | 来源：https://mistral.ai/news/manage-prompts-and-skills-in-studio | 🎯 Rubedo 凝华
+  了解：prompts/skills 被视为生产资产，不可变版本 + 明确所有权 + 分类标签 + 审计日志，非开发者也能编辑测试后标签推生产。对 Rubedo 的 Skill 体系是治理范本——对照当前 Skill 是否有「版本化 + 回滚 + 变更可追溯」机制，尤其多 Skill 积累后的「沉淀（Sediment）」风险。
+
+- [ ] **【TeXada — 基于 MiniCPM 的本地数学 Agent，公式 OCR 转可编辑 LaTeX】** | 来源：https://x.com/OpenBMB/status/2075218678027850154 | 🎯 Nigredo 馏析
+  了解：支持自然语言转 LaTeX、手写/图像公式 OCR 转可编辑 LaTeX、LaTeX 补全与错误修复，全程本地推理无云端。Nigredo 摄入管线依赖文本/公式提取，TeXada 可作为「扫描文档/讲义公式」的本地化补充引擎——当前优先级低，标记备查。
+
+- [ ] **【Claude 推出「反思」功能（Beta）— 让模型回顾并修正自己的回答】** | 来源：https://www.anthropic.com/news/reflect-with-claude | 🎯 Rubedo 凝华
+  了解：对话中 Claude 可主动反思、识别疏漏并修正。这与自动化质量闭环直接相关——对照 Rubedo「零人工干预」原则，评估「反思」机制能否作为 Agent 自检环节，在交付前自动纠错（类似 Albedo 验证的轻量前置）。
+
+- [ ] **【ChatGPT Work — OpenAI 跨应用自主工作的 AI 智能体】** | 来源：https://openai.com/index/chatgpt-for-your-most-ambitious-work | 🎯 Rubedo 凝华
+  了解：面向「最雄心勃勃的工作」，可跨文件/日历/邮件/通讯等应用自主推进任务。这是 OpenAI 对「跨应用自主 Agent」的正面下场，与 7/06 收录的 Claude Cowork 同赛道——印证「AI 员工嵌入现有工作流」已成大厂共识，对 Rubedo 自动化业务的定位和获客叙事是需求端验证。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：Google SensorFM（健康AI学术）、Musk 赞 Anthropic（大公司动态）、Sequoia 3万亿支出（纯宏观）、Bun 被收购（基础设施）、SWE-1.7 benchmark（模型评测）、LiteRT.js（端侧推理基础设施）、Anthropic 硬问题（公关）、GPT-5.6 发布（7/03 已收录 Sol 详细）、伯南克受托人（公司治理）、特斯拉擎天柱（机器人硬件）、Meta Muse Spark（模型发布）、法国反垄断 CUDA（监管）、NVIDIA Nemotron Puzzle（模型/算力）、蚂蚁 LingBot 视频/世界模型（研究发布）
+> - ✅ 保留：ChatGPT Sites（零代码建站）、colibrì（低成本自托管推理）、LinkedIn AI 泛滥（内容生态变化）、微软 Flint（AI 设计图表）、Mistral Studio（Skill 资产治理）、TeXada（本地公式OCR）、Claude 反思（Agent 自检）、ChatGPT Work（跨应用自主Agent）
+> - 🆕 与 6/23-7/08 去重对照：全部 8 条均未在历史队列中出现（ChatGPT Sites ≠ 百度秒哒/Ardot；colibrì ≠ LongCat/Hy3；Flint ≠ Ardot/Recraft/Figma；LinkedIn 泛滥 ≠ 小红书变现真相/自媒体结构变化）
+> - 🔍 今日 24h 精选 23 条中 8 条（35%）通过一人公司过滤，剔除率 65%，偏大企业/学术/模型发布；WebSearch 4 组补充均为 7 天窗口外旧文或已收录项（小红书变现真相 5 天前已在 7/08 队列），无新增。
+
+> 📡 **二次扫描补充（机会雷达深度 7d：txtmix AI副业早报 7/4 + 大黑AI速报 7/7-7/10 共 16 期）** | 新增 18 条，与 aihot 主段 8 条零重复 | 🕐 08:50
+>
+> 主段 WebSearch 4 组未命中副业/一人公司垂直信号，本补充专攻「副业机会/一人公司/赚钱渠道/平台红利/降本工具」，覆盖主段缺口。
+
+### 🔴 本周可试（二次扫描补充）
+
+- [ ] **【腾讯开源 BrowserSkill — 让 AI 智能体直接操作浏览器】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_1601 | 🎯 Rubedo 凝华
+  研究方向：腾讯开源的浏览器操作 Skill，让 Agent 像人一样点网页、填表、抓数据。对照主段 ChatGPT Sites（建站），BrowserSkill 补上「网页 RPA」环节——评估能否嵌入 Rubedo 的小红书/酷家乐采集与 Athanor 摄入管线的网页抓取，降低对单一 API 的依赖、提升稳定性。
+
+- [ ] **【Cognition SWE-1.7 — 低成本逼近前沿的编程 Agent 模型（1000 tok/s，成本仅几分之一）】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_0401 | 🎯 Rubedo 凝华
+  研究方向：基于 Kimi K2.7 的编程模型，SWE-Bench Pro 逼近最强模型但成本大幅降低、速度 1000 tok/s。SSS 当前用 Claude Code 推进 Athanor，编码成本是直接痛点——本周评估 SWE-1.7 能否承接日常编码/测试，把 Claude 额度留给复杂架构决策，月成本可降一截（主段 colibrì 解决「推理底座」，SWE-1.7 解决「编码成本」）。
+
+- [ ] **【agent-bridge — Claude Code + Codex 双开会话桥开源（MIT，纯本地）】** | 来源：https://github.com/raysonmeng/agent-bridge | 🎯 Rubedo 凝华
+  研究方向：把 Claude（规划）和 Codex（执行）接进同一常驻会话，自动互传结果、额度见底无缝接续，大部分代码由两个 Agent 自己写出来。对 Athanor 开发是「双模型编排」现成参考——评估接入 OpenCode/Gemini CLI，做成 SSS 自己的本地多 Agent 编码流，降本又不被单一厂商锁定。
+
+### 🟡 关注（二次扫描补充）
+
+- [ ] **【LangChain 开源 deepagents + Gemini API Managed Agents（后台/远程 MCP）】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-08_0401 | 🎯 Rubedo 凝华
+  研究方向：同一天两个 Agent 基础设施开源/升级——LangChain deepagents（深度 Agent 框架）+ Gemini Managed Agents 支持后台运行和远程 MCP。对 Rubedo 自动化底座是直接可选型——对照 6/29 Weave/Wayfinder 路由，评估「框架 + 托管 Agent + 远程工具」能否构成零运维的自动化执行层。
+
+- [ ] **【OpenAI GPT-Live 全双工语音模型全面推送（实时 UI + 调用 GPT-5.5）】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_1201 | 🎯 Nigredo 馏析 + Rubedo 凝华
+  研究方向：官方版全双工语音，边说边听、可实时操控界面、调用模型。对 Nigredo 语音处理管线（实时转写/语音驱动）是直接方案；对 Rubedo 是「语音驱动自动化 + 销售陪谈 Agent」的语音底座。对照 6/29 ChatGPT Bidi 1，GPT-Live 已全量推送——评估接入成本与中文表现。
+
+- [ ] **【Kyutai Pocket TTS 开源 — 5 秒音频克隆音色】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-07_0001 | 🎯 Nigredo 馏析
+  研究方向：法国 Kyutai 开源极轻量 TTS，5 秒样本即可克隆音色。对照 6/24 Confucius4-TTS，Pocket TTS 是多一个开源选项——评估能否作为 Nigredo「文字→有声内容」输出格式，或做知识付费/播客的低成本配音，本地部署零成本。
+
+- [ ] **【Koder — 浏览器 UI 编码工具发布（设计稿→代码）】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-07_2001 | 🎯 Rubedo 凝华
+  研究方向：浏览器内直接做 UI 编码的工具，把设计意图转成可运行界面。对照主段 微软 Flint（图表）+ 6/27 Ardot/Recraft，Koder 是「设计→代码」赛道又一新玩家——SSS 作为效果图设计师，评估能否把军工效果图风格稿直通代码交付，缩短提案到收钱的距离。
+
+- [ ] **【淘宝 GrowBrain — Agentic 内容成长引擎（商家内容自动化）】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_2001 | 🎯 Rubedo 凝华
+  研究方向：淘宝发布面向商家的 Agentic 内容成长引擎，自动生成并优化店铺内容。这是「平台级内容 Agent」红利信号——对照 Rubedo 小红书/私域内容自动化与 6/25 小红书新规，研究能否借平台原生 Agent 降低内容生产成本，或把 SSS 内容服务对齐平台工具做差异化。
+
+- [ ] **【工信部发布 Claude Code 后门风险提示 + 北京拟限制海外访问中国 AI 模型】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-08_1601 | 🎯 Rubedo 凝华
+  研究方向：监管连续出手——工信部提示 Claude Code 后门风险、北京拟限制海外访问中国 AI 模型。叠加 7/08 阿里 7/10 禁用 Claude，国产模型从「备选」变「刚需」——立即把 Hy3/LongCat/DeepSeek 迁移预案从「待办」提到「本周必须跑通」，避免 Athanor 开发工具链断供（呼应主段 colibrì 自托管路线）。
+
+- [ ] **【Danluu Agentic coding 方法论 — 测试驱动 + 默认无 code review】** | 来源：https://news.ycombinator.com/item?id=48782671 | 🎯 Rubedo 凝华
+  研究方向：资深工程师分享「测试当一等公民、靠属性测试/fuzzing 替代手写单测与 review」的 AI 编程工作流，支撑「接单产能翻倍」。对 SSS 用 AI 接单/做 Athanor 是直接可抄的工程质量 SOP——研究能否沉淀为 Rubedo 的交付质量检查清单（呼应主段 Claude 反思 自检机制）。
+
+### ⚪ 了解（二次扫描补充）
+
+- [ ] **【Grok-4.5 正式发布 — Terminal-Bench 击败对手、成本更低】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_0801 | 🎯 Rubedo 凝华
+  了解：xAI 发布 Grok-4.5，Terminal-Bench 超过竞争对手且成本/效率更优，Code Arena Frontend 升至第 3。前沿编码模型又多一个低成本选项——标记备查，等 API 开放后评估能否加入 Athanor 编码模型路由（成本维度补充主段 colibrì）。
+
+- [ ] **【Manus 推出 Branch 并行会话功能】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-10_0001 | 🎯 Rubedo 凝华
+  了解：Agent 产品 Manus 支持并行分支会话，同一任务多路线探索。对 Rubedo 多 Agent 编排有产品形态参考——了解其「分支/合并」交互，看能否复用到自动化任务调度。
+
+- [ ] **【魔芯 MoWorld — 50FPS 视频生成、成本降 70%、获华为联想投资】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-09_0002 | 🎯 Rubedo 凝华
+  了解：视频生成速度和成本再下探（50FPS、成本降 70%）。对照 6/24 FastWan-QAD / Seedance，视频生产降本趋势明确——标记跟踪，等 SSS 做小红书/短视频时评估自部署 vs API 的经济性。
+
+### 💡 探索（二次扫描补充）
+
+- [ ] **【小互用 Claude Code 建站 3 天盈利 — 一人公司 PMF 真实样本】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-08_2001 | 🎯 OpusMagnum 巨作
+  值得关注：开发者小互用 Claude Code 三天建站即盈利，是「AI 编程 + 一人交付」的最新 PMF 案例。对照主段 ChatGPT Sites（零代码建站），验证「建站/小工具即盈利」路径仍跑得通——研究其选品与获客，看能否复制到我们的垂直知识库方向。
+
+- [ ] **【BrowSync — Mac 多浏览器同步工具，内购限免、独立开发年收入估千万级】** | 来源：https://browsync.ct106.com | 🎯 OpusMagnum 巨作
+  值得关注：纯本地、隐私优先、iCloud 同步的 Mac 工具，靠「内购限免」拉声量、月费 $9.99 变现，独立开发者年收入估千万级。这是一人公司「小工具 + 订阅制」产品形态标杆——研究其定价/限免/增长打法，对照 SSS 能否做类似的 AI Coding 上下文同步工具（Cursor↔Claude Code↔Codex）。
+
+- [ ] **【Show HN 半衰期 7 小时 — 4.1 万次 launch 数据复盘】** | 来源：https://news.ycombinator.com/item?id=48759838 | 🎯 OpusMagnum 巨作
+  值得关注：统计 41,301 个 Show HN，热度半衰期仅 7 小时，成功者都是「真有刚需的工具」而非刻意 launch。对 SSS 副业 launch 是清醒方法论：把「首发 0-7 小时响应预案 + 第 7 天复盘」做成标准动作，「找 30 个真实用户比 3000 个点赞重要」——直接复用到 Rubedo 任何产品的发布 SOP。
+
+- [ ] **【OASIS Ring 走红 — Vibe Coding 语音/手势硬件，AI 硬件+内容复合变现】** | 来源：https://www.36kr.com/p/3880964231707525 | 🎯 OpusMagnum 巨作
+  值得关注：智能戒指 OASIS Ring 不做健康、专做「AI 输入设备」，用声音/手势控制电脑里的 AI。今年 Vibe Coding 硬件（三键键盘、AI 麦克风、AI 耳机）集中走红——这是「软件副业 + 硬件测评/配置文件内容」复合变现窗口，SSS 可卖「国产 AI 助手 + 智能戒指」语音命令预设（¥19-49/套）。
+
+- [ ] **【Cloudflare Monetization Gateway — Agent 自动收费网关，按使用付费】** | 来源：https://news.daheiai.com/realtime.php?file=quick_2026-07-08_1201 | 🎯 OpusMagnum 巨作
+  值得关注：Cloudflare 推出按使用付费的自动收费网关，Agent 可直接对调用方计费、分成、结算。一人公司做「按次/按量收费的 AI 工具」最大痛点（收钱、对账、分成）被平台接管——研究能否作为 Rubedo 未来对外售卖自动化服务的变现基建，省去自己搭支付。
+
+> 📡 **二次扫描筛选**：
+> - ❌ 剔除（与主段同理由）：纯大企业/基础设施（Ollama 融资、MiniMax M3 P、DeepSeek 自研芯片、NVIDIA Nemotron、Gemma 4、三星芯片、机器人上市、具身基准、医疗微调、AWS/SageMaker 集成、百度下载破百万）、监管无直接变现（GPT-5.6 日区假消息辟谣、OpenAI 人事）、已收录重复（阿里禁用 Claude 7/08、Hy3 7/08、Fun-ASR 7/08、Claude Sonnet 5 7/01、GPT-5.6 6/27、Kimi K2.7 7/03、Claude Loop 7/01、小红书 MCP 7/03）
+> - ✅ 保留（18 条，全为副业/一人公司/赚钱/平台红利维度，主段 WebSearch 未命中）：BrowserSkill、SWE-1.7、agent-bridge、deepagents+Managed Agents、GPT-Live、Kyutai Pocket TTS、Koder、GrowBrain、工信部后门+北京限制、Danluu、Grok-4.5、Manus Branch、MoWorld、小互建站、BrowSync、Show HN 半衰期、OASIS Ring、Cloudflare Gateway
+> - 🆕 与 6/23-7/08 及本日主段 8 条三重去重：全部 18 条均为新增，无重复
+> - 🔍 本日总覆盖：aihot 主段 8 条 + 二次扫描 18 条 = 26 条高相关信号；大模型密集发布期，信号密度极高，已按「宁少勿滥」剔除所有无关项
+
+## 2026-07-12
+
+> 数据源：WebSearch 多维度扫描 16 组（副业/一人公司/开源工具/AI设计/平台红利/AI编程平替/事实核查/向量OCR/RAG）+ 7天窗口补充 | 去重对照 6/23-7/10 全部条目 | 匹配项目 5 个 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【Days to First $1,000 — 11 个 AI 副业按"首赚千元"速度排名（31 位独立运营者收据）】** | 来源：https://betonai.net/days-to-first-1000-with-ai-in-2026-11-side-hustles-ranked-by-how-fast-a-solo-operator-got-paid-receipts-from-31-operators/ | 🎯 Rubedo 凝华
+  研究方向：最快路径是"本地商家 AI 语音客服搭建"（中位 14 天首赚 $1K、最快 4 天）、AI 接待员（21 天）、Cursor 接单开发（23 天）、AI 社媒内容包（28 天）；最慢是 AI 图库（71 天）。对照 SSS 技能栈，优先验证"AI 社媒内容包 / 设计接单"两条——既是中位最快、又复用 Nigredo+Rubedo 流水线。本周挑一条跑"首单→首千元"最小闭环。
+
+- [ ] **【国产编码 Agent 平替矩阵 — OpenCode / QwenCode / ZCode / DeepCode CLI 集中开源（MIT/Apache，免费商用）】** | 来源：https://new.qq.com/rain/a/20260709A0811Y00?refer=cp_1009 | 🎯 Rubedo 凝华
+  研究方向：阿里 7/10 禁用 + 工信部后门提示后，平替已成型——OpenCode（17万Star、无监控、本地存储、75+模型）、Qwen Code（Apache-2.0、25k Star）、ZCode（GLM-5.2、Terminal-Bench 81%、API $1.4/$4.4 仅为 Opus 1/5）、Deep Code CLI（DeepSeek-V4 原生、MIT）。本周必须把 Athanor 开发工具链从"Claude Code 单点"迁到"OpenCode + 国产模型"双轨，避免断供式单点依赖（呼应 7/08 预案）。
+
+### 🟡 关注
+
+- [ ] **【Google Gemma 4 全系开源（Apache 2.0，31B 端侧多模态+深度思考）】** | 来源：https://www.163.com/dy/article/L1ICDGJD0511ABV6.html | 🎯 Citrinitas 熔知
+  研究方向：7/11 解封，原生多模态（视觉+音频）+ 深度推理，笔记本/手机可离线跑。补上 Citrinitas「自托管推理底座」多模态短板——与 7/08 LongCat/Hy3、7/10 colibrì 形成「开源自托管三选一」。评估 Gemma 4 能否本地承担 Athanor 的图片/音频摄入与长文档解析，进一步降低对云端 API 的依赖与断供风险。
+
+- [ ] **【Z.ai 发布 ZCode — 免费 AI 编码 IDE（GLM-5.2，MIT，微信/飞书机器人远程控制）】** | 来源：https://www.ai-master.cc/blog/blog-413 | 🎯 Rubedo 凝华
+  研究方向：基于 GLM-5.2（744B MoE），Terminal-Bench 2.1 得 81%（Opus 4.8 为 85%），SWE-bench Pro 62.1 超 GPT-5.5，基础版免费、付费 $16.2/月（低于 Cursor $20），API 成本仅为闭源 1/5–1/9。这是 Claude Code 断供后最直接的「免费+国产+可远程微信操控」平替——本周实测 ZCode 承接 Athanor 日常编码，把 Claude 额度留给复杂架构决策。
+
+- [ ] **【2026 事实核查/幻觉治理工具栈成熟 — Standard/Hybrid/Agentic RAG + 7 款验证工具 + ReMMD-Agent + 氢离子动态证据】** | 来源：https://news-factory.app/blog/news-fact-checking-2026 | 🎯 Albedo 炼真
+  研究方向：幻觉治理已从「概念」进入「工程标配」——三层 RAG（Standard 降 15-25% / Hybrid KG-RAG 降 18% / Agentic RAG 降 25-40%）；7 款验证工具（Perplexity Sonar、Vectara HHEM 幻觉评分、Guardrails AI、Patronus AI、Google Fact Check Explorer 等）；上交大/清华 ReMMD-Agent 用「原子化解析+记忆库复用」把假新闻核查做到 82.4%；阿里健康氢离子把静态引用升级为「动态证据定位」（校验时效性/权威性）。这是 Albedo 炼真的可直接复用的技术栈与产品范式——把「知识验证→证据追踪→时效性校验」做成 Athanor 的验证层。
+
+- [ ] **【VideoCaptioner — 15k Star 开源字幕神器，一行命令搞定转录/翻译/烧录，自带 Claude Code Skill】** | 来源：https://guopei.blog.csdn.net/article/details/162551646 | 🎯 Nigredo 馏析
+  研究方向：CLI+GUI 双模式，ASR（必剪/Whisper）+ LLM 语义断句翻译 + FFmpeg 烧录全流程一体化，免费功能零成本；还提供 Claude Code Skill（`/videocaptioner`），让 AI 编程助手直接调它处理视频字幕。对照 7/03 browser-use video-use 与 7/08 klipa 横评，VideoCaptioner 是「字幕回填」环节更省心的一体化选项——评估接入 Nigredo 视频摄入管线，降低多工具拼凑成本。
+
+- [ ] **【MinerU + DeepSeek-OCR 2 — PDF 结构化+OCR+自动目录，中文强】** | 来源：https://gitcode.csdn.net/69b2863454b52172bc60bd7b.html | 🎯 Citrinitas 熔知 + Nigredo 馏析
+  研究方向：MinerU（OpenDataLab）做 PDF 解析+版面分析+标题层级+自动目录+Markdown 输出；DeepSeek-OCR 2 用 VLM+LLM 还原阅读顺序与层级、自动生成 Markdown 目录。两者都是 Athanor 摄入管线的「文档→结构化」候选引擎，尤其适合军工效果图规范/技术文档的批量入库——对比 7/08 TeXada（公式）与既有方案，评估能否统一文档摄入栈。
+
+- [ ] **【PilotDeck — 清华/OpenBMB/面壁开源本地 Agent OS，智能路由省约 70% 成本】** | 来源：https://watermelonwater.tech/insights/%E6%9C%AC%E5%9C%B0agentos%E4%BA%BA%E4%BA%BA%E5%8F%AF%E6%8B%A5%E6%9C%89 | 🎯 Rubedo 凝华
+  研究方向：一个项目一个 WorkSpace（文件/记忆/技能/任务进度/成本记录），开源可本地部署；智能路由按任务难度动态降级模型（社媒场景省约 70%，复杂任务用 1/6 成本超 Sonnet 4.6 单 Agent）。这正是 Rubedo「零人工干预 + 算账」原则的工具化样本——评估能否作为 Athanor 开发的本地 Agent 工作舱，把「灵感→执行」压成一个人调度一支 Agent 小队。
+
+- [ ] **【OpenWork — 开源本地优先 AI Agent 桌面工作台（OpenCode 引擎，可一键分发工作流）】** | 来源：https://www.toutiao.com/article/7657883971157492267 | 🎯 Rubedo 凝华
+  研究方向：对标 Claude Cowork/Codex，本地优先（127.0.0.1 起 OpenCode，数据不出本地），接入 50+ 模型，支持把「Skills+MCP+提示词+自动化流程」打包成分享链接一键导入。对 Rubedo 的双重价值：(1) 隐私可控的本地 Agent 工作台；(2)「可分发工作流」是可对外售卖的数字化产品形态——把 SSS 的自动化 SOP 做成模板卖，正是内容变现新路径。
+
+- [ ] **【小红书 AI 视频流量扶持 — RED 精选计划曝光 50万→270万，最高 8 万流量券/月+100万基金】** | 来源：https://www.toutiao.com/a7644305256737735211?channel= | 🎯 Rubedo 凝华
+  研究方向：AI 中长视频满足「真实信息增量 / 艺术辨识度 / 完整剧情逻辑」三项即可进 RED 精选，篇均曝光从 50 万升至 270 万、最高 8 万流量券/月、推荐周期延至 90 天。2026 以来已封禁 110 万+ AI 托管账号——但「有辨识度的 AI 视觉创作」被明确扶持。SSS 作为效果图设计师，立即把小红书 SOP 重写为「AI 中长视频 + 强个人风格 + 知识增量」，对齐 RED 精选拿流量倾斜（呼应 6/25 小红书新规）。
+
+- [ ] **【视频号完成商业化闭环 — 微信小店整合+社交推荐权重提升+直播基建成熟】** | 来源：https://c.m.163.com/news/a/KVAAQCNK0522COE6.html | 🎯 Rubedo 凝华
+  研究方向：视频号从「内容平台」跃为「商业平台」——微信小店内闭环下单（免跳转）、社交推荐权重提升（朋友互动影响推荐流）、直播带货工具补齐。对 SSS 的「小红书种草→微信私域成交」组合拳是平台级红利：视频号承接私域、微信小店直接变现，链路比抖音更短。评估是否把内容分发从「抖音测爆款+小红书种草」补上「视频号沉淀私域」第三极。
+
+### ⚪ 了解
+
+- [ ] **【证券时报《2026 一人公司洞察报告》：1 元撬动 72 倍人力，零成本工具矩阵曝光】** | 来源：https://blog.csdn.net/liferecords/article/details/161227643 | 🎯 Rubedo 凝华
+  了解：量化结论——一人公司月工具成本（OpenClaw+Dify+n8n 全免费方案）可压到 ¥0，混合方案约 ¥402/月，对比 5 人团队成本比 1:200、产出达 60-80%。这是对「一人公司可行性」的硬数据背书，标记备查，用于对外讲 SSS 一人公司故事时引用。
+
+- [ ] **【goose — Linux 基金会 AAIF 托管开源 AI Agent（47k Star，MCP 70+ 扩展）】** | 来源：https://f.mffb.com.cn/a/498123.html | 🎯 Rubedo 凝华
+  了解：Block 内部孵化、2026/4 迁入 Linux 基金会，本地优先、支持 15+ LLM 与 70+ MCP 扩展（GitHub/数据库/Shell/文件系统），桌面 GUI+CLI+API 三形态。MCP 生态最广泛的本地 Agent 之一——标记备查，作为 Rubedo 自动化底座的候选（与 OpenClaw/OpenWork/PilotDeck 横向对比）。
+
+### 💡 探索
+
+- [ ] **【Chatbase 117 天做到 $1M ARR — 零融资零团队，16 个粉丝起步，现 $8M ARR】** | 来源：https://1opc.ai/article/881/arr-chatbase-yasser-elsaid-ai-gpt | 🎯 OpusMagnum 巨作
+  值得关注：创始人 Yasser Elsaid 做「基于自己数据训练定制 GPT 聊天机器人」的拖拽式平台，117 天从 16 粉丝到 $1M ARR、现 $8M，全程零融资零销售团队、纯自举。最大反直觉启示：「16 个粉丝也能引爆产品」——别等准备好才推广。对 Athanor/Rubedo 的直接启发：知识库聊天机器人（Citrinitas 方向）是被验证的 solo PMF 赛道，且「先发产品再涨粉」比「先涨粉再卖货」更稳。
+
+- [ ] **【OPC 政策红利密集落地 — 北京/海南/济南/重庆最高算力补贴 50 万、海南奖励 800 万】** | 来源：https://www.mycaijing.com/article/detail/569521?source_id=40 | 🎯 OpusMagnum 巨作
+  值得关注：2026 年以来超 20 城出台一人公司专项政策——北京通州模型券 30 万/算力券 50 万、海南自贸港税收优惠+数据跨境+最高 800 万奖励、济南 50 亿产业基金+免租空间、重庆创业担保贷款个人 50 万/小微 600 万且 50% 贴息。这是巨作层面的战略储备：一人公司的「政策套利窗口」正在打开，SSS 可评估把公司主体落在有补贴的城市（如海南/北京），把算力/模型/办公成本外部化。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：纯大企业/融资/芯片（MiniMax 160亿融资、曙光8000超集群、Meta出租算力、Anthropic自研芯片、AMD Zen6、英伟达H100涨价、Grok-4.5已在7/10）、模型发布重复（GPT-5.6 Sol已在6/27、GPT-5.6公开已在7/11）、学术/基准（ARC-AGI-3已在7/09覆盖）、自媒体平台对比旧文（与6/25小红书新规/7/08变现真相重叠）
+> - ✅ 保留：betonai首千元排名、国产编码平替矩阵、Gemma 4、ZCode、事实核查工具栈(Albedo首条命中)、VideoCaptioner、MinerU/DeepSeek-OCR2、PilotDeck、OpenWork、小红书RED精选、视频号闭环、72倍人力、goose、Chatbase、OPC政策
+> - 🆕 与 6/23-7/10 去重对照：全部 15 条均为新增，无重复；其中 **Albedo 炼真首次有命中条目**（事实核查/幻觉治理工具栈）
+> - 🔍 本周（7/10→7/12）主线：国产替代 + 自托管 + 平台红利；aihot 专家流本次未直接可用，改用 WebSearch 多维度扫描兜底，覆盖等同
+
+---
+
+> 📡 **二次扫描补充（机会雷达 7d 深度）** | 数据源：aihot.virxact.com 24h 精选（7/11-7/12）+ WebSearch 副业/AI设计/开源Agent/平台红利 6 组 | 与专家主段 15 条及 6/23-7/10 全量去重 | 新增 8 条 | 🕐 08:50
+
+### 🟡 关注（二次扫描补充）
+
+- [ ] **【Perplexity Computer Analytics — 跨模型信用额度支出监控，免费】** | 来源：https://aihot.virxact.com/items/cmrf3pi9j0730ih8eb6hjx4hn | 🎯 Rubedo 凝华
+  研究方向：免费的 analytics 跨模型实时跟踪 credit 消耗，补上主段缺失的「成本监控」半环。SSS 当前用 Claude Code + 多模型路由，把各模型 credit 接入 Perplexity Analytics 看板，量化「哪个任务最烧钱」，为 7/03 起的「AI 成本管控 SOP」补数据底座。
+
+- [ ] **【Claude Code 桌面版内置沙盒浏览器 — 直接读网页交互，免复制粘贴】** | 来源：https://aihot.virxact.com/items/cmrf8177m007bihprf4zml1hn | 🎯 Rubedo 凝华
+  研究方向：Claude 现在能在沙盒里直接开浏览器读网页、点链接、抓内容，前端调试与文档/RAG 资料查阅不用再手动复制。试用于 Athanor 摄入管线的「网页资料自动抓取→结构化入库」环节，看能否替代部分 Playwright 脚本，提升管线稳定性（呼应当前「摄入管线稳定性修复」重心）。
+
+- [ ] **【OpenAI GPT-5.6-Sol 误删用户整块 Mac 硬盘 — Agent 放权的安全红线】** | 来源：https://aihot.virxact.com/items/cmrfr2xvi02brihjlp1tlzg1n | 🎯 Rubedo 凝华
+  研究方向：Agent 因路径变量错误拿到全权限误删用户数据。这是「零人工干预」原则的安全警钟——Rubedo 自动化 SOP 必须给 Agent 设「文件系统沙箱 + 写操作二次确认 + 备份前置」。立即把「权限最小化 + 危险操作拦截」写进 Rubedo 的 Agent 安全清单，避免 Athanor 摄入/交付脚本重演。
+
+- [ ] **【百度「搭子联盟」开放 — 个人 AI Agent 的变现/协作分发渠道】** | 来源：https://aihot.virxact.com/items/cmrf0774z04wyih8e0snjs2g2 | 🎯 Rubedo 凝华
+  研究方向：百度搭子（个人 AI）启动「搭子联盟」，给个人开发者提供变现与协作渠道，浏览器调用 + 智能路由降耗 20%。这是主段小红书 MCP / 视频号闭环之外的又一个「平台级 Agent 分发红利」——评估能否把 Rubedo 的自动化能力上架搭子联盟变现，或借其流量获客。
+
+- [ ] **【LiteRT.js — 浏览器端 WebGPU 推理运行时，免服务器跑模型】** | 来源：https://aihot.virxact.com/items/cmre0j0vj002sihwk71qvktk7 | 🎯 Rubedo 凝华
+  研究方向：Google 开源 LiteRT.js，前端 WebGPU 直接跑模型，省去服务器开销。一人公司做轻量 AI 应用（如 Nigredo 的本地字幕预览、Rubedo 的小红书配图工具）可把推理塞进浏览器——零后端成本、隐私不出端。评估能否用于 Athanor 的「端侧轻推理」场景。
+
+### ⚪ 了解（二次扫描补充）
+
+- [ ] **【Meta 撤回 Instagram「无许可 AI 深伪」功能 — 平台创作政策收紧】** | 来源：https://aihot.virxact.com/items/cmrflz3sd00x5ihjlndy4k7rn | 🎯 Rubedo 凝华
+  了解：Meta 在反对声下撤回无需许可的 AI 图像生成。平台对「AI 生成 + 真人肖像权」的边界正在收紧——标记备查，若 SSS 未来做数字人 / AI 头像类内容，须把「授权 + 标识」做成前置合规项（呼应 7/08 数字人直播标识令）。
+
+### 💡 探索（二次扫描补充）
+
+- [ ] **【2026 AI 设计变现指南：25 赛道 + 月入 4 万收益模型】** | 来源：https://www.douchuanghui.com/thread-21568-1-1.html | 🎯 OpusMagnum 巨作
+  值得关注：可落地收益模型——设计服务 80 单×¥350=¥28,000 + 模板销售 ¥5,000 + 课程 ¥8,000 = 月入 ¥41,000，成本仅 ¥3,000（利润率 92.7%）。SSS 本身是效果图设计师，这条把「AI 设计接单→模板被动收入→课程」三段式讲透，可直接对标设计自己的副业收入结构，与 Athanor/Rubedo 主业形成「设计副业反哺」闭环。
+
+- [ ] **【2026 普通人用 AI 赚钱完整指南：6 大路径 + 25 品类利润率表】** | 来源：https://www.douchuanghui.com/thread-20974-1-1.html | 🎯 OpusMagnum 巨作
+  值得关注：25 个品类附利润率（AI LOGO 90-98%、AI 私域话术包 90-98%、AI 知识付费 92-99%）与变现周期。这是「已知可行赚钱路径」的速查表——对照 SSS 技能栈（设计 / 效果图 / 知识管理），挑 1-2 条优先验证，比盲目试错省时间。
+
+> 📡 **二次扫描筛选**：
+> - ❌ 剔除（与专家主段/历史重叠或弱相关）：七龙虾大厂Agent混战（与主段 OpenWork/PilotDeck/goose 本地 Agent 主题重叠）、Meta Compute 出租裸算力（专家主段已剔除）、OPC 创新社区算力补贴（与主段 OPC 政策红利完全重复）、Claude Code v2.1.207 常规版本（无行为变更）、GPT-5.6 医疗评估/博科圣地/苹果诉 OpenAI/宇树手术机器人/Ghost Font/数学猜想（大企业/学术/安全，非一人公司）
+> - ✅ 保留（8 条，均为主段未覆盖的新维度）：Perplexity Analytics（成本监控）、Claude Code 桌面浏览器（自动化）、GPT-5.6-Sol 误删（RPA 安全）、百度搭子联盟（平台分发红利）、LiteRT.js（端侧推理）、Meta IG 撤回（合规预警）、AI 设计 25 赛道（设计副业）、6 大变现路径（收入速查）
+> - 🆕 与专家主段 15 条及 6/23-7/10 全量三重去重：8 条均为新增，无重复
 

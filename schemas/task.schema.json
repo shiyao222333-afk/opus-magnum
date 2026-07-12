@@ -25,7 +25,7 @@
     },
     "project": {
       "type": "string",
-      "enum": ["athanor", "alembic", "crucible", "elixir", "opus-magnum"],
+      "enum": ["athanor", "alembic", "crucible", "aludel", "opus-magnum"],
       "description": "所属项目"
     },
     "labels": {

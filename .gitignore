@@ -27,3 +27,8 @@ Thumbs.db
 
 # WorkBuddy
 .workbuddy/
+
+# 前半部分整合：子项目目录联接（指向真实仓库 D:\nigredo 等，不纳入 git 跟踪）
+front_half/nigredo/
+front_half/albedo/
+front_half/citrinitas/

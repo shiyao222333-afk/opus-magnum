@@ -1,0 +1,3 @@
+# 前半部分总管（Supervisor）依赖
+# 主项目 Opus Magnum 用 Streamlit；总管界面单独用 NiceGUI，互不干扰。
+nicegui>=1.4.0

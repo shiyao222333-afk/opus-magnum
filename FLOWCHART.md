@@ -57,7 +57,7 @@ flowchart TB
 | 节点 | 名称 | 输入 | 输出 | 逻辑 |
 |:--:|------|------|------|------|
 | H_HEALTH | 健康检测循环 | ProjectConfig ×4 | 在线/离线状态 | requests.get(/health) → 200=在线 其他=离线 |
-| GH_SYNC | GitHub 数据同步 | GITHUB_TOKEN + repo 名 | Issue 列表 + 仓库统计 | PyGithub → list_issues + stars/forks/last_commit |
+| GH_SYNC | GitHub 数据同步 | GITHUB_TOKEN + repo 名 | Issue 列表 + 仓库统计 | requests → list_issues + stars/forks/last_commit |
 
 ### 数据聚合
 

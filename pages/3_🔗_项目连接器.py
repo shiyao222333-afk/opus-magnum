@@ -23,7 +23,7 @@ st.divider()
 
 # ── 区块 1：健康检查 ──────────────────────────────
 st.subheader("📡 健康检查")
-st.caption("调用各项目的 GET /health 端点")
+st.caption("检测各项目是否在线（HTTP /health 优先，端口监听兜底）")
 
 cols = st.columns(4)
 projects = [
@@ -36,15 +36,12 @@ projects = [
 for (label, proj), col in zip(projects, cols):
     with col:
         if st.button(f"Ping {label}", use_container_width=True, key=f"ping_{proj.name}"):
-            try:
-                resp = req.get(proj.endpoint("/health"), timeout=3)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    st.success(f"✅ 在线\n版本：{data.get('version', '?')}")
-                else:
-                    st.warning(f"⚠️ HTTP {resp.status_code}")
-            except Exception as e:
-                st.error(f"❌ 离线\n{e}")
+            from core.health_check import check_health
+            result = check_health(proj)
+            if result["online"]:
+                st.success(f"✅ 在线\n版本：{result.get('version', '?')}")
+            else:
+                st.error(f"❌ 离线\n{result.get('status', '')}")
 
 st.divider()
 
