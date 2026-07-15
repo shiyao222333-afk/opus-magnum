@@ -1,0 +1,117 @@
+{
+  "doc_id": "doc_063055860afd27d5",
+  "point_count": 9,
+  "payload_fields_distinct": {
+    "epistemic_status": [
+      "rejected"
+    ],
+    "trust_score": [
+      "0.0"
+    ],
+    "content_type": [
+      "paper"
+    ],
+    "domain": [
+      "['5', '6']"
+    ],
+    "temporal_nature": [
+      "evergreen"
+    ],
+    "needs_review": [
+      "True"
+    ],
+    "source_project": [
+      "albedo-refined"
+    ],
+    "refined_status": [
+      "rejected"
+    ],
+    "project_source": [
+      "通用"
+    ]
+  },
+  "first_point_payload": {
+    "text": "## 📌 内容摘要（讲了什么）\n\n> 该视频介绍了Minecraft 26.2版本“混沌立方”，主要内容包括硫磺洞穴地形、硫方怪（硫磺史莱姆）的机制、间歇泉特性、新唱片与无首单曲，并提及Vulkan渲染API过渡和P2P联机功能未完成等遗憾。\n\n**要点：**\n- 26.2版本主题为Chaos Cube（混沌立方），地图由半达达达制作。\n- 新群系硫磺洞穴会生成硫磺与朱砂、烈性硫磺、硫方怪和洞穴之珠，地表可能出现硫磺涌泉。\n- 间歇泉由水下烈性硫磺在岩浆块或岩浆上触发，可将生物或物品喷至空中，喷发高度与水深度相关。\n- 硫方怪可吸收方块，攻击后转化为动能，不同方块类型决定物理特性和音效，可用桶运输、剪刀去除方块、栓绳牵引。\n- 新唱片可在硫磺洞穴废弃矿井的箱子矿车中找到；无首单曲在各特定群系概率播放。\n- 床的弹性提升同步基岩版；局域网开放后可在设置中关闭；新增unpublish命令。\n- 版本遗憾包括Vulkan渲染API仍处于实验性阶段、P2P联机功能未完成。\n\n**关键主张（待你验证真假）：**\n- 26.2版本中，烈性硫磺在岩浆块或岩浆上且在水下会喷出间歇泉。\n- 硫方怪可以吸收任意方块（除实体方块、碰撞箱不完整方块和透明方块）。\n- 摧毁硫方怪会分裂成两个小的硫方怪，小硫方怪可被黏性球加速长大。\n- 唱片可在硫磺洞穴的废弃矿井箱子矿车中找到。\n- Vulkan渲染API目前仍为实验性，默认优先使用OpenGL。",
+    "title": "混沌立方 MC 26.2新版本介绍",
+    "source": "BV1h1LD6BELK_refined.md",
+    "chunk_index": 2,
+    "total_chunks": 9,
+    "chapter_index": 2,
+    "chapter_title": "📌 内容摘要（讲了什么）",
+    "chunk_in_chapter": 1,
+    "doc_id": "doc_063055860afd27d5",
+    "content_hash": "014dba88b856de58fcb39b57a72f23e6",
+    "images": [],
+    "content_type": "paper",
+    "domain": [
+      "5",
+      "6"
+    ],
+    "temporal_nature": "evergreen",
+    "epistemic_status": "rejected",
+    "lifecycle": "published",
+    "project_source": "通用",
+    "udc_code": "",
+    "knowledge_type": "case",
+    "is_personal": true,
+    "trust_score": 0.0,
+    "tags": [],
+    "is_canonical": true,
+    "relations": [],
+    "keywords": [
+      "Minecraft",
+      "混沌立方",
+      "硫磺洞穴",
+      "硫方怪",
+      "间歇泉",
+      "Vulkan渲染API",
+      "P2P联机"
+    ],
+    "auto_summary": "该视频介绍了Minecraft 26.2版本混沌立方的新内容，包括硫磺洞穴、硫方怪、间歇泉等机制，以及Vulkan渲染API过渡和P2P联机未完成的遗憾。",
+    "timeline": {
+      "published": null,
+      "effective": null,
+      "expiry": null,
+      "ingested": "2026-07-15T01:50:54.545094+00:00",
+      "accessed": null
+    },
+    "origin": {
+      "author": "籽岷",
+      "source_url": "",
+      "file_type": "txt",
+      "ingest_method": "manual",
+      "source_path": "D:\\citrinitas\\library\\inbox\\BV1h1LD6BELK_refined.md"
+    },
+    "stats": {
+      "access_count": 0,
+      "starred": false
+    },
+    "target_platform": "none",
+    "related_product": "",
+    "version": "",
+    "language": "zh",
+    "access_level": "private",
+    "batch_id": "",
+    "is_archived": false,
+    "needs_review": true,
+    "field_sources": {
+      "temporal_nature": "rule",
+      "content_type": "rule",
+      "domain": "rule",
+      "epistemic_status": "rule",
+      "keywords": "llm",
+      "title": "llm",
+      "author": "llm",
+      "auto_summary": "llm",
+      "trust_score": "llm",
+      "knowledge_type": "llm",
+      "is_personal": "llm",
+      "lifecycle": "llm",
+      "udc_code": "default"
+    },
+    "confidence": 0.82,
+    "source_project": "albedo-refined",
+    "refined_status": "rejected"
+  },
+  "text_sample": "## 📌 内容摘要（讲了什么）\n\n> 该视频介绍了Minecraft 26.2版本“混沌立方”，主要内容包括硫磺洞穴地形、硫方怪（硫磺史莱姆）的机制、间歇泉特性、新唱片与无首单曲，并提及Vulkan渲染API过渡和P2P联机功能未完成等遗憾。\n\n**要点：**\n- 26.2版本主题为Chaos Cube（混沌立方），地图由半达达达制作。\n- 新群系硫磺洞穴会生成硫磺与朱砂、烈性硫磺、硫方怪和洞穴之珠，地表可能出现硫磺涌泉。\n- 间歇泉由水下烈性硫磺在岩浆块或岩浆上触发，可将生物或物品喷至空中，喷发高度与水深度相关。\n- 硫方怪可吸收方块，攻击后转化为动能，不同方块类型决定物理特性和音效，可用桶运输、剪刀去除方块、栓绳牵引。\n- 新唱片可在硫磺洞穴废弃矿井的箱子矿车中找到；无首单曲在各特定群系概率播放。\n- 床的弹性提升同步基岩版；局域网开放后可在设置中关闭；新增unpublish命令。\n- 版本遗憾包括Vulkan渲染API仍处于实验性阶段、P2P联机功能未完成。\n\n**关键主张（待你验证真假）：**\n- 26.2版本中，烈性硫磺在岩浆块或岩浆上且在水下会喷出间歇泉。\n- 硫方怪可以吸收任意方块（除实体方块、碰撞箱不完整方块和透明方块）。\n- 摧毁硫方怪会分裂成两个小的硫方怪，小硫方怪可被黏性球加速长大。\n- 唱片可在硫磺洞穴的废弃矿井箱子矿车中找到。\n- Vulkan渲染API目"
+}
