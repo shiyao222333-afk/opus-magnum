@@ -31,7 +31,22 @@ INGEST_LOG = CITRINITAS / "local_data" / "ingest_log.jsonl"
 
 
 def find_python(project: Path) -> str:
-    """优先项目 venv，其次受管 venv，最后 PATH python。"""
+    """解析运行某项目的 Python 解释器。
+
+    优先级：
+      1. 环境变量 <NAME>_PYTHON（NIGREDO_PYTHON / ALBEDO_PYTHON / CITRINITAS_PYTHON）
+         —— 由调用方按本机实际可用解释器传入，解决「项目 venv 为空壳/缺失」的情况。
+      2. 项目自带 venv/Scripts/python.exe
+      3. 受管 venv
+      4. PATH 中的 python
+    """
+    env_key = {
+        NIGREDO: "NIGREDO_PYTHON",
+        ALBEDO: "ALBEDO_PYTHON",
+        CITRINITAS: "CITRINITAS_PYTHON",
+    }.get(project)
+    if env_key and os.environ.get(env_key):
+        return os.environ[env_key]
     cand = project / "venv" / "Scripts" / "python.exe"
     if cand.exists():
         return str(cand)
