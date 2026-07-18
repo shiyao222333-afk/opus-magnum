@@ -51,6 +51,12 @@ OpusMagnum 不仅是总蓝图，还承担**战略情报**职能：
 
 > 详细路线图见 [PROJECT_PLAN.md](PROJECT_PLAN.md)。后半部分（凝华）本次不整合，待路线图阶段 2 接入——它保持独立仓库、独立可卖。
 
+### M4 端到端验收（当前落地）
+- **代码位置**：`acceptance/`（本仓库）—— 巨作验收 harness，只做「操作编排」：拉起三器 → 喂输入 → 轮询文件夹/摄入日志 → 复制产物 → 清理测试数据。
+- **已注册流程**：`bilibili_video`（馏析→炼真→熔知，产出 7 份文件：1 中转① + 3 中转② + 3 熔知 53 字段结果）。
+- **边界**：只负责操作部分；审核判定（可信度/优点/可照搬步骤/溯源）由以后单独流程负责，不在本 harness。
+- **怎么跑**：以管理员身份在 `D:\opus-magnum` 运行 `python -m acceptance.cli run --flow bilibili_video --url "<B站网址>"`。详见 `acceptance/README.md`。
+
 ---
 
 ## 边界
