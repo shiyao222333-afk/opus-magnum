@@ -60,6 +60,7 @@ flowchart LR
 | M0-3 统一启动 | 4 个 `run.bat` 统一模板（venv 优先 + 回退 + ★横幅）；`front_half/launch.bat` 总启动器（先起熔知→等→起总管）；`docs/PORTS.md` | 巨作 + 三器 | ✅ |
 | M0-4 补 LICENSE | nigredo / albedo / opus-magnum 补 MIT LICENSE（熔知已有） | 四仓库 | ✅ |
 | M0-5 依赖清理 | 去 AGPL `ebooklib`（自写 `epub_reader.py`）/ LGPL `pygithub`→requests / `chardet`→`charset_normalizer` | 熔知 + 巨作 | ✅ |
+| **M0-6 共享 LLM 客户端库** | 三器各自调 AI 的代码整合为一处：统一管理 API Key / 模型选择 / **强制 temperature=0** / 失败重试 / 结构化输出 / 花销统计。**落点**：巨作仓库下新建共享模块（如 `shared/llm_client/`），三器改为 import 它；馏析（当前散落 3 文件）/ 熔知（散落分类/搜索/OCR 等多处）优先收敛，炼真 `core/llm.py` 作参考基线。**归属**：未来由巨作统一管理。 | 巨作 + 三器 | ⚪ 待开工 |
 
 **意义**：三个独立项目用最轻的"文件夹传送带 + 共享契约"绑成一条自动线，且随时可拆——馏析未来要单独卖直接拿走即可，零成本。
 
@@ -173,3 +174,4 @@ flowchart LR
 
 - [ ] 代码内路径引用按两段式规范核对（Nigredo 目录 `alembic/` 等英文功能名保留，不强制改阶段名）；以两段式统一呈现为准
 - [ ] 凝华未克隆到本地前的整合路径需在使用时确认（`D:\rubedo\` 已存在则直接 junction）
+- [ ] **三器 LLM 调用各自为政**（见 M0-6）：馏析散落 3 文件、熔知散落分类/搜索/OCR 多处、炼真已规范（`core/llm.py`）；未统一前，"AI 不严格 temperature=0 导致结果抖动"类老问题无法从根上锁死。M0-6 待开工即解决。

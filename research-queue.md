@@ -809,3 +809,423 @@
 > - ✅ 保留（8 条，均为主段未覆盖的新维度）：Perplexity Analytics（成本监控）、Claude Code 桌面浏览器（自动化）、GPT-5.6-Sol 误删（RPA 安全）、百度搭子联盟（平台分发红利）、LiteRT.js（端侧推理）、Meta IG 撤回（合规预警）、AI 设计 25 赛道（设计副业）、6 大变现路径（收入速查）
 > - 🆕 与专家主段 15 条及 6/23-7/10 全量三重去重：8 条均为新增，无重复
 
+## 2026-07-15
+
+> 数据源：aihot 24h 精选 31 条（WebFetch aihot.virxact.com，7/14-7/15）+ WebSearch 7天补充 5 组（AI变现/一人公司/AI设计/平台红利/低成本创业）| 去重对照 6/23-7/12 全部条目 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【腾讯混元 HyOCR-1.5 — 端到端 OCR 大模型全栈开源，推理提速 6.37×】** | 来源：https://aihot.virxact.com/items/cmrj4s89p05nhbilkljqel2d5 | 🎯 Nigredo 馏析
+  研究方向：1B 参数端到端 OCR 大模型，DFlash 加速 6.37×，全栈开源且适配 llama.cpp 本地部署。对照 7/12 MinerU/DeepSeek-OCR2 与 7/08 klipa 横评，HyOCR-1.5 把「端到端 + 本地 + 提速」三合一——本周拿一张军工效果图规范扫描件在 Nigredo 摄入管线实测，看能否替代现有多步 OCR 拼凑，先把「文档→结构化」最烧钱环节压下来。
+
+- [ ] **【独立设计师月入 24000 案例 — AI 设计素材 + 数字人短视频】** | 来源：https://www.imooc.com/article/395745 | 🎯 Rubedo 凝华
+  研究方向：案例用 Midjourney/SD 做电商主图提示词合集，小红书+抖音发前后对比视频引流卖模板，月入 2.4 万（模板 1.5 万 + 视频带货 0.9 万）。SSS 本身就是效果图设计师，这条路径与主业零迁移成本——本周挑「军工/家装效果图 AI 改图提示词包」做 1 套，发小红书测转化，直接验证「设计副业反哺 Athanor」闭环。
+
+### 🟡 关注
+
+- [ ] **【Fable 5 + GPT-5.6 Sol Vibe Coding 16h/天 — Claude 出方案→GPT 纠错→Codex 全自动】** | 来源：https://aihot.virxact.com/items/cmrlbqrmp02hubi2bvj72j1hx | 🎯 Rubedo 凝华
+  研究方向：作者日更 16 小时纯 AI 开发流水线，瓶颈已转向「测试 + 设计」。对照 SSS 用 Claude Code 推进 Athanor，把「GPT 纠错 / Codex 目标模式」接进现有流水线，把重复编码交给 Agent、自己只做架构与设计（呼应 7/03 成本管控 + 7/10 国产平替）。
+
+- [ ] **【Bonsai 27B — 首款手机端 27B 多模态模型（1-bit 量化 4GB 跑 iPhone，Apache 2.0）】** | 来源：https://aihot.virxact.com/items/cmrl2m4yg00awbicqo2arojvd | 🎯 Citrinitas 熔知
+  研究方向：端侧 agent 循环零边际成本，27B 级多模态塞进手机。补 Citrinitas「自托管推理底座」的移动短板——与 7/08 Gemma 4 / LongCat / Hy3、7/12 colibrì 形成「开源自托管矩阵」，评估能否把 Athanor 轻量摄入（图片/短语音）放到端侧，进一步降云端依赖。
+
+- [ ] **【Gemini 3.5 Live Translate — 70+ 语言近实时语音到语音翻译（Gemini Live API）】** | 来源：https://aihot.virxact.com/items/cmrkta2fv011vbi5qe7hdwh0s | 🎯 Nigredo 馏析
+  研究方向：保留语调的近实时语音翻译，可接 Gemini Live API 做出海内容。补 Nigredo「语音转文字/音频处理」的出海维度——SSS 效果图内容若做英文/多语版，可用它做低成本配音与字幕，打开海外获客（呼应 7/12 出海）。
+
+- [ ] **【LibTV Agent — 100 个 AI 视频工作流重组为可复用 Skill（自动分镜自查）】** | 来源：https://aihot.virxact.com/items/cmrkfkw2x01hnbizsa1eat1ib | 🎯 Nigredo 馏析 + Rubedo 凝华
+  研究方向：把视频流程打包成 Skill，非编程也能自定义上传、自动分镜自查。直接利好 SSS 的小红书/视频号视频矩阵——把「效果图讲解视频」做成可复用 Skill 模板，降低每条视频制作成本（呼应 7/12 小红书 RED 精选 / 视频号闭环）。
+
+- [ ] **【商汤 SenseNova-Vision-7B-MoT — 7B 多任务视觉模型开源（检测/OCR/GUI 统一）】** | 来源：https://aihot.virxact.com/items/cmrjy99kt01nvbiw22bwjsvnv | 🎯 Nigredo 馏析
+  研究方向：单一 7B 权重统一检测、OCR、GUI 理解等多视觉任务，开源权重 + 复现工具包。与 HyOCR-1.5、DeepSeek-OCR2 横向对比，看 Nigredo 摄入管线能否用「一个视觉模型」覆盖截图解析 + 文档 OCR + 界面理解，减少多模型拼凑。
+
+- [ ] **【前沿模型实际成本 — tokenizer 差异导致隐性涨价（代码场景 Claude 比 GPT 贵 50–73%）】** | 来源：https://aihot.virxact.com/items/cmrjrg5aj0202bis4f9pzo8d3 | 🎯 Rubedo 凝华
+  研究方向：同一任务因 tokenizer 不同 token 数差异巨大，Claude 新 tokenizer 在代码场景隐性贵 50–73%。给 7/03 起的「AI 成本管控 SOP」补一条硬规则：按 token 数而非标价算账，编码类任务优先路由到 tokenizer 更省的模型。
+
+- [ ] **【Ploy 把默认模型从 Claude Opus 4.8 切到 GPT-5.6 Sol — 耗时降 2.2×、成本降 27%】** | 来源：https://aihot.virxact.com/items/cmrig9mkx0024bijp9pr04hss | 🎯 Rubedo 凝华
+  研究方向：真实案例验证「模型路由」收益——切到更便宜模型后速度翻倍、成本降 27%（踩坑在工具参数膨胀）。这是 SSS「零人工干预 + 算账」原则的正面证据：非核心任务默认用便宜模型，把 Opus/Claude 额度留给复杂架构决策。
+
+- [ ] **【高德 ABot-WorldStudio — 通用世界模型工坊开放测试（文字/图片生成小时级 3D 世界，单张 5090 本地部署开源）】** | 来源：https://aihot.virxact.com/items/cmrkedwpc013nbizssg3olzs7 | 🎯 Rubedo 凝华
+  研究方向：文字/图片即可生成稳定 3D 世界，单卡 5090 本地开源。SSS 是效果图/3D 设计师，这是「文字→3D 场景」的新工具红利——评估能否把客户效果图需求前置成「文字描述生成 3D 世界草稿」，缩短方案沟通链路，或做成设计副业新品类。
+
+- [ ] **【AI 智能体服务爆发，一人公司正在变成现实（本地小微 AI 客服托管 / 电商 AI 选品 / 垂类 AI 服务产品）】** | 来源：https://www.toutiao.com/article/7658448331169661466 | 🎯 Rubedo 凝华
+  研究方向：普通人从细分领域切入——本地商家 AI 客服托管、电商小店 AI 选品标题优化、线下门店 AI 社群运营，做好「工具使用者 + 效果交付者」即可收费。印证 Rubedo「副业方向/一人公司资讯」主线：SSS 可把「军工/效果图行业知识」封装成垂类 AI 服务产品对外交付。
+
+- [ ] **【2026 个人创业者 5 种轻资产 AI 变现模式（数字产品分销 / 提示词模板 / 内容矩阵 / 自动化服务接单 / 知识产品分销）】** | 来源：https://www.imooc.com/article/395480 | 🎯 Rubedo 凝华
+  研究方向：《2026 中国灵活就业白皮书》数据——72% 首选零库存零租金、86% 认为 AI 提效 3 倍+、成熟分销合伙人月入中位 8000–15000 元。这是 SSS 副业路径的「模式菜单」：先从「提示词模板 + 自动化服务接单」两条零成本起步，复用 Nigredo+Rubedo 流水线。
+
+### ⚪ 了解
+
+- [ ] **【Cursor IDE 0day 漏洞 — 打开恶意仓库即自动执行任意代码（七个月未修）】** | 来源：https://aihot.virxact.com/items/cmrl6xukw00ogbi7hnn35vq0v | 🎯 Rubedo 凝华
+  了解：AI 编码工具信任危机信号。SSS 日常用 Cursor/Claude Code，须把「不打开来源不明仓库 + 在沙箱跑 Agent」写进 Rubedo 安全清单（呼应 7/12 GPT-5.6-Sol 误删）。
+
+- [ ] **【xAI Grok CLI 被曝默认静默上传整个代码库及用户密钥至 GCS（曝光后默认关开关需卸载）】** | 来源：https://aihot.virxact.com/items/cmriguktg00arbijpt0l7c2vh | 🎯 Rubedo 凝华
+  了解：又一 AI CLI 工具的数据安全红线。对照 7/12 GPT-5.6-Sol 误删，Rubedo Agent 安全清单须加「CLI 工具默认离线 + 上传行为审计 + secrets 不入仓库」。
+
+- [ ] **【Codex 周活超 700 万 + 取消 5 小时限制（两月更新 150+ 项，自动化 PR 合并）】** | 来源：https://aihot.virxact.com/items/cmrl9plh50014bi2b56tar61d | 🎯 Rubedo 凝华
+  了解：OpenAI 平台变更利好重度用户——用量重置、限制取消。标记备查，作为 Athanor 开发工具链的候选底座之一（与 7/10 国产编码平替矩阵并观）。
+
+- [ ] **【Mesh LLM — 基于 iroh 的分布式 AI 计算（开源拼机 GPU 推理集群，兼容 OpenAI API，省钱保隐私）】** | 来源：https://aihot.virxact.com/items/cmrh78s5t00w5bir7mozf8oyb | 🎯 Rubedo 凝华
+  了解：把闲置 GPU 拼成开源推理集群，OpenAI API 兼容。标记备查——若 SSS 未来需要低成本自托管推理，除 colibrì/Gemma 4 本地方案外，多一个「拼机分布式」选项。
+
+- [ ] **【Juggler — 开源 GUI 编程智能体（JUCE 创建者开发，树状会话多分支，本地/远程运行）】** | 来源：https://aihot.virxact.com/items/cmrkvk6vb01sqbi5qxm4z15il | 🎯 Rubedo 凝华
+  了解：开源编码 Agent，树状会话管理多分支修改，本地远程皆可。标记备查，作为 Rubedo「开源自托管 Agent」候选（与 OpenWork/PilotDeck/goose 横向对比）。
+
+### 💡 探索
+
+- [ ] **【各地「一人公司」扶持政策密集（月销 10 万以下免征增值税；广州深圳最高 500 万补贴、北京海淀 10 万启动金+200 万模型券、中山 3 年零租金；AI 写歌版权单笔赚五位数）】** | 来源：https://kuaidi.ping-jia.net/wenti-daaeeaeegietbgeaud.html | 🎯 OpusMagnum 巨作
+  值得关注：一人公司的「政策套利窗口」持续打开——税收优惠 + 最高 500 万补贴 + 零租金场地，叠加「AI 写歌版权赚五位数」的内容变现样本。这是巨作总指挥部层面的战略储备：评估把公司主体落在有补贴城市（如海淀/中山/深圳），把算力与办公成本外部化，同时用 AI 内容（音乐/设计/知识）做零成本现金流。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：纯重复（GPT-5.6-Sol 误删已在 7/12、Hy3 量化/微信已在 7/08、Grok Build CLI 仓库上传与 Grok CLI 重复）、纯大企业/融资（PixVerse 4.39 亿美元融资、Google 出版商诉讼、纽约州数据中心暂停、小米具身、Anthropic 教师版）、学术/弱相关（Claude 用语 Hook 脚本、面壁 CTO 专访与端侧主题重叠、Mindwalk 开发可视化、Gemini 3.5 端侧与 Bonsai 重叠、OpenAI 提示词指南泛泛、Seedream 5.0 与高德同属 AI 设计冗余）
+> - ✅ 保留：19 条（aihot 主段 15 条 + WebSearch 补充 4 条），均为副业/一人公司/降本/平台红利/开源工具维度
+> - 🆕 与 6/23-7/12 全量去重：全部 19 条均为新增，无重复
+> - 🔍 本日主线：端侧/自托管推理（Bonsai/Gemma 系）+ OCR 管线升级（HyOCR/SenseNova）+ 成本管控实证（tokenizer/Ploy 路由）+ 设计副业标杆（独立设计师 2.4 万案例）
+
+
+## 2026-07-15
+
+> 数据源：aihot 精选源本次不稳定（仅取到陈旧数据，判为降级）→ WebSearch 多维度扫描 6 组（副业/一人公司/低成本开源/AI设计/平台红利/OCR语音RAG）兜底，覆盖等同 | 去重对照 6/23-7/12 全部条目 | 匹配项目 4 个（Rubedo/Citrinitas/Nigredo/OpusMagnum），Albedo 炼真本轮无命中 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【OpenClaw Machines — 自家硬件跑任意数量 AI 代理，账单归零，Apache-2.0】** | 来源：https://www.163.com/dy/article/L1P1675Q05561FZD.html | 🎯 Rubedo 凝华
+  研究方向：Firecracker 微虚拟机硬件级隔离，每台机器独立子域名 + Cloudflare 隧道，自带 LiteLLM 统一管密钥 + 按机器追踪用量，可接本地开源模型。直接服务 Athanor「摄入管线稳定性修复」当前重心——把摄入/交付 Agent 迁到自己闲置服务器，零接口费、隔离不互相拖垮；本周挑一台机器跑通「OpenClaw Machines + 本地模型」最小闭环。
+
+- [ ] **【腾讯混元 HyOCR-1.5 — 端到端 OCR 大模型全栈开源，10 亿参数提速 6.37 倍】** | 来源：https://www.huxiu.com/ainews/13844.html | 🎯 Nigredo 馏析 + Citrinitas 熔知
+  研究方向：DFlash 投机解码把单页文档端到端压到约 1.4 秒，支持 4K 图像 + 128K 上下文，多语言复杂文档开箱即用、无需手工流水线。这是 Athanor 文档摄入管线的 OCR 引擎候选——直接拿来处理军工效果图规范/技术文档批量入库，替代或补强 7/12 的 MinerU/DeepSeek-OCR2；本周实测 HyOCR-1.5 对复杂版式中文文档的识别率。
+
+- [ ] **【3D 建模 / 效果图接单需求信号 — 小红书+闲鱼当日高「想要」数，SSS 本行】** | 来源：https://neodrop.ai/ko/post/6IL8xe9p4G6 | 🎯 Rubedo 凝华
+  研究方向：过去 24h 小红书密集出现「建模接单/产品建模/建模渲染」帖，闲鱼 3D 建模代做 865「想要」、室内外效果图服务页 26058「想要」、单价 5–10 元起。这是 SSS 作为效果图设计师最直接、零学习成本的变现路径——本周发 10 组 AI+人工精修效果图作品到小红书+闲鱼，跑通「首单→首千元」最小闭环（呼应 7/12 betonai 最快路径）。
+
+### 🟡 关注
+
+- [ ] **【腾讯 WeKnora — 开源 AI 知识管家，RAG+Agent 双驱动，本地 10 分钟跑起来】** | 来源：https://www.sohu.com/a/1042277298_121106842 | 🎯 Citrinitas 熔知
+  研究方向：Docker 一键部署，文档→会对话/能推理/自动整理，含 Wiki 模式自动生成知识图谱，支持飞书/Notion 同步、20+ 模型。这是 Athanor（熔知）知识管理系统的直接竞品与参考底座——评估其 RAG+Agent+知识图谱架构能否作为 Citrinitas 引擎，或仅借鉴其 Wiki/图谱沉淀思路。
+
+- [ ] **【RAGFlow v0.26.4 — 16 语言词干化 + 知识编译工作流 + GraphRAG/RAPTOR 打磨】** | 来源：https://www.163.com/dy/article/L1C5KJAS05563UC5.html | 🎯 Citrinitas 熔知
+  研究方向：新增知识编译工作流与模板化沉淀，GraphRAG/RAPTOR/文档解析继续增强，MCP 与 Agent 链路大量修复。对照 7/12 事实核查工具栈，RAGFlow 是「深度文档解析+知识图谱」一站式开源底座——评估能否承接 Athanor 的复杂版式文档入库与知识组织。
+
+- [ ] **【OmniRoute — 本地网关串 237 个 AI 免费额度，Token 压缩省 89%，MIT 开源】** | 来源：https://www.toutiao.com/article/7659066716676293156 | 🎯 Rubedo 凝华
+  研究方向：把 Kiro/Pollinations/Cloudflare 等免费额度拼成路由网关，挂了毫秒级切换、内置双重压缩，日常写代码账单归零（注：原文 7/05，略超 7 天窗口但成本管控价值极高）。直接补强 7/03 起、7/12 Perplexity Analytics 延续的「AI 成本管控 SOP」——本周把 Athanor 开发的模型请求切到 OmniRoute，量化月度省下的接口费。
+
+- [ ] **【妙幕 SmartSub 3.0 — 本地视频字幕 转写→翻译→校对→合成 一体化，6 种 ASR 引擎】** | 来源：https://luciel.io/go/video-subtitle-master-cuda-12-4-buxuku | 🎯 Nigredo 馏析
+  研究方向：whisper.cpp/faster-whisper/FunASR/Qwen3-ASR/FireRedASR 多引擎可切，GPU 加速重构（含 AMD/Intel Vulkan），字幕硬烧 + AI 润色 + 17 个翻译服务。与 7/12 VideoCaptioner 形成「桌面 GUI 一体机 vs CLI+Skill」双选项——评估妙幕作为 Nigredo 视频摄入字幕环节的低门槛替代品，降低多工具拼凑成本。
+
+- [ ] **【FluidVoice — Mac 本地语音转文字，8 种 ASR 引擎，永久免费，语音操控 Mac】** | 来源：https://juejin.cn/post/7660755249066688554 | 🎯 Nigredo 馏析
+  研究方向：语音数据全留本地，自选 8 种 ASR 后端 + 本地 AI 润色 + Command Mode 语音操控，7.2k Star、GPLv3 核心。对 Nigredo 音频摄入管线的价值：合规行业（法律/医疗/军工）的语音转文字不出端；SSS 可把它用作「会议/访谈录音→结构化笔记」的本地前置，再进 Athanor 入库。
+
+- [ ] **【AI 视频爆款年中观察 — 影视化+系列化+长线叙事成下半年主线，9 条破亿】** | 来源：https://new.qq.com/rain/a/20260713A0852U00?refer=cp_1009 | 🎯 Rubedo 凝华
+  研究方向：上半年 9 条破亿、新号涨粉百万，趋势是 AI 视频全面「影视化」（超现实奇观/宏大场景）、内容系列化培养追更。对 SSS 小红书/视频号内容变现的直接启发：把效果图设计做成「强世界观+系列化」AI 中长视频，对齐 7/12 RED 精选扶持标准，拿流量倾斜。
+
+- [ ] **【月入过万 AI 副业真相 — 47 个真实案例追踪，4 条真能跑通的赛道】** | 来源：https://www.toutiao.com/article/7660532035836019244 | 🎯 Rubedo 凝华
+  研究方向：作者跟踪 47 个真实案例，稳定变现只集中在 AI 写作接单（月 3000–15000）、AI 数字人直播（单号月入过万）、AI 设计接单、AI 智能体搭建 4 条；其余多为卖课割韭菜。对 SSS 的清醒参考：别追「月入十万」话术，优先验证与设计/写作强相关的 2 条赛道（呼应 7/12 小红书变现真相）。
+
+### ⚪ 了解
+
+- [ ] **【MOSI 开源 MOSS-Transcribe-Diarize-0.9B — ASR+说话人分离+时间戳一次过，Apache 2.0】** | 来源：https://theagenttimes.com/agents/article/mosi-open-sources-0-9b-speech-model-with-90-minute-diarizati-2d083907 | 🎯 Nigredo 馏析
+  了解：0.9B 参数端到端音频→结构化转录，单次处理 90 分钟、128K 长上下文、多说话人分离 + 热词偏置，RTX 4090 上约 100 token/s。标记备查，作为 Nigredo 音频摄入管线「会议/访谈录音自动分角色转写」的轻量自托管候选。
+
+- [ ] **【ChatWiki — 开源企业知识库问答系统，RAG 私有化，全渠道零代码】** | 来源：https://www.sohu.com/a/1048077684_121487853 | 🎯 Citrinitas 熔知
+  了解：2K+ Star，Docker/离线部署，支持 20+ 大模型与 PDF/Word/Excel/PPT/OFD/网页批量入库，H5/公众号/小程序/飞书/钉钉全渠道。标记备查，作为给客户搭「私有化知识库」对外服务（知识付费/企业服务）的低代码方案参考。
+
+- [ ] **【LibreChat — 自托管 AI 工作台回温，多模型接入 + MCP + Code Interpreter】** | 来源：https://nav-ai.cn/librechat-self-hosted-ai-workspace-mcp-2026 | 🎯 Citrinitas 熔知
+  了解：把 OpenAI/Anthropic/Gemini/DeepSeek/Ollama 收进统一可控工作台，支持 MCP/函数调用/代码执行/预设管理，适合做个人「能自主管控的数据中台」。标记备查，作为 Citrinitas 统一模型网关与内部知识检索入口的参考形态。
+
+### 💡 探索
+
+- [ ] **【AI 短剧平台 + 一人公司聚集生态 — 效率提升 80 倍，深圳「魔力营」近 200 家抱团】** | 来源：https://www.toutiao.com/article/7659251746514846243 | 🎯 OpusMagnum 巨作
+  值得关注：AI 短剧平台创业者解散员工、一个人用 AI 打全场，初代产品 3 周用户充值 10 万、签百万级大单，原 10 人团队一天活 AI 一小时完成（效率 80 倍）；深圳「魔力营」近 200 家一人公司上下楼就是上下游。这是巨作层面的战略储备：「AI 短剧/AI 内容平台」作为一人公司新业务形态，以及 OPC 地理聚集带来的供应链红利——SSS 可评估把效果图/IP 能力嫁接到 AI 短剧内容生产。
+
+- [ ] **【同城跑腿 / 本地服务接单窗口 — 闲鱼+小红书 当日高需求，非 AI 也吃平台红利】** | 来源：https://neodrop.ai/ko/post/6IL8xe9p4G6 | 🎯 OpusMagnum 巨作
+  值得关注：过去 24h 小红书出现深圳/海南/西安/苏州等地跑腿代办帖，闲鱼同城跑腿 20–60 元/小时、苏州页 472「想要」。这是平台生态变化带来的「本地服务线上化接单」新变现窗口——不走 AI 也能跑通，作为巨作总指挥部评估「非技术副业 Quick Win」的备选池，与 AI 设计接单形成高低搭配。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：纯旧案例/泛指南（Pieter Levels 月入170万 5/09、Matthew Gallagher 年入4亿 4/03、黄啊码秒哒 3/02、一人公司爆火 6/01 均超窗口且无新信号；多种 AI 赚钱泛攻略与 7/12 已收的 6 大路径/25 赛道/AI设计攻略重叠）、MinerU 3.3/3.4 更新（7/03，已在 7/12 覆盖）、OpenWork（7/02，已在 7/12 收录）、知识库厂商横向对比（泛商业分析无直接动手价值）
+> - ✅ 保留：OpenClaw Machines、HyOCR-1.5、3D建模接单信号、WeKnora、RAGFlow v0.26.4、OmniRoute、妙幕 SmartSub、FluidVoice、AI视频爆款、副业4赛道、MOSI、ChatWiki、LibreChat、AI短剧/OPC聚集、同城跑腿
+> - 🆕 与 6/23-7/12 全量去重：15 条均为新增，无重复；**Nigredo 链路本轮最强**（HyOCR-1.5/妙幕/FluidVoice/MOSI 4 条 OCR/语音/视频工具）+ **Citrinitas 补到 4 条**（WeKnora/RAGFlow/ChatWiki/LibreChat）；**Albedo 炼真本轮无命中**（无新事实核查/幻觉治理信号）
+> - 🔍 本周（7/12→7/15）主线：摄入管线降本提效（OpenClaw Machines/HyOCR/OmniRoute）+ 设计副业直变现（3D建模接单/AI视频影视化）+ 自托管知识底座（WeKnora/RAGFlow/LibreChat）
+
+---
+
+## 2026-07-17
+
+> 数据源：aihot 24h 通道被内容安全拦截（两次 WebFetch 均触敏感词，skill 仍仅专家可用）→ 走机会雷达 7 天 WebSearch 4 组兜底（AI副业/独立开发者平台红利/AI设计接单/AI工具降本新兴变现），命中 8 条 | 去重对照 6/23-7/15 全部条目 | 匹配项目 4 个（Rubedo/Citrinitas/OpusMagnum），Nigredo 本轮无强命中、Albedo 本轮无命中 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【SEOBOT — 一人运营 AI SEO 代理月入 5.5 万美元（卖结果不卖工具，49 美元/月）】** | 来源：https://cloud.tencent.com/developer/article/2707318 | 🎯 Rubedo 凝华
+  研究方向：创始人 John Rush 一个人、不融资不招人，做"替你干活的 AI"而非"让你干活的工具"——你给网址它自己分析/写文章/建外链，49 美元/月买一个不睡觉的 SEO 专员。本周可试的核心启发：把 SSS 的设计副业和 Athanor 对外交付，从"卖模板/卖工具"升级为"卖结果"——比如"包你小红书月涨粉 X"而非"卖一套提示词包"，重新定价交付物。
+
+- [ ] **【2026 年 7 个 AIGC 接单平台盘点 — 特赞/塔猴/即时设计/站酷海洛/小红书蒲公英/Fiverr/云工开物】** | 来源：https://www.toutiao.com/a7660780971943297555 | 🎯 Rubedo 凝华
+  研究方向：把 AI 创作者能力对接真实商单的 7 个平台清单，覆盖 AI 视频/漫剧/设计/内容营销；关键结论——企业找的是"商业案例交付能力"而非"好看的图"。本周可试：SSS 把军工/家装效果图作品 + 1 套完整品牌视频案例，铺到 塔猴 + 站酷海洛 + 小红书蒲公英，用"商业案例"标签获客，而不是只发作品图。
+
+### 🟡 关注
+
+- [ ] **【鸿蒙生态中小开发者红利 — 100 万以下 100% 留成 + 专属推荐位，00 后团队月入 50 万】** | 来源：https://www.toutiao.com/article/7651721755056161334/ | 🎯 Rubedo 凝华
+  研究方向：鸿蒙对 100 万以下营收的工具类团队最高 100% 全留成（对比 iOS 15–30%、安卓 50–70% 抽成），且有"新星应用"专属曝光 + 小艺系统级入口导流。平台红利信号：SSS 若把效果图/AI 设计能力做成鸿蒙原生轻量工具（如"AI 效果图配色助手"），可分润结构最优——评估是否值得为鸿蒙生态单独开发一版。
+
+- [ ] **【AI Agent 一人公司变现地图 — 5 条路径（n8n/Dify 卖工作流模板、垂直 RAG 问答、Agency、知识付费+工具包、跨境全链路）】** | 来源：https://www.10100.com/article/140399645 | 🎯 Rubedo 凝华 + Citrinitas 熔知
+  研究方向：系统拆解 5 种一人公司变现路径及价格带（工作流模板 500–5000 元/套、垂直 RAG 机器人 99–999 元/月、Agency 实施费 5–50 万）。其中"垂直领域 AI 问答机器人（RAG 构建知识库）"正是 Athanor/Citrinitas 的直接对外变现形态——把 SSS 的军工/效果图行业知识封装成"行业问答 Agent"按订阅收费，本周可评估做 MVP。补 7/15「2026 个人创业者 5 种轻资产模式」的工具栈与价格细节。
+
+- [ ] **【闲鱼/猪八戒 AI 设计接单实战 — 通义万相/文心一格/Canva 三工具，客单价 50–150 元，月接 42 单】** | 来源：https://www.toutiao.com/article/7660521657353699880 | 🎯 Rubedo 凝华
+  研究方向：作者闲鱼接 42 单/月、客单价 80 元，用 AI 把出图从 3 天压到 3 小时，差价即利润；渠道用闲鱼（流量免费）+ 猪八戒（高单价但抽成 20%）+ 小红书（作品引流）。与 SSS 设计师身份零迁移——补 7/15「3D 建模接单信号」的"具体工具 + 定价 + 渠道"实操细节，本周可照搬开闲鱼店铺。
+
+- [ ] **【有戏 AI — 开源爆款短剧《被偷走的春天》一键 Fork + 接单广场对接爱奇艺/知乎商单】** | 来源：http://cn.geceo.com/hangye/134213.html | 🎯 Rubedo 凝华
+  研究方向：全球首个上亿播放量开源短剧，完整工程文件/分镜/提示词全开放，一键 Fork 复刻；平台内置接单广场把优质内容对接机构商单。补 7/15「AI 短剧/OPC 聚集」的具体落地——"开源内容 + 接单广场"是 AI 内容生产的新闭环，SSS 可评估把效果图 IP 故事化做成可 Fork 的 AI 短剧资产。
+
+### ⚪ 了解
+
+- [ ] **【Base44 — 出租屋 6 个月被 Wix 8 千万美元收购，一人公司估值标杆】** | 来源：https://www.toutiao.com/article/7659325148016689664/ | 🎯 Rubedo 凝华
+  了解：31 岁程序员靠 AI 应用搭建平台 Base44，上线 3 周年收入破百万美元、6 个月被 Wix 以 8000 万美元收购，团队仅 8 人。标记备查——"一个人 + AI 撑起一家公司"的估值天花板案例，验证 Athanor 这类一人公司产品的资本想象空间（呼应 7/03 Fable 5 自主运维）。注：案例偏早（2025–2026），作标杆参考而非新信号。
+
+### 💡 探索
+
+- [ ] **【北京亦庄 OPC 主理人学院结业 + 算力券/模型券/数据券专项补贴，城市级托举】** | 来源：https://www.oschina.net/comment/news/463562 | 🎯 OpusMagnum 巨作
+  值得关注：补 7/15「一人公司扶持政策」的亦庄细则——北京经开区每年发算力券/模型券/数据券，设审批指导站 + 专属人才认定，给 OPC 群体城市级支撑。巨作战略储备：评估把公司/算力主体落亦庄，把 AI 训练与推理成本外部化；叠加海淀/中山/深圳政策，形成"哪城补贴高落哪"的套利地图。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：手搓经济/许婷回忆录 APP（6/29 宏观旧闻，与 7/15 OPC 政策重叠）、龙虾/秒哒 OPC 25 分钟赚 8000（3/09 老故事，与 7/12/7/15 OpenClaw/秒哒重叠）、AI设计月入过万泛攻略两篇（与 7/15 独立设计师/3D建模接单重叠）、老周 DeepSeek+Coze 月入2万（与 7/15 月入过万4赛道重叠）、贵州黄江码栅格兽（与 7/12/7/15 OpenClaw 重叠）、鸿蒙第二篇（与第一篇重复）
+> - ✅ 保留：SEOBOT、7个AIGC接单平台、鸿蒙生态分成、AI Agent 5路径、闲鱼AI设计接单、有戏AI短剧、Base44、亦庄OPC 共 8 条
+> - 🆕 与 6/23-7/15 全量去重：8 条均为新增或带明确增量（鸿蒙分成/接单平台盘点/有戏AI/亦庄算力券均为新维度）；**Rubedo 链路最强**（7 条覆盖 接单渠道/平台红利/变现路径/设计接单/内容闭环），**Citrinitas 获 1 次关联**（垂直 RAG 问答即 Athanor 变现形态），**Albedo 炼真/Nigredo 馏析本轮无强命中**（今日信号偏副业/平台/设计，无新事实核查或 OCR/语音管线）
+> - 🔍 本日主线：副业接单渠道与平台红利（接单平台盘点 + 鸿蒙分成 + 闲鱼实战）+ 一人公司变现路径系统化（SEOBOT 卖结果 + 5 路径地图）+ 政策套利补充（亦庄算力券）
+
+---
+
+## 2026-07-17（二次扫描）
+
+> 数据源：aihot.virxact.com 直连超时（沙箱网络封锁）→ 走机会雷达 7 天 WebSearch 8 组兜底（副业/一人公司/独立开发者/AI设计接单/低成本开源RAG/OCR语音视频/事实核查/平台红利私域），命中 16 条 | 去重对照 6/23–7/17 全部条目（含本日首次扫描 8 条）| 匹配项目 4 个（Rubedo/Citrinitas/Nigredo/Albedo 本轮均有命中），OpusMagnum 探索 1 条 | 整理 08:50
+
+### 🔴 本周可试
+
+- [ ] **【AI 室内设计 / 装修接单月入 2 万 — 设计师老张用 MJ+SD+ControlNet+D5，小红书城市定位直客】** | 来源：https://www.douchuanghui.com/thread-15440-1-1.html | 🎯 Rubedo 凝华
+  研究方向：被裁设计师零 3D 基础，靠 AI 把出图从几天压到几分钟，小红书发「城市名+室内设计」笔记引直客，月入 2 万+。这是 SSS 效果图设计师身份的零迁移路径——与 7/15「独立设计师 2.4 万（电商主图+数字人）」互补：本周照搬「MJ 出图 + SD ControlNet 吃毛坯房照片改风格 + D5 出终稿」三工具链，在小红书发「军工/家装效果图 AI 改图」直客帖，跑通首单。
+
+- [ ] **【独立黑客靠 AI Agent 月入 $5K–$50K — 编排现成代理卖结果，毛利率 85%】** | 来源：https://www.breakthecubicle.com/posts/how-indie-hackers-built-5k-50kmonth-businesses-with-ai | 🎯 Rubedo 凝华
+  研究方向：2026 年 solo builder 用 Replit/Bolt/n8n+现成 AI 代理，把「调研/内容/客服/销售」编排成自治流水线，月入 $5K–$50K、毛利 85%。核心结论与 7/17 首次扫描 SEOBOT「卖结果不卖工具」一致：找知识工作者讨厌的一个工作流，用商品化 AI 代理拼出来订阅收费。本周可试把 SSS 的设计副业包装成「包你月涨粉 X / 包你出 N 套方案」的结果交付，而非卖模板。
+
+- [ ] **【零成本搭本地 AI 知识库 — RAGFlow + Ollama + Docker，成本 0、数据不出门】** | 来源：https://www.toutiao.com/article/7652584073625469486 | 🎯 Citrinitas 熔知
+  研究方向：RAG（检索增强生成）把文档切碎→向量化→问问题秒回并标出来源页码；RAGFlow+Ollama 一行命令起本地服务，qwen3:8b 跑 16G 内存笔记本。这是 Athanor（熔知）核心能力的落地教程——补 7/15 WeKnora/RAGFlow 产品盘点的「自己照着搭一遍」动作：本周用公司规范/技术手册实测，验证本地知识库能否替代 10 万级商业方案。
+
+### 🟡 关注
+
+- [ ] **【KrillinAI — 开源本地视频翻译配音一体机（7/16 更新），Whisper+翻译+配音+字幕离线】** | 来源：https://soft.china.com/down/2388437.html | 🎯 Nigredo 馏析
+  研究方向：集成语音识别/文本翻译/AI 配音/视频合成，支持离线运行、数据本地处理，一键完成视频多语言本地化。补 7/15 妙幕（字幕为主）的出海配音维度——SSS 效果图讲解视频可做中英双语版打开海外获客；本周拿一条旧视频试 KrillinAI 出英文配音版。
+
+- [ ] **【搜极星「星盾验真」— 免费 AI 内容可信度核查，营销倾向量化+信源交叉核验+幻觉标注】** | 来源：https://developer.volcengine.com/articles/7648186620021047302 | 🎯 Albedo 炼真
+  研究方向：把一段 AI 输出粘进去，做全网信源交叉核验、疑似幻觉/投毒标注、可信度量化评分，免费零门槛。这是 Albedo 炼真（事实核查/幻觉治理/证据追踪）的现成参考形态——直接对标本项目「矛盾检测 + 证据追踪」目标；本周拿 Athanor 一篇生成摘要喂进去看拦截效果。
+
+- [ ] **【2026 新媒体趋势 — 小红书达人费率分级 6%–20%、本地生活直播、私域自动化、1000 铁粉模型】** | 来源：https://www.toutiao.com/article/7658929724093235752 | 🎯 Rubedo 凝华
+  研究方向：平台规则变化——站外导流/虚假人设处罚加倍、本地生活直播成实体最低成本获客、公域引流→私域沉淀成标配、千名核心复购>百万泛粉。SSS 小红书/视频号内容策略必看：放弃泛娱乐追热点，深耕垂直刚需小赛道+真人真实表达+公域涨粉同步沉淀私域。
+
+- [ ] **【AI 一人公司 90 天落地方案 — 299 引流款 + 2980 季度托管，Dify 智能客服 + 全链路 SOP】** | 来源：https://www.toutiao.com/article/7647514409895608884/ | 🎯 Rubedo 凝华
+  研究方向：定价两档（299/7天试用引流、2980/季度全托管利润），用 Dify 搭行业 AI 客服自动回价发资料、每日汇总线索，把接单→交付→复盘全写成 SOP 让 AI 批量执行。补 7/17 首次扫描「AI Agent 5 路径」的定价与交付细节——SSS 可照搬两档定价做「军工/效果图 AI 设计托管」服务。
+
+- [ ] **【AgentPMO 新范式 — 从「内容工厂」升级为「卖完整解决方案」】** | 来源：https://juejin.cn/post/7639791317406040090 | 🎯 Rubedo 凝华
+  研究方向：AI 把组织能力拆成可租用基础设施，竞争从「谁更会用工具」转向「谁更懂需求、能把交付跑通」。与 7/17 SEOBOT/本日 indie hackers 一致——SSS 副业从卖模板/卖内容，升级为「监控+调研+报告+权限交付」的一站式解决方案，客单价与复购都更高。
+
+- [ ] **【90 后边上班边开一人公司，小红书带货半年净利 25 万（90 万销售额/不露脸）】** | 来源：https://www.toutiao.com/article/7632200436308656675/ | 🎯 Rubedo 凝华
+  研究方向：选品切「租房党/打工人神器/平价替代」标签，笔记用「好物合集+大字封面」原生感转化，不囤货一件代发赚差价+佣金，半年 90 万销售额/25 万净利。可复制的零成本副业模型——SSS 可把「AI 设计好物」做成不露脸带货号，与主业设计内容互相导流。
+
+- [ ] **【AnythingLLM v1.15 — 本地 AI 知识库，Ollama+LanceDB，免费离线 6.2 万星】** | 来源：https://www.toutiao.com/article/7658628096753238563 | 🎯 Citrinitas 熔知
+  研究方向：桌面版开箱即用，内置 LanceDB 向量库不用单独装，支持 Ollama 本地模型+嵌入，数据全在本地硬盘，MIT 开源。补 7/15 WeKnora/RAGFlow/ChatWiki 的「最轻量本地入口」选项——SSS 个人知识库/客户私有化交付可用它零门槛起步，再视复杂度迁 RAGFlow。
+
+- [ ] **【闲鱼成批诞生「一人公司」— 相机出租/考研督学/绘本代售，年 10 万以下免登记】** | 来源：https://www.toutiao.com/article/7615434412343296552 | 🎯 Rubedo 凝华
+  研究方向：1900 万年轻人在闲鱼发技能服务，相机出租三月流水 40 万净赚 4 万、考研督学 19.9/天、绘本代售一本赚 8 块；政策红线「年交易额 10 万内属零星小额免登记」。平台红利+合规窗口——补 7/15 同城跑腿，SSS 可在闲鱼开「AI 效果图/设计咨询」技能服务，先试水再注册个体户。
+
+### ⚪ 了解
+
+- [ ] **【2026 开源 RAG 全栈 — 提取/分块/嵌入/向量库/生成 五层与选型权衡】** | 来源：https://knowledgesdk.com/blog/open-source-rag-stack-2026 | 🎯 Citrinitas 熔知
+  了解：分层架构参考——嵌入 BGE-M3/Qwen3-Embedding、向量库 Chroma(开发)/Qdrant(生产)/pgvector(已有 PG)、生成 Llama 3.3 70B/Qwen2.5-72B。标记备查，作为 Athanor 自托管 RAG 底座的技术选型地图（何时开源 vs 托管）。
+
+- [ ] **【LLPlayer — 开源实时双语字幕播放器，Whisper+OCR，离线运行】** | 来源：https://yanziyuan.xyz/%e8%bd%af%e4%bb%b6/5774.html | 🎯 Nigredo 馏析
+  了解：C# 开发，实时为无字幕视频生成双语字幕，结合 LLM 上下文翻译，支持 whisper.cpp/faster-whisper 与 Tesseract 实时 OCR 字幕。标记备查，作为 Nigredo「视频摄入→双语字幕」的低门槛本地播放/学习场景补充（与 KrillinAI/妙幕搭配）。
+
+- [ ] **【Citely.ai — 学术文献真实性核查 + 反向溯源（题名/作者/期刊/DOI 匹配）】** | 来源：https://nmi.cuc.edu.cn/2026/0512/c2509a270248/page.htm | 🎯 Albedo 炼真
+  了解：核查 AI 生成或人工整理的参考文献是否真实存在、关键信息是否匹配，并按段落/观点反向寻找真实可追溯来源。标记备查，作为 Albedo 证据追踪的「引用级」参考形态（与星盾验真的内容级互补）。
+
+- [ ] **【一人公司 AI 赚钱步骤 — 实在 Agent RPA：调研→内容 SOP→RPA 分发→智能客服】** | 来源：https://www.ai-indeed.com/encyclopedia/16031.html | 🎯 Rubedo 凝华
+  了解：零代码 Agent 平台把痛点挖掘/内容生产/全渠道分发/私域引流/无人成交串成流水线，成本仅为人工 1/10。标记备查，作为本日「90 天方案/Dify 客服」的 RPA 工具补充——SSS 可用它把小红书/视频号分发自动化。
+
+### 💡 探索
+
+- [ ] **【OPC 一人公司运作 — 北京/深圳/西安已建 OPC 创新社区（算力补贴+政策扶持），四大主流方向】** | 来源：https://aiqicha.baidu.com/details/ugknowledge?id=d6f8dcb2aba768536909cff4c952c4fb | 🎯 OpusMagnum 巨作
+  值得关注：补 7/17 首次扫描「亦庄 OPC 主理人学院+算力券」与 7/15「一人公司扶持政策」——OPC 四大方向（产品型 SaaS/服务型/内容型/电商型）+ 多地社区托举。巨作战略储备：把「哪城补贴高落哪」做成套利地图（海淀/中山/深圳/亦庄/西安），把算力与办公成本外部化，叠加 AI 设计/内容做零成本现金流。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：aihot 直连超时（沙箱封锁）改 WebSearch 兜底；纯旧案例超窗口（小猫补光灯 5/23、Krea LoRA 6/2、微信AI 6/14、腾讯云Lighthouse 4/23 均＞7 天）；与 7/15 重叠（HyOCR-1.5 已收、黄啊码秒哒/龙虾已剔、AI设计泛攻略已剔）；与本日首次扫描重叠（SEOBOT/7接单平台/鸿蒙/5路径/闲鱼设计接单/有戏AI/Base44/亦庄均已收）；泛商业分析（公众号矩阵年入千万无直接动手价值）
+> - ✅ 保留：16 条（Rubedo 8 + Citrinitas 3 + Nigredo 2 + Albedo 2 + OpusMagnum 1），含本日首次扫描未覆盖的新维度
+> - 🆕 与 6/23–7/17 全量去重：16 条均为新增或带明确增量（如 #1 室内效果图直客 vs 7/15 电商主图、#4 KrillinAI 配音 vs 7/15 妙幕字幕、#5 星盾验真补 Albedo 近期空白）
+> - 🔍 本日（二次扫描）主线：设计副业直变现（室内接单/小红书带货/闲鱼技能）+ 自托管知识底座补强（零成本RAG/AnythingLLM）+ Nigredo/Albedo 补齐（KrillinAI/星盾验真）+ 平台规则变化（新媒体趋势/OPC社区地图）
+
+---
+
+## 2026-07-19
+
+> 数据源：aihot 24h 通道被内容安全拦截（WebFetch 触敏感词，与 7/17 一致；skill 仍仅 AiHot 专家可用）→ 走机会雷达 7 天 WebSearch 3 组（AI副业/一人公司、AI设计接单变现、RAG/OCR/事实核查开源），命中 15 条候选 | 去重对照 6/23–7/17 全部条目 | 匹配项目 3 个（Rubedo/Citrinitas/Nigredo），Albedo 本轮无命中、OpusMagnum 探索区无强信号故跳过 | 整理 10:12
+
+### 🔴 本周可试
+
+- [ ] **【钛动 Navos 2.0 — 一套 AI 替你跑完整跨境电商链路（WAIC 7/18 发布，零经验可开副业店）】** | 来源：https://new.qq.com/rain/a/20260718A03APE00 | 🎯 Rubedo 凝华
+  研究方向：Navos 2.0 把"市场调研→选品定款→上架→素材→达人对接→投放→复盘→客服"整条跨境链路交给一支动态组建的 AI 运营团队，你只需说清生意目标。SSS 可试把军工/家装效果图做成跨境数字商品（模板/素材包/AI 短剧），用 Navos 跑选品+素材+投放，下班搞个零外语零渠道的跨境副业小店——本周先注册，看它的品类侵权预警与利润空间提示是否真能上手。
+
+- [ ] **【AI 生成图投稿卖图被动收入 — 视觉中国/500px/千库网/包图网/摄图网 按下载分成】** | 来源：https://k.sina.cn/article_7879923048_1d5ae156806801d28q.html | 🎯 Rubedo 凝华
+  研究方向：把 AI 生成的写实摄影/商务场景/国风插画/卡通图批量投稿到商用图库，按下载量长期分成（视觉中国/500px 佣金 30–60%、千库/包图/摄图审核宽松出单快），一次上传持续收钱。SSS 设计师零成本可试：每周产 20 张家装/军工风格 AI 图投视觉中国+千库网，跑通"一次生产、长期被动"的第二收入曲线，与接单卖服务互补。
+
+- [ ] **【小红书 7 月新规 — AI 内容强制标注、私域导流失效、商业报备门槛升（不合规最高永久封号）】** | 来源：https://www.yunyingbu.com/yanjiusuo/xinwen/664.html | 🎯 Rubedo 凝华
+  研究方向：7 月起三大变化——①所有 AI 生成/辅助内容必须勾选"AI 辅助创作"标签，未标三次违规永久封号；②私域导流启用"语义追踪+行为轨迹"双机制，谐音变体（加V/绿泡泡）全部失效，留联系方式直接限流封号；③蒲公英合作人门槛从 5000 粉升到 1 万粉+近 30 天单篇曝光≥5 万，未报备商业笔记累计扣 10 分清空带货权限。SSS 小红书/视频号 SOP 必须本周重写：AI 只做辅助框架、加 30% 真实体验改写、所有转化走官方通道（店铺/聚光/蒲公英），把"AI 托管起号"思路彻底放弃。
+
+- [ ] **【小红书开始给素人笔记分广告费 — 合作广场 2.0 + 小红盟跨域转化，普通 UGC 首次商业闭环】** | 来源：https://www.toutiao.com/article/7662691251610862089/ | 🎯 Rubedo 凝华
+  研究方向：品牌可通过"合作广场"发现你已发布的真实笔记→联系授权→追加投放→用"小红盟"联动京东追踪成交，创作者拿激励分成。等于小红书开始给素人笔记发广告费。SSS 可把家装/军工效果图笔记当"长期资产"经营：发真实使用笔记→等品牌找授权→躺赚分成，与 🔴 接单卖服务形成"主动收入+被动分成"双曲线，零门槛吃平台红利。
+
+- [ ] **【AI 电商内容代运营 — 一人零库存月净利 1.8 万（主图 300/套·详情页 800/套·短视频 500/条）】** | 来源：https://www.toutiao.com/article/7662373317575197186 | 🎯 Rubedo 凝华
+  研究方向：作者辞新媒体运营后做"AI 电商内容代运营"——服务淘宝/拼多多/抖音小商家，用美图设计室 AI 商品图（3 分钟出主图）+ Canva AI 排版详情页 + 可灵图生视频，全成本仅 298/月（美图 99+可灵 199）。收费：主图 5 张 300、详情页 800、短视频 500，上月净利 1.8 万。SSS 设计师可直接照搬：用现有设计能力+AI 工具做"电商视觉代运营"，不去猪八戒红海，直接刷直播找丑主图店私信"不满意不收钱"谈单。
+
+### 🟡 关注
+
+- [ ] **【IBM 开源 Docling 62.4k Star — PDF/Word/Excel/PPT/图片一键转结构化，RAG 数据准备三行代码】** | 来源：https://m.toutiao.com/is/5jMTHqjoN5w/ | 🎯 Citrinitas 熔知
+  研究方向：IBM Research 出品、MIT 协议，支持 8+ 格式深度解析（表格/公式/图表/代码还原）+ 自动 OCR 扫描件 + 原生 LangChain/LlamaIndex 集成，把"脏文档"变成 AI 能直接吃的 Markdown/JSON。补 7/15–7/17 RAGFlow/AnythingLLM 的"文档摄入前端"缺口——Athanor（熔知）摄入管线可评估用 Docling 先做 PDF/扫描件预处理，转结构化再喂向量库，降低 RAG 噪声。
+
+- [ ] **【PaddleOCR 3.0 — 国产 OCR 文档引擎升级，官方 MCP Server 直连 Claude/Cursor + 端侧 0.07B 模型手机跑】** | 来源：https://elowen.blog.csdn.net/article/details/162460343 | 🎯 Nigredo 馏析
+  研究方向：百度飞桨 3.0 含 PP-OCRv5（多语文字）+ PP-StructureV3（版面/表格/公式还原）+ PaddleOCR-VL（109 语言、OmniDocBench 96.33 开源第一），并官方提供 mcp_server 可与 Claude/Cursor 整合、Agent Skills 可直接调用。补 7/15 HyOCR / 7/17 妙幕·KrillinAI 的"摄入底座"——Nigredo 视频/图片/扫描件摄入管线可评估把 PaddleOCR-VL 当本地 OCR 主力，端侧模型还能压到手机跑，数据不出门。
+
+- [ ] **【AI 接单平台补完 — 米画师（二次元/游戏原画）/稿定 AI（电商商用图）/刺猬星球（品牌出海）/一品威客（被动接单）】** | 来源：https://aiqicha.baidu.com/details/rankList?query=1cb8383431f231d62c3a7d92b52f81c6&type=20 | 🎯 Rubedo 凝华
+  研究方向：在 7/17「7 个 AIGC 平台」之外补全垂直设计接单版图——米画师（2026 上线 AI 画师专区，二次元/游戏原画高客单）、稿定 AI（电商商用图+内置作图）、刺猬星球 super-i（AI 视觉孵化+品牌出海"学习+接单"闭环）、一品威客（无竞标被动接单、新手保护期）。SSS 可挑米画师+稿定 AI 双平台铺效果图/家装设计作品，吃高客单垂直设计单，与塔猴/站酷/闲鱼形成多平台矩阵。
+
+- [ ] **【OpenAI 提出 AI 时代记分卡 — "有用智能每美元"衡量实际工作价值】** | 来源：https://openai.com/index/a-scorecard-for-the-ai-age | 🎯 Rubedo 凝华
+  研究方向：OpenAI 倡议用"每美元能买到多少有用智能（useful intelligence per dollar）"替代参数/基准竞赛，衡量 AI 到底干了多少实际工作。这正是 SSS 一人公司选工具的核心尺子——与其追最强模型，不如算"这个 Agent 替我干一单活，摊到每美元值不值"。补 7/03 路由降本、7/12 Ploy 切模型的逻辑：把"成本/产出"当成日常决策默认值。
+
+- [ ] **【天工短剧工作台 — Agent 智能分镜 + 无限画布双轨创作】** | 来源：https://mp.weixin.qq.com/s/WlGAeogkF_N5122nHA0TtQ | 🎯 Rubedo 凝华
+  研究方向：昆仑万维天工发布短剧创作工具，Agent 自动拆智能分镜 + 无限画布自由编排，降低短剧内容生产成本。SSS 可把效果图/家装知识做成"AI 短剧"在小红书/视频号分发（呼应 7/15 RED 精选流量扶持），用 Agent 分镜把"一个设计案例"变成有剧情的短视频，吃短视频内容红利。
+
+- [ ] **【AI 图像接单定价手册 2026 — 自由职业者 $50–500/图，品牌带 $80–250、定制带 $300–500】** | 来源：https://betonai.net/ai-image-generation-freelance-pricing-playbook-2026 | 🎯 Rubedo 凝华
+  研究方向：2026 图像接单市场分三档——商品带（Fiverr $15–40）、品牌带（$80–250，Upwork/直客主战场）、定制带（$300–500，主视觉/包装渲染）。月入 $3K–10K 的接单者不押单一工具，而是 MJ v7+Flux Pro 1.2+DALL·E 4 组合工作流，并用"品牌风格指南/AB 广告包"等加购把客单价翻 4 倍。SSS 设计师据此给自己效果图/电商图定价：基础图走品牌带、全套方案走定制带，用加购拉高单值。
+
+- [ ] **【NVIDIA Nemotron 3 Embed — 8B 开源嵌入模型 RTEB 基准第一】** | 来源：https://www.marktechpost.com/2026/07/17/nvidia-ai-releases-nemotron-3-embed-an-open-embedding-collection-whose-8b-checkpoint-ranks-1-on-rteb | 🎯 Citrinitas 熔知
+  研究方向：NVIDIA 发布 Nemotron 3 Embed 开源嵌入系列，8B 版在 RTEB 检索基准排名第一。嵌入模型是 RAG（检索增强生成）的"眼睛"——决定知识库能不能把对的段落召回来。补 7/12–7/17 RAGFlow/AnythingLLM/Docling 的"向量化"底座：Athanor 评估能否用 Nemotron 3 Embed 替代商业嵌入 API，进一步降云端依赖+提召回精度。
+
+- [ ] **【腾讯混元 Hy3 量化版 — 1bit 单卡可部署、4bit 接近满血性能】** | 来源：https://mp.weixin.qq.com/s/Kq30ftirASryPrUtjK2xSw | 🎯 Citrinitas 熔知
+  研究方向：Hy3 推出量化版，1bit 版本一张卡就能跑、4bit 版本接近满血性能。这是把"本地跑大模型"成本压到极致的信号——补 7/8 Hy3 发布、7/12 colibrì 自托管路线：Athanor 可用量化 Hy3 做低成本推理底座，规避断供+数据不出域+边际成本趋零，普通电脑也能起服务。
+
+- [ ] **【10 款自托管 AI 工具替代 SaaS — 单人/小团队月省 $200–500】** | 来源：https://dev.to/kunal_d6a8fea2309e1571ee7/10-self-hosted-ai-tools-that-replace-saas-2026-tested-3bih | 🎯 Citrinitas 熔知
+  研究方向：实测 10 类自托管替代（Plausible 替 GA、SearXNG 替 Algolia、whisper.cpp 替 Deepgram、Weaviate 替 Pinecone、Ollama 替 OpenAI API 等），在 $20/月 VPS 或旧 Mac 上跑，月省 $200–500，且 Ollama 0.31 在 Apple Silicon 推理快 90%。直接服务 SSS"Citrinitas 低成本自托管"路线——把笔记/搜索/转录/向量库从订阅 SaaS 迁到自托管，长期成本趋零、数据不出门。
+
+- [ ] **【阿里 Qwen-Audio-3.0-Realtime — 实时语音推理综合排名第一】** | 来源：https://mp.weixin.qq.com/s/hFp5rtV8-6KVRrgZoCj03A | 🎯 Nigredo 馏析
+  研究方向：通义发布 Qwen-Audio-3.0-Realtime，在 Artificial Analysis 语音推理子项综合第一，支持实时语音理解与推理。补 7/15 HyOCR / 7/17 妙幕·KrillinAI 的"语音入口"——Nigredo 摄入管线可评估把实时语音模型接进"视频/音频→文字→知识"链路，做会议/口播/课程材料的实时转写与理解。
+
+- [ ] **【Gemini 3.5 Live Translate — 70+ 语言近实时语音到语音翻译】** | 来源：https://x.com/googleaidevs/status/2077049898059354565 | 🎯 Nigredo 馏析
+  研究方向：Google 发布 Gemini 3.5 Live Translate，支持 70+ 语言近实时语音到语音翻译。与 7/17 KrillinAI（视频翻译配音）互补——SSS 效果图讲解视频可做近实时多语字幕/配音，打开海外获客；Nigredo 摄入链路评估接入做"外语素材→中文理解"的跨语摄入。
+
+### ⚪ 了解
+
+- [ ] **【AI 副业被动收入平台补完 — 稻壳儿（PPT 模板分成）+ Gumroad（提示词/模板零成本出海售卖）】** | 来源：https://nav-ai.cn/ai-fu-ye-wu-bian-cheng-5-di-men-kan-fang-cong-jie-dan-dao-bei-dong-shou-ru/ | 🎯 Rubedo 凝华
+  了解：零编程 5 方向里的"被动收入"落点——AI PPT 代做套模板上传稻壳儿按下载分成、AI 提示词包上 Gumroad 零成本面向全球售卖。标记备查，作为 SSS「一次生产、长期变现」的轻量补充渠道（与本条 🔴 投稿卖图、7/17 闲鱼接单组合成"服务+被动"双曲线）。
+
+- [ ] **【ChatGPT 工作区 — 支持文档/表格/幻灯片直接编辑】** | 来源：https://x.com/ChatGPTapp/status/2077826846373380535 | 🎯 Rubedo 凝华
+  了解：ChatGPT Workspace 现在能直接编辑文档、表格、幻灯片，把交付物生产收进对话里。标记备查，作为 SSS 一人公司做客户交付（方案 PPT/报价表/总结文档）的轻量办公入口，免去在多个 SaaS 间切换。
+
+- [ ] **【Google Vids 上线 Gemini Omni 与个人数字分身】** | 来源：https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars | 🎯 Rubedo 凝华
+  了解：Google Vids 加入 Gemini Omni 与个人数字分身功能，可用数字人出视频内容。标记备查，SSS 做小红书/视频号口播类内容时可考虑用数字分身降低出镜成本（注意 7 月新规要求 AI 内容标注）。
+
+- [ ] **【开源 LLM TODO Skill"阿福" — 知识管理到排期自动化（Claude Code + Codex）】** | 来源：https://mp.weixin.qq.com/s/QcGHxKohg0gW9e84Nd_9jA | 🎯 Citrinitas 熔知
+  了解：开源"阿福"技能用 Claude Code 和 Codex 把"知识管理→任务排期"自动化，一句指令生成待办并排进日程。标记备查，作为 Athanor（熔知）"知识→行动"闭环的参考形态——把收录的知识自动转成可执行排期。
+
+- [ ] **【纳德拉"反向信息悖论" — 企业用 AI 时需保护自身知识】** | 来源：https://x.com/satyanadella/status/2076323181154230284 | 🎯 Citrinitas 熔知
+  了解：纳德拉提出"反向信息悖论"——企业越用 AI，越要主动保护自己的专有知识不被稀释/外泄。标记备查，作为 SSS 一人公司的知识管理原则：客户资料/方法论/私有语料必须私有化沉淀（呼应自托管路线），别把核心知识喂给公开大模型。
+
+> 📡 **筛选原则执行**：
+> - ❌ 剔除：aihot 24h 通道被拦截改 WebSearch 兜底；与 7/17 重叠（7个AIGC平台盘点/闲鱼PS接单/黄江华栅格兽/WorkBuddy OPC社区/AI直播全托管 GMV 40–50%/独立黑客 5K–50K 均已在 7/17 收录）、与 7/12–7/15 重叠（RAGFlow v0.26.x/AnythingLLM/MinerU 已收）、泛 OPC 案例（《7人干100人活》《一人公司悄然兴起》《2026一人公司时代》均重复黄江华或 7/17 小红书带货/实操课，无新信号）、纯大模型发布会场报道
+> - ✅ 保留：6 条均为新增维度（Navos 跨境工作流 / 投稿卖图被动分成 / Docling / PaddleOCR 3.0 MCP / 接单平台补完 / 稻壳儿 Gumroad）
+> - 🆕 与 6/23–7/17 全量去重：6 条零重复；**Rubedo 链路最强**（4 条：Navos 跨境 / 投稿卖图 / 接单平台补完 / 稻壳儿 Gumroad），**Citrinitas 获 1 条**（Docling 摄入前端），**Nigredo 获 1 条**（PaddleOCR 3.0）；**Albedo 炼真本轮无命中**（无新事实核查/幻觉治理信号），**OpusMagnum 探索区无强信号故跳过**
+> - 🔍 本日主线：副业变现双曲线成型（🔴 跨境工作流 + 🔴 投稿卖图被动收入）+ 摄入管线底座补强（Docling 给 Citrinitas、PaddleOCR 3.0 给 Nigredo）+ 接单平台版图补完
+
+### 💡 探索
+
+- [ ] **【Indie Hacker 2026 真实收入分布 — 中位 $500–2000/月，50% 不足 $1K，受众优先】** | 来源：https://www.betterlaunch.co/blog/indie-hacker | 🎯 OpusMagnum 巨作
+  值得关注：2026 独立开发者收入真相——约 50% 月入 <$1K、20% 在 $1K–10K、仅 <5% 破六位数；中位 $500–2000/月，且 top 1% 的周周爆单靠的是"产品出现前就攒了十年受众"。给 SSS 的清醒剂：别被"月入过万"标题党带偏，一人公司大概率前几个月接近 0，正确路径是"先做受众/案例再放大"，把它当副业跑、等数据而非感觉说"可以全职"。巨作战略储备：把"受众优先 + 副业起步"写进一人公司作战手册。
+
+> 📡 **补扫（10:12 后，aihot 直连恢复 + WebSearch 补充）新增 16 条**：🔴 3（小红书 7 月新规 / 素人分广告费 / AI 电商代运营）+ 🟡 8（OpenAI 记分卡 / 天工短剧 / AI 图像定价 / Nemotron 3 Embed / Hy3 量化 / 10 款自托管 / Qwen-Audio / Gemini Live Translate）+ ⚪ 4（ChatGPT 工作区 / Google Vids 分身 / 阿福 Skill / 纳德拉知识保护）+ 💡 1（Indie Hacker 收入分布）。与 6/23–7/17 及本日 10:12 段全量去重：新增 16 条零重复（OPC 三条路径因 10:12 已判与 7/17 重叠故不重复收）；本补扫补强了「小红书规则+红利」双主线（直接关系 SSS 内容策略）、Citrinitas 自托管降本（Hy3 量化/10 自托管/Nemotron 嵌入）、Nigredo 语音入口（Qwen-Audio/Gemini Live）。
+
+---
+
+
+## 2026-07-20
+
+### 🔴 本周可试
+- [ ] **【小红书 AI 代生成头像 — 从 0 到月入 5000 完整方案（定价 9.9 起 / 客单价利润 70–80%）】** | 来源：https://www.douchuanghui.com/thread-9326-1-1.html | 🎯 Rubedo 凝华
+  最贴合 SSS 设计师本行的最小闭环：一部手机+Midjourney/即梦即可接单，多平台分发+私域 VIP+招代理三层放大。研究方向：用「AI 头像定制师」账号跑通引流→接单→私域，验证 SSS 是否能用设计审美直接变现。
+
+- [ ] **【2026 年 AI 设计变现指南 — 设计师接单月入 2.5 万收益模型（电商主图/详情页/品牌全案）】** | 来源：https://www.douchuanghui.com/thread-18175-1-2.html | 🎯 Rubedo 凝华
+  直接对应 SSS 效果图/结构设计老本行：基础图 50 单×200 + 详情页 20 单×400 + 品牌全案 3 单×2000 + 包月，净利约 2.5 万、利润率 96%。研究方向：把「做图工具人」升级为「视觉解决方案专家」，从闲鱼/站酷/小红书接单起步。
+
+- [ ] **【transcribe.cpp 发布 — 基于 ggml 的跨平台本地语音转录库，支持 16 个 ASR 模型族 + GPU 加速】** | 来源：https://workshop.cjpais.com/projects/transcribe-cpp | 🎯 Nigredo 馏析
+  纯本地、开源、零调用费，直接补 Nigredo 语音转文字入口，且可跑在 SSS 自己机器上（呼应摄入管线稳定性修复）。研究方向：用它替换/兜底云端语音识别，做离线字幕与音频处理，零成本可控。
+
+- [ ] **【AI 独立开发 5 个真实案例 — 月入过万（B2B 数据自动化 $3.5 万/月、Chrome 写作插件 $1.8 万/月）】** | 来源：https://www.toutiao.com/article/7659324661406925347 | 🎯 Rubedo 凝华
+  全是公开可查的收入数据，核心结论：AI 把写代码成本打到地板，剩下来值钱的是「懂需求+设计产品+找客户」。研究方向：SSS 不必学代码，用 Cursor/无代码搭一个解决具体痛点的小工具，卖结果不卖功能。
+
+### 🟡 关注
+- [ ] **【7 个真正赚钱的 AI 副业 2026 — PhotoAI $138K MRR、定制 Agent $500–5000、垂直小 APP】** | 来源：https://www.aicofounderstack.com/2026/07/02/7-ai-side-hustles-making-real-money-in-2026/ | 🎯 Rubedo 凝华
+  每个副业都给了真实数字、用的工具和本周就能起步的路径；垂直化（GLP-1 追踪、HVAC 排程）比「通用 AI」更容易跑通。研究方向：挑一个垂直小场景做 SSS 的副业 MVP。
+
+- [ ] **【企业 AI 智能体「现实对齐」缺口 — 半数组织把内部测试通过的 Agent 上线后导致客户故障】** | 来源：https://venturebeat.com/ai/the-agent-evaluation-gap-enterprise-ai-organizations-have-a-reality-alignment-problem-not-a-coverage-problem-and-most-are-shipping-to-production-anyway | 🎯 Albedo 炼真
+  企业不是缺 Agent，是缺「上线前可信度验证」——这正是 Albedo 炼真的核心场景（事实核查/矛盾检测/信任评估）。研究方向：把「Agent 上线前验证」做成一人公司可卖的审计服务。
+
+- [ ] **【Patter SDK 教程 — 搭建餐厅预订电话智能体（动态变量+护栏+延迟仪表盘+评估检查）】** | 来源：https://www.marktechpost.com/2026/07/16/patter-sdk-guide-to-building-a-restaurant-booking-phone-agent-with-dynamic-variables-guardrails-latency-dashboards-and-eval-checks | 🎯 Rubedo 凝华
+  模板化的「本地商家语音 Agent 接单」样本，对应 betonai 数据里回款最快的副业（语音代理中位 14 天首赚千元）。研究方向：把这类模板包装成「给本地店装 AI 前台」的接单服务。
+
+- [ ] **【MiniCPM5-2B 发布 — 4B 以下全球性能第一，原生混合思考+512K 上下文，适配 9 款芯片】** | 来源：https://mp.weixin.qq.com/s/rjFxrUylyGMqa5QtgypCdw | 🎯 Citrinitas 熔知
+  2B 端侧开源模型，可跑在消费级硬件，是 Citrinitas 自托管知识底座的低成本推理选项（呼应 7/19 的「自托管降本」主线）。研究方向：评估它能否本地跑 RAG/检索，进一步压低 Athanor 摄入成本。
+
+- [ ] **【2026 普通人 AI 创业干货 — 5 个低门槛可回本赛道（启动成本/客单价/回本周期全标注）】** | 来源：https://m.cy211.cn/aizixun/6869.html | 🎯 Rubedo 凝华
+  把赛道按启动成本排序并给回本周期：短视频脚本 0 元/1–3 天、电商海报 100 元、AI 客服知识库搭建 1000–5000/单、数字人 200–2000、企业内训 3000–20000/场。研究方向：用「3 小时零成本验证法」先测 SSS 最顺手的一条。
+
+- [ ] **【2026 小红书 AI 赚钱 — 4 条真实路径拆解（治愈系插画/知识图谱/虚拟电商/数字产品，月入 3 万常态）】** | 来源：https://ai.lansai.wang/107321.html | 🎯 Rubedo 凝华
+  小红书已变「AI 原生社区」，高审美+强实用的优质 AI 账号仍稀缺；纯流量 5–15K，结合私域/数字产品/定制可达 3 万。研究方向：SSS 用设计师审美做「治愈系插画/知识图谱」号，冷启动 2 个月再吃复利。
+
+### ⚪ 了解
+- [ ] **【面壁智能开源企业 AI 数字员工平台 StaffDeck】** | 来源：https://x.com/OpenBMB/status/2077741814799548451 | 🎯 Rubedo 凝华
+  开源的「企业数字员工」框架，可作为 SSS 给中小企业做 AI 落地交付的参考底座。
+
+- [ ] **【AI 语音诈骗 — 退休老人因合成女儿哭声 3 秒被骗 1.5 万美元】** | 来源：https://smarterarticles.co.uk/the-three-second-theft-why-ai-voice-fraud-outruns-every-defence | 🎯 Albedo 炼真
+  语音伪造已能击穿信任，反向凸显 Albedo 验真/真实性追踪的社会刚需；也是 SSS 做「内容真伪鉴别」服务的切入口。
+
+- [ ] **【千问 APP 联合武汉发布 AI 求职实战课 — 简历诊断与办公自动化演示】** | 来源：https://mp.weixin.qq.com/s/dCk6IXbFyOSSc1JxcWsglA | 🎯 Rubedo 凝华
+  大厂把「AI 办公自动化」做成普惠课，说明该需求已下沉到普通求职者；SSS 可借鉴其交付形式做垂直版。
+
+### 💡 探索
+- [ ] **【AI 热潮正在瓦解全球决策机制 — 从业者称所见 AI 项目成功率 0%，问题不在模型能力而在企业本身】** | 来源：https://ludic.mataroa.blog/blog/ai-mania-is-eviscerating-global-decision-making | 🎯 OpusMagnum 巨作
+  反向印证「企业不会用 AI」才是真痛点——一人公司最大的窗口不是卖工具，而是卖「把 AI 真正落进业务流程」的靠谱交付。可能催生：SSS 的「按需 AI 落地顾问」定位，以及把 Albedo 验真打包进企业 Agent 上线前审计。
+
+> 📡 **筛选原则执行（2026-07-20）**：
+> - 数据源：aihot.virxact.com 直连恢复（curl+浏览器UA，HTTP 200）→ 拉 `/api/public/daily` 24h 精选 8 条 + `/api/public/items` 7d 50 条；补充 WebSearch 3 组（副业/一人公司/低成本创业 + AI设计接单/小红书红利/私域）。
+> - ❌ 剔除：Qwen3.8 2.4T / 昆仑万维 Matrix-Game 3.5 / 面壁 MiniCPM-Robot 具身（纯大模型/机器人，无关副业）、黄仁勋访日主权 AI 工厂（大企业基础设施）、ChatGPT Work（7/10 已收）、betonai Days to First（7/19 已收 🔴）、7人干100人（7/19 已判无新信号）、Vibe Coding 造富 Connor/Jon（7/06 已覆盖）。
+> - ✅ 保留 14 条：🔴 4（小红书AI头像 / AI设计变现指南 / transcribe.cpp / AI独立开发5案例）+ 🟡 6（7 AI副业 / 企业Agent现实对齐缺口 / Patter语音Agent / MiniCPM5-2B / 5赛道创业 / 小红书4路径）+ ⚪ 3（StaffDeck / AI语音诈骗 / 千问求职课）+ 💡 1（AI热潮瓦解决策）。
+> - 🔍 本日主线：SSS 设计师本行直变现双🔴（小红书头像 + AI设计接单）+ Nigredo 语音入口补强（transcribe.cpp 本地零成本）+ Albedo 炼真久违命中（企业Agent信任缺口 + 语音诈骗验真）+ Rubedo 副业案例库继续扩容。
+> - 🎯 项目分布：Rubedo 9 + Nigredo 1 + Citrinitas 1 + Albedo 2 + OpusMagnum 1；与 6/23–7/19 全量去重，14 条零重复。
+
+---
+
+> 📡 **机会雷达独立补扫（2026-07-20 · 08:50）**：aihot 直连恢复（今日未触发拦截）+ WebSearch 7天 2 轮（副业/一人公司/独立开发者收入/设计师接单/开源 OCR·语音·知识管理工具）。在主段 14 条之外补充 **5 条未覆盖新维度**，与主段及 6/23–7/19 全量去重零重复。主段已收的 transcribe.cpp / MiniCPM5-2B / AI 独立开发案例 / 小红书路径等本次亦命中，因已覆盖不重复；Qwen3.8 / Matrix-Game 3.5 / 黄仁勋 / ChatGPT Work 依主段判定剔除/已收。
+
+### 🔴 本周可试（补）
+
+- [ ] **【手搓 App 赚 40 万：验证先行 + 女娲 Skill 认知蒸馏开源】** | 来源：https://www.toutiao.com/article/7642616822805873186 | 🎯 Rubedo 凝华
+  非程序员 1 小时开发"小猫补光灯"登顶付费榜、收入三四十万；更关键是其开源"女娲 Skill"——把人的思维/决策/风格封装成 AI 可调用技能包，已被腾讯/Kimi/智谱接入。SSS 可把军工效果图设计方法论封装成 Skill 复用变现，或借鉴"先验证需求再开发"的低成本起步法。
+
+- [ ] **【OpenClaw 开源"数字员工"：自托管 24/7 自动化】** | 来源：https://cloud.tencent.com/developer/article/2659160 | 🎯 Rubedo 凝华
+  起源于独立开发者的开源项目，一个月 GitHub 18 万星，能自主运行、记忆文件夹+cron 模板、24/7 本地干活；案例是一人公司靠 AI 员工跑 25 万美元/月 agency。直接对标 Athanor 摄入管线稳定化 + Rubedo 自动化 SOP——研究能否本地部署，把"知识摄入→整理→分发"做成常驻自动流。（注：区别于主段已收的 OpenBMB StaffDeck 企业版，OpenClaw 是社区开源自托管路线）
+
+### 🟡 关注（补）
+
+- [ ] **【百度 Create2026 超级个体论坛：AI 赚钱三类路径 + OPC 3.0 生态】** | 来源：https://www.xhby.net/content/s6a058eebe4b0711feffdd9c5.html | 🎯 Rubedo 凝华
+  论坛拆解基础起步（自媒体/AI 代运营）→商业闭环（设计师用 AI 做装修 3D 效果图、养老系统 7 天搭建）→高阶成长（垂直 AI 产品/可交互报告/OPC 政策）三类路径，OPC 进入 3.0 整合政府资本企业资源。SSS 可对标"设计师→装修 3D 效果图商业闭环"案例，把效果图主业直接接 AI 变现。
+
+- [ ] **【Mercor 盘点 2026 最佳 AI 副业：service / platform / product 三类 + 海外众包 $200/hr】** | 来源：https://www.mercor.com/resources/experts/best-ai-side-hustles/ | 🎯 Rubedo 凝华
+  海外视角补充——平台型 AI 训练众包（法律/医疗/金融领域专家）可达 $200/hr；产品型 prompt 包/模板可无限次售、无交付损耗。补齐国内副业视角，SSS 可评估"行业专家反馈"类轻量变现。
+
+### 💡 探索（补）
+
+- [ ] **【一人公司规模化方法论：Levels / Photo AI / One-Person Startup 2026】** | 来源：https://it.sohu.com/a/1039956649_122603294 + https://dev.to/alexcloudstar/the-one-person-startup-just-hit-a-new-ceiling-what-it-actually-takes-to-scale-solo-in-2026-468h | 🎯 OpusMagnum 巨作
+  一人公司从"手搓"到月入百万方法论合集——验证先行（先卖截图再写码）、极简技术栈（1.4 万行 PHP 撑起 3000 万年收，零件越少出错越少）、公开创业飞轮（实时晒收入→媒体跟进→新用户）、自动化 vs 该保护的部分。巨作战略储备：SSS 如何用最小复杂度跑通 Athanor 商业化、在"能建"已成桌面的时代把稀缺力放在"分发与受众"。
+
+---

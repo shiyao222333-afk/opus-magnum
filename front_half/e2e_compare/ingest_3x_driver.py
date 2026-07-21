@@ -25,7 +25,7 @@ FILE_PATH = "D:/opus-magnum/front_half/e2e_compare/run1/nigredo_transit.md"
 FACET_FIELDS = [
     "content_type", "domain", "temporal_nature", "epistemic_status",
     "trust_score", "knowledge_type", "is_personal", "language",
-    "project_source", "lifecycle", "author", "udc_code",
+    "project_source", "lifecycle", "author", "udc_code", "needs_review",
 ]
 FREE_FIELDS = ["title", "keywords", "auto_summary"]
 
