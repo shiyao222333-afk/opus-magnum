@@ -51,6 +51,7 @@ def get_all_repo_summaries() -> dict:
         "Citrinitas": gh.get_repo_summary(settings.citrinitas_repo),
         "Nigredo": gh.get_repo_summary(settings.nigredo_repo),
         "Albedo": gh.get_repo_summary(settings.albedo_repo),
+        "Rubedo": gh.get_repo_summary(settings.rubedo_repo),
         "OpusMagnum": gh.get_repo_summary(settings.opus_repo),
     }
 

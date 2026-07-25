@@ -123,7 +123,8 @@ def start_albedo() -> Service:
     env = dict(os.environ,
                ACCEPTANCE_KEEP_FILES="1",
                ALBEDO_OUTPUT_DIR=str(STAGING_DIR),
-               ALBEDO_REQUIRE_HUMAN_REVIEW="false")
+               ALBEDO_REQUIRE_HUMAN_REVIEW="false",
+               ALBEDO_WATCHER_IDLE_EXIT_MINUTES="0")
     proc = subprocess.Popen(
         [py, "-m", "watcher.run"], cwd=str(ALBEDO), env=env,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,

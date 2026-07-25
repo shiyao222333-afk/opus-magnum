@@ -1,0 +1,14 @@
+[2026-07-24 23:59:11.632] [INFO    ] [root] Logging initialized: level=20, file=D:\citrinitas\local_data\logs\citrinitas.log
+[2026-07-24 23:59:11.839] [INFO    ] [__main__] ✅ Qdrant 连接正常
+[2026-07-24 23:59:11.839] [INFO    ] [__main__] 刷新系统状态（ui.run 前）...
+[2026-07-24 23:59:13.949] [INFO    ] [__main__] 状态刷新完成 — stats={'points': 0, 'dim': 2560, 'collection': 'athanor_v1'}
+[2026-07-24 23:59:13.949] [INFO    ] [__main__] Citrinitas 服务启动成功！
+[2026-07-24 23:59:13.949] [INFO    ] [__main__]   📍 Web UI:  http://127.0.0.1:8080
+[2026-07-24 23:59:13.950] [INFO    ] [__main__]   📍 Qdrant:  http://127.0.0.1:6333
+[启动] 检查 Qdrant: http://127.0.0.1:6333/collections
+NiceGUI ready to go on http://localhost:8080, http://169.254.170.196:8080, http://169.254.179.123:8080, http://169.254.33.32:8080, http://169.254.98.126:8080, and http://192.168.31.249:8080
+[2026-07-24 23:59:13.994] [INFO    ] [__main__] startup 回调开始（事件循环线程）
+[2026-07-24 23:59:13.995] [INFO    ] [__main__] 验收模式：禁用浏览器关闭自动退出，服务常驻。
+[2026-07-24 23:59:13.998] [INFO    ] [__main__] 守望文件夹 v2 已启动
+[2026-07-24 23:59:13.998] [INFO    ] [__main__] startup 回调完成 — STATE 已有 stats={'points': 0, 'dim': 2560, 'collection': 'athanor_v1'}
+[2026-07-24 23:59:14.643] [INFO    ] [__main__] 浏览器已自动打开

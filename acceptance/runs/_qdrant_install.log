@@ -1,0 +1,7 @@
+  Fetching latest Qdrant version...
+  Version: 1.18.3
+  Downloading: https://github.com/qdrant/qdrant/releases/download/v1.18.3/qdrant-x86_64-pc-windows-msvc.exe
+  [!] Invoke-WebRequest failed, trying curl...
+curl: (35) schannel: next InitializeSecurityContext failed: CRYPT_E_NO_REVOCATION_CHECK (0x80092012) - 吊销功能无法检查证书是否吊销。
+  [ERROR] Download failed. Please install Qdrant manually.
+  Visit: https://github.com/qdrant/qdrant/releases

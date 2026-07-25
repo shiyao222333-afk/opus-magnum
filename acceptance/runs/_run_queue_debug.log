@@ -1,0 +1,7 @@
+2026-07-19 11:04:05,909 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 11:04:05,911 [INFO] DownloadManager 初始化完成
+2026-07-19 11:04:05,911 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 11:04:05,911 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 11:04:05,911 [INFO] 视频已缓存，跳过: BV1AbPrzJEba
+2026-07-19 11:04:05,911 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=cached
+2026-07-19 11:04:05,911 [INFO] 队列处理结束：成功 1/1

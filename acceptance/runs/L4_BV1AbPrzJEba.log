@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\opus-magnum\acceptance\cli.py", line 62, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\opus-magnum\acceptance\cli.py", line 54, in main
+    res = flow.run(args.url)
+  File "D:\opus-magnum\acceptance\flows\bilibili_video.py", line 64, in run
+    transit1 = run_nigredo(url, timeout=NIGREDO_TIMEOUT)
+  File "D:\opus-magnum\acceptance\core\services.py", line 179, in run_nigredo
+    raise RuntimeError(f"馏析 run_queue.py 失败 (rc={proc.returncode})")
+RuntimeError: 馏析 run_queue.py 失败 (rc=3221225477)
+=== B站视频验收流程启动: https://www.bilibili.com/video/BV1AbPrzJEba/ ===
+[2/5] 馏析下载（先于拉起炼真，捕获中转①）…

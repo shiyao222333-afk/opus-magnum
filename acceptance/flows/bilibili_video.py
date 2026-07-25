@@ -21,6 +21,7 @@ from __future__ import annotations
 import random
 import shutil
 import subprocess
+import json
 import time
 from pathlib import Path
 
@@ -89,6 +90,40 @@ class BilibiliVideoFlow:
                         pass
         if cleaned_files:
             self._say(f"  [清理] 已清 {cleaned_files} 个残留验收注入文件")
+
+        # 清理熔知「已处理登记簿」(file_state.jsonl) 里历次验收留下的 _acc_r 记录。
+        # 原因：watcher 按文件名记终态，重跑时同名 _acc_r 注入会被「已处理」卫士跳过，
+        # 导致 step⑤ 摄入超时崩。只清命名含 _acc_r 的验收测试记录，不影响真实文件状态。
+        state_file = INBOX_DIR.parent / "file_state.jsonl"
+        if state_file.is_file():
+            try:
+                kept: list[str] = []
+                removed_state = 0
+                with open(state_file, "r", encoding="utf-8") as _sf:
+                    for _line in _sf:
+                        _line = _line.rstrip("\n")
+                        if not _line.strip():
+                            kept.append(_line)
+                            continue
+                        try:
+                            _rec = json.loads(_line)
+                            _fname = _rec.get("file", "")
+                        except json.JSONDecodeError:
+                            kept.append(_line)
+                            continue
+                        if "_acc_r" in _fname:
+                            removed_state += 1
+                        else:
+                            kept.append(_line)
+                if removed_state:
+                    _tmp = state_file.with_suffix(".jsonl.tmp")
+                    with open(_tmp, "w", encoding="utf-8") as _sf:
+                        if kept:
+                            _sf.write("\n".join(kept) + "\n")
+                    _tmp.replace(state_file)
+                    self._say(f"  [清理] 已清 {removed_state} 条验收测试状态记录（file_state.jsonl）")
+            except OSError as _e:
+                self._say(f"  [清理] 警告：file_state.jsonl 清理失败: {_e}")
 
         try:
             # 【步骤④】炼真 ×3（同输入）

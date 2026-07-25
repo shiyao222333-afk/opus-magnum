@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\opus-magnum\acceptance\cli.py", line 62, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\opus-magnum\acceptance\cli.py", line 54, in main
+    res = flow.run(args.url)
+  File "D:\opus-magnum\acceptance\flows\bilibili_video.py", line 79, in run
+    removed = purge_acceptance_docs()
+  File "D:\opus-magnum\acceptance\core\services.py", line 177, in purge_acceptance_docs
+    import requests as _requests
+ModuleNotFoundError: No module named 'requests'
+=== B站视频验收流程启动: https://www.bilibili.com/video/BV1AbPrzJEba ===
+[2/5] 馏析下载（先于拉起炼真，捕获中转①）…
+  中转①: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md
+[1/5] 拉起炼真 / 熔知（带验收开关 ACCEPTANCE_KEEP_FILES；炼真输出重定向暂存）…

@@ -1,0 +1,465 @@
+===== ATTEMPT 1 13:01:31 =====
+2026-07-19 13:01:32,384 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:01:32,385 [INFO] DownloadManager 初始化完成
+2026-07-19 13:01:32,385 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:01:32,385 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:01:32,385 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:01:32,939 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:01:32,989 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:01:33,057 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:33,058 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:01:34,978 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:01:34,979 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:01:35,110 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:35,238 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:35,384 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:01:35,476 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:01:35,569 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:01:38,878 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:01:39,295 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:01:56,578 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:01:56,578 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:01:56,578 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:01:56,694 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:56,746 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:01:56,808 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437316&web_location=1550101&w_rid=e2c7cfef78cc08220181b92a1773f553 "HTTP/1.1 200 OK"
+2026-07-19 13:01:56,854 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437316&web_location=1550101&w_rid=b1bccd19f56c95131ea667d124c726f4 "HTTP/1.1 304 Not Modified"
+2026-07-19 13:01:56,983 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,157 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,310 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,421 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,533 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,649 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,707 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,829 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,940 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437317&w_rid=1666d4090232ba9d9d37b518d8e7a742 "HTTP/1.1 200 OK"
+2026-07-19 13:01:57,941 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:01:58,055 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:58,177 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:01:58,178 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:01:58,182 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:01:58,187 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:01:58,187 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:01:58,188 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:01:58,188 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x000001E87870B740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 1 EXIT=0
+attempt 1 OK
+===== ATTEMPT 2 13:01:58 =====
+2026-07-19 13:01:59,189 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:01:59,191 [INFO] DownloadManager 初始化完成
+2026-07-19 13:01:59,191 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:01:59,191 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:01:59,191 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:01:59,710 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:01:59,755 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:01:59,813 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:01:59,814 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:02:02,178 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:02:02,178 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:02:02,367 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:02,482 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:02,640 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:02:02,785 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:02:02,885 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:02:05,978 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:02:06,385 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:02:23,323 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:02:23,323 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:02:23,323 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:02:23,462 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:23,509 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:02:23,574 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437343&web_location=1550101&w_rid=6458d2a5208166594ebd8b205381551b "HTTP/1.1 200 OK"
+2026-07-19 13:02:23,627 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437343&web_location=1550101&w_rid=2f8f59ac361f7171313e840ec5cfde8b "HTTP/1.1 304 Not Modified"
+2026-07-19 13:02:23,760 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:23,938 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,088 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,220 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,358 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,489 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,552 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,680 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,820 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437344&w_rid=55b6b27a9db06b268fd655da6b0fe4b3 "HTTP/1.1 200 OK"
+2026-07-19 13:02:24,822 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:02:24,957 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:25,080 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:02:25,082 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:02:25,093 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:02:25,097 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:02:25,097 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:02:25,097 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:02:25,097 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x0000021DED4BB740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 2 EXIT=0
+attempt 2 OK
+===== ATTEMPT 3 13:02:25 =====
+2026-07-19 13:02:25,990 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:02:25,992 [INFO] DownloadManager 初始化完成
+2026-07-19 13:02:25,992 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:02:25,992 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:02:25,992 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:02:26,481 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:02:26,535 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:02:26,602 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:26,604 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:02:28,899 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:02:28,899 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:02:29,018 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:29,142 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:29,298 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:02:29,463 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:02:29,562 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:02:32,613 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:02:33,018 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:02:50,102 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:02:50,102 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:02:50,102 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:02:50,235 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:50,284 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:02:50,354 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437370&web_location=1550101&w_rid=7adf5b62801464c56e4e70f33c7da8d1 "HTTP/1.1 200 OK"
+2026-07-19 13:02:50,401 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437370&web_location=1550101&w_rid=d1370ba6575408e53bef12f4623cda37 "HTTP/1.1 304 Not Modified"
+2026-07-19 13:02:50,560 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:50,756 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:02:50,893 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,016 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,151 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,295 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,361 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,505 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,635 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437371&w_rid=ca05a51434060311311371d7c1bae962 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,636 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:02:51,778 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,929 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:02:51,931 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:02:51,942 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:02:51,946 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:02:51,946 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:02:51,946 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:02:51,946 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x000001A68922B740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 3 EXIT=0
+attempt 3 OK
+===== ATTEMPT 4 13:02:52 =====
+2026-07-19 13:02:52,884 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:02:52,886 [INFO] DownloadManager 初始化完成
+2026-07-19 13:02:52,886 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:02:52,886 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:02:52,886 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:02:53,401 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:02:53,457 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:02:53,522 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:53,523 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:02:55,640 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:02:55,640 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:02:55,759 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:55,881 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:02:56,065 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:02:56,228 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:02:56,327 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:02:59,450 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:02:59,876 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:03:17,087 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:03:17,088 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:03:17,088 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:03:17,211 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,257 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,350 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437397&web_location=1550101&w_rid=4ab05fca96ab79330df1d637e8c8be4c "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,407 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437397&web_location=1550101&w_rid=15b38af3a0aba89d27892be202630efb "HTTP/1.1 304 Not Modified"
+2026-07-19 13:03:17,536 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,728 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,858 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:03:17,990 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,120 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,269 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,323 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,452 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,592 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437398&w_rid=80199a32b8639eace99b76717e7df71e "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,595 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:03:18,714 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,870 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:03:18,872 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:03:18,883 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:03:18,887 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:03:18,887 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:03:18,887 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:03:18,887 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x000002175A95B740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 4 EXIT=0
+attempt 4 OK
+===== ATTEMPT 5 13:03:19 =====
+2026-07-19 13:03:19,822 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:03:19,823 [INFO] DownloadManager 初始化完成
+2026-07-19 13:03:19,823 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:03:19,823 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:03:19,823 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:03:20,343 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:03:20,400 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:03:20,458 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:20,461 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:03:22,780 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:03:22,780 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:03:22,888 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:23,010 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:23,142 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:03:23,277 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:03:23,379 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:03:26,585 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:03:27,012 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:03:44,594 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:03:44,594 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:03:44,594 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:03:44,702 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:44,752 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:03:44,802 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437424&web_location=1550101&w_rid=3cd39f2c20196665a682663dc23f3a52 "HTTP/1.1 200 OK"
+2026-07-19 13:03:44,854 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437424&web_location=1550101&w_rid=edd61705b5639bd2bbd16c259173d63d "HTTP/1.1 304 Not Modified"
+2026-07-19 13:03:44,979 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,187 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,318 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,442 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,559 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,708 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,755 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,872 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,996 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437425&w_rid=ec06f50342adf3d23e88a32016582462 "HTTP/1.1 200 OK"
+2026-07-19 13:03:45,998 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:03:46,178 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:46,295 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:03:46,298 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:03:46,308 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:03:46,311 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:03:46,311 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:03:46,311 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:03:46,312 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x0000017F3D32B740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 5 EXIT=0
+attempt 5 OK
+===== ATTEMPT 6 13:03:46 =====
+2026-07-19 13:03:47,270 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:03:47,272 [INFO] DownloadManager 初始化完成
+2026-07-19 13:03:47,272 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:03:47,272 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:03:47,272 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:03:47,796 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:03:47,857 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:03:47,929 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:47,932 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:03:49,947 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:03:49,947 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:03:50,068 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:50,194 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:03:50,343 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:03:50,473 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:03:50,578 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:03:53,907 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:03:54,341 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:04:13,198 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:04:13,198 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:04:13,198 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:04:13,319 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:13,367 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:04:13,439 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437453&web_location=1550101&w_rid=faa2826c00af9b467d9112701b1c49b3 "HTTP/1.1 200 OK"
+2026-07-19 13:04:13,491 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437453&web_location=1550101&w_rid=bb27f227150b10616c1b32e20c42abdc "HTTP/1.1 304 Not Modified"
+2026-07-19 13:04:13,621 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:13,813 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:04:13,945 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,072 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,199 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,327 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,378 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,504 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,630 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437454&w_rid=86fbc74e2dbe4f896e609eecb4f327c2 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,632 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:04:14,752 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,849 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:04:14,851 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:04:14,856 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:04:14,858 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:04:14,858 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:04:14,858 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:04:14,858 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x000001EF145AB740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 6 EXIT=0
+attempt 6 OK
+===== ATTEMPT 7 13:04:15 =====
+2026-07-19 13:04:16,060 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:04:16,063 [INFO] DownloadManager 初始化完成
+2026-07-19 13:04:16,063 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:04:16,063 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:04:16,063 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:04:16,731 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:04:16,782 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:04:16,842 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:16,843 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:04:19,334 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:04:19,334 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:04:19,453 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:19,568 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:19,706 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:04:19,856 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:04:19,980 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:04:23,707 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:04:24,176 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:04:44,877 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:04:44,877 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:04:44,877 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:04:44,984 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,029 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,088 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437485&web_location=1550101&w_rid=ebe7bf9e3c5b89c7d9d8c6e546600a9d "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,146 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437485&web_location=1550101&w_rid=3a6ed1f9b6348202965fad9d530029e7 "HTTP/1.1 304 Not Modified"
+2026-07-19 13:04:45,266 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,434 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,576 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,704 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,849 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:04:45,964 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,018 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,134 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,250 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437486&w_rid=c074ec1d4b5f83a67e8481276637643c "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,252 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:04:46,371 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,506 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:04:46,507 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:04:46,512 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:04:46,514 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:04:46,514 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:04:46,514 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:04:46,514 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x00000183F2FEB740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 7 EXIT=0
+attempt 7 OK
+===== ATTEMPT 8 13:04:46 =====
+2026-07-19 13:04:47,732 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 13:04:47,734 [INFO] DownloadManager 初始化完成
+2026-07-19 13:04:47,734 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 13:04:47,735 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 13:04:47,735 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 13:04:48,378 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 13:04:48,432 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 13:04:48,482 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:48,483 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 13:04:51,031 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 13:04:51,031 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 13:04:51,145 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:51,279 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:04:51,421 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:04:51,566 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 13:04:51,683 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+2026-07-19 13:04:55,509 [INFO] Processing audio with duration 02:39.034
+2026-07-19 13:04:56,043 [INFO] VAD filter removed 00:00.000 of audio
+2026-07-19 13:05:17,257 [INFO] Whisper ASR 完成，片段数: 86
+2026-07-19 13:05:17,257 [INFO] 字幕生成成功，来源: whisper
+2026-07-19 13:05:17,257 [INFO] 获取弹幕与评论: BV1AbPrzJEba
+2026-07-19 13:05:17,367 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:17,408 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 13:05:17,465 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=1&wts=1784437517&web_location=1550101&w_rid=acacac0beb69f6ff66d7944775bc4711 "HTTP/1.1 200 OK"
+2026-07-19 13:05:17,506 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/dm/wbi/web/seg.so?oid=36468883755&type=1&pid=116175308655424&segment_index=2&wts=1784437517&web_location=1550101&w_rid=69eb81e718041dbae80d2c1897bca122 "HTTP/1.1 304 Not Modified"
+2026-07-19 13:05:17,635 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:17,830 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:05:17,955 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=2&type=1&oid=116175308655424&sort=2 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,096 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,213 [INFO] HTTP Request: GET https://api.bilibili.com/x/v2/reply?pn=1&type=1&oid=116175308655424&sort=0 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,336 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,386 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/detail/tag?bvid=BV1AbPrzJEba&aid=116175308655424&cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,508 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,606 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view/conclusion/get?aid=116175308655424&bvid=BV1AbPrzJEba&cid=36468883755&up_mid=491266931&web_location=333.788&wts=1784437518&w_rid=b58396ada3cf2d6b7bab0b5cbc260b07 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,609 [WARNING] AI 摘要获取失败: 接口返回错误代码：-101，信息：账号未登录。
+{'code': -101, 'message': '账号未登录', 'ttl': 1}
+2026-07-19 13:05:18,719 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,868 [INFO] HTTP Request: GET https://bvc.bilivideo.com/pbp/data?cid=36468883755 "HTTP/1.1 200 OK"
+2026-07-19 13:05:18,870 [INFO] 弹幕 7 条 / 评论 3 条 / 置顶 0 条 / 标签 8 个 / 播放分析无 / 播放来源(scope=none) / 创作者中心快照无
+2026-07-19 13:05:18,881 [INFO] 字幕已落盘(2个): BV1AbPrzJEba
+2026-07-19 13:05:18,886 [INFO] 中转①单文件已落盘: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md (弹幕 7→4, 评论 3, 标签 8, AI摘要=False)
+2026-07-19 13:05:18,886 [INFO] 处理完成: BV1AbPrzJEba
+2026-07-19 13:05:18,886 [INFO] 完成: https://www.bilibili.com/video/BV1AbPrzJEba/ -> status=done
+2026-07-19 13:05:18,886 [INFO] 队列处理结束：成功 1/1
+Exception ignored in atexit callback <function __clean at 0x0000022DC0C6B740>:
+Traceback (most recent call last):
+  File "D:\nigredo\venv\Lib\site-packages\bilibili_api\utils\network.py", line 1137, in __clean
+    loop.run_until_complete(__clean_task())
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 700, in run_until_complete
+    self._check_closed()
+  File "C:\Users\Lenovo\.workbuddy\binaries\python\versions\3.13.12\Lib\asyncio\base_events.py", line 556, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+<sys>:0: RuntimeWarning: coroutine '__clean.<locals>.__clean_task' was never awaited
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+ATTEMPT 8 EXIT=0
+attempt 8 OK
+LOOP DONE 13:05:19

@@ -1,0 +1,85 @@
+{
+  "doc_id": "doc_0f66c9bd30a23ba3",
+  "collection": "athanor_v1",
+  "n_points": 16,
+  "field_count": 43,
+  "fields": {
+    "text": "**🔍 被过滤主张（审计 · 如误杀请告诉我，我调阈值）：**\n- [AE1 水词/过渡句] [00:37] 然后你再叫它去读取这个设定\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [00:59] 然后它会\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [00:04] 缺AE写小说\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [02:30] 然后给它\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [02:58] 然后具体这个tiffin\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [03:11] 点开来之后\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [03:35] 然后生成了\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [04:44] 然后用起来 其实我感觉就是跟起来也没有什么很大的区别\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [05:14] 最近才开始用TRA\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 水词/过渡句] [02:04] 内置模型\n  - 原因：水词/过渡句/定义碎片（非可证伪事实主张，验真线跳过）\n- [AE1 非可证伪(观点/主观)] [04:06] 这个概率可以说是百分之九十九的概率了\n  - 原因：非可证伪事实主张（观点/主观感受，验真线跳过）",
+    "title": "5分钟部署trae+deepseek开始ai写小说",
+    "source": "01_nigredo_transit1_acc_r2_refined_acc_r3.md",
+    "chunk_index": 4,
+    "total_chunks": 16,
+    "chapter_index": 3,
+    "chapter_title": "🛡️ 逐条验真（真 / 假 / 可疑）",
+    "chunk_in_chapter": 2,
+    "doc_id": "doc_0f66c9bd30a23ba3",
+    "content_hash": "fb063b139abc78e83795a9859a895753",
+    "images": [],
+    "content_type": "video_script",
+    "domain": [
+      "0"
+    ],
+    "temporal_nature": "evergreen",
+    "epistemic_status": "corroborated",
+    "lifecycle": "published",
+    "project_source": "通用",
+    "udc_code": "004",
+    "knowledge_type": "reference",
+    "is_personal": false,
+    "trust_score": 4.5,
+    "tags": [],
+    "is_canonical": true,
+    "relations": [],
+    "keywords": [
+      "原创",
+      "小说"
+    ],
+    "auto_summary": "本视频介绍如何5分钟内部署Trae并配置DeepSeek密钥，实现高效、低成本的AI写小说流程。",
+    "subject": "tutorial",
+    "refined_status": "ok",
+    "timeline": {
+      "published": "2026-07-17T10:54:27+08:00",
+      "effective": null,
+      "expiry": null,
+      "ingested": "2026-07-25T01:41:32.807782+00:00",
+      "accessed": null
+    },
+    "origin": {
+      "author": "真吃牛肉",
+      "source_url": "https://www.bilibili.com/video/BV1DEKJ6WETH",
+      "file_type": "txt",
+      "ingest_method": "manual",
+      "source_path": "D:\\citrinitas\\library/inbox\\01_nigredo_transit1_acc_r2_refined_acc_r3.md"
+    },
+    "stats": {
+      "access_count": 0,
+      "starred": false
+    },
+    "target_platform": "none",
+    "related_product": "无",
+    "version": "无",
+    "language": "zh",
+    "access_level": "private",
+    "batch_id": "无",
+    "is_archived": false,
+    "needs_review": true,
+    "field_sources": {
+      "title": "file",
+      "author": "file",
+      "domain": "rule",
+      "temporal_nature": "rule",
+      "content_type": "rule",
+      "epistemic_status": "rule",
+      "keywords": "llm",
+      "auto_summary": "llm",
+      "trust_score": "llm",
+      "lifecycle": "llm",
+      "udc_code": "llm",
+      "knowledge_type": "rule",
+      "is_personal": "rule"
+    },
+    "ingest_conf": 0.82,
+    "ext_text1": "mDeBERTa-XNLI+本地字幕核验",
+    "ext_num1": 1.0
+  }
+}

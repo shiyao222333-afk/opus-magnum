@@ -1,0 +1,9 @@
+/usr/bin/bash: line 1: export: `D:/opus-magnumnecho': not a valid identifier
+/usr/bin/bash: line 1: export: `LAUNCHING L4 harness (run4, retry-fixed) at 11:52:50nD:/opus-magnum/venv/Scripts/python.exe': not a valid identifier
+/usr/bin/bash: line 1: export: `-m': not a valid identifier
+/usr/bin/bash: line 1: export: `acceptance.cli': not a valid identifier
+/usr/bin/bash: line 1: export: `--flow': not a valid identifier
+/usr/bin/bash: line 1: export: `--url': not a valid identifier
+/usr/bin/bash: line 1: export: `https://www.bilibili.com/video/BV1AbPrzJEba/': not a valid identifier
+/usr/bin/bash: line 1: export: `--out': not a valid identifier
+/usr/bin/bash: line 1: export: `D:/opus-magnum/acceptance/runs/L4_BV1AbPrzJEba': not a valid identifier

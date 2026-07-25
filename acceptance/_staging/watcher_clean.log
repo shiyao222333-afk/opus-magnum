@@ -1,0 +1,2 @@
+<frozen runpy>:130: RuntimeWarning: 'watcher.run' found in sys.modules after import of package 'watcher', but prior to execution of 'watcher.run'; this may result in unpredictable behaviour
+2026-07-22 10:42:21,565 [albedo-watcher] INFO 炼真监控启动：监控 D:\opus-magnum\front_half\transit\nigredo_out（每 5.0s 轮询）；空闲不自动退出

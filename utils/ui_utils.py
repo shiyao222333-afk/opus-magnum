@@ -5,6 +5,7 @@ OpusMagnum · 巨作 / GreatWork — UI 共享工具
 
 import streamlit as st
 from pathlib import Path
+from config.settings import settings
 
 ASSETS_DIR = Path(__file__).parent.parent / "assets"
 
@@ -31,10 +32,11 @@ def render_sidebar() -> None:
 
         st.divider()
 
-        # 外部链接
-        st.markdown("🔗 [Athanor 知识库](http://localhost:8080)")
-        st.markdown("🔗 [Alembic 视频提炼](http://localhost:8502)")
-        st.markdown("🔗 [Crucible 矛盾检测](http://localhost:8503)")
+        # 外部链接（直接读 settings，端口以配置为准，避免写死）
+        st.markdown(f"🔗 [🏭 熔知 知识库]({settings.citrinitas.url})")
+        st.markdown(f"🔗 [⚗️ 馏析 视频提炼]({settings.nigredo.url})")
+        st.markdown(f"🔗 [🔬 炼真 矛盾检测]({settings.albedo.url})")
+        st.markdown(f"🔗 [✨ 凝华 自动化]({settings.rubedo.url})")
         st.divider()
 
         st.caption("OpusMagnum · 一人公司总指挥部")

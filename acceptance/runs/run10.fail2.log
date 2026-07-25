@@ -1,0 +1,49 @@
+已写入: D:\opus-magnum\acceptance\runs\20260719_153937_BV1AbPrzJEba\05_citrinitas_fields_r1.json（顶层字段数=43，分块数=17）
+{
+  "ok": true,
+  "deleted": 17,
+  "doc_id": "doc_402e73c17d19ea27",
+  "doc_uid": "doc_402e73c17d19ea27",
+  "images_cleaned": 0
+}
+已写入: D:\opus-magnum\acceptance\runs\20260719_153937_BV1AbPrzJEba\06_citrinitas_fields_r2.json（顶层字段数=43，分块数=17）
+{
+  "ok": true,
+  "deleted": 17,
+  "doc_id": "doc_4639e403aa0091ef",
+  "doc_uid": "doc_4639e403aa0091ef",
+  "images_cleaned": 0
+}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\opus-magnum\acceptance\cli.py", line 62, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\opus-magnum\acceptance\cli.py", line 54, in main
+    res = flow.run(args.url)
+  File "D:\opus-magnum\acceptance\flows\bilibili_video.py", line 134, in run
+    raise TimeoutError(f"熔知第{r}次超时未摄入（doc_id 未出现）")
+TimeoutError: 熔知第3次超时未摄入（doc_id 未出现）
+=== B站视频验收流程启动: https://www.bilibili.com/video/BV1AbPrzJEba ===
+[2/5] 馏析下载（先于拉起炼真，捕获中转①）…
+  中转①: D:\opus-magnum\front_half\transit\nigredo_out\BV1AbPrzJEba.md
+[1/5] 拉起炼真 / 熔知（带验收开关 ACCEPTANCE_KEEP_FILES；炼真输出重定向暂存）…
+  [清理] 已清 76 个残留验收测试点（Qdrant）
+  [清理] 已清 4 个残留验收注入文件
+[3/5] 炼真 ×3（同输入）…
+  第1次：已注入 01_nigredo_transit1_acc_r1.md，等待炼真产出（≤1800s，每300s探）…
+  第1次：中转② -> 01_nigredo_transit1_acc_r1_refined.md
+  第2次：已注入 01_nigredo_transit1_acc_r2.md，等待炼真产出（≤1800s，每300s探）…
+  第2次：中转② -> 01_nigredo_transit1_acc_r2_refined.md
+  第3次：已注入 01_nigredo_transit1_acc_r3.md，等待炼真产出（≤1800s，每300s探）…
+  第3次：中转② -> 01_nigredo_transit1_acc_r3_refined.md
+[4/5] 熔知 ×3（先随机选 1 份，同一份提交 3 次，记录 53 字段后删除）…
+  选中炼真文件: 01_nigredo_transit1_acc_r2_refined.md（同一份提交 3 次）
+  第1次：已注入 01_nigredo_transit1_acc_r2_refined_acc_r1.md，等待熔知摄入（≤600s，每60s探）…
+  第1次：doc_id=doc_402e73c17d19ea27 已记录字段 -> 05_citrinitas_fields_r1.json
+  第1次：已删除测试数据 doc_id=doc_402e73c17d19ea27
+  第2次：已注入 01_nigredo_transit1_acc_r2_refined_acc_r2.md，等待熔知摄入（≤600s，每60s探）…
+  第2次：doc_id=doc_4639e403aa0091ef 已记录字段 -> 06_citrinitas_fields_r2.json
+  第2次：已删除测试数据 doc_id=doc_4639e403aa0091ef
+  第3次：已注入 01_nigredo_transit1_acc_r2_refined_acc_r3.md，等待熔知摄入（≤600s，每60s探）…

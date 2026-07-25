@@ -1,0 +1,122 @@
+[warn] 馏析 run_queue.py 第1次 GPU 瞬时段错误(0xC0000005)，再试（冷却 12s 让 CUDA 驱动恢复）
+2026-07-19 12:50:19,100 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:50:19,102 [INFO] DownloadManager 初始化完成
+2026-07-19 12:50:19,102 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:50:19,102 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:50:19,102 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:50:19,630 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:50:19,697 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:50:19,750 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:19,751 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:50:21,715 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:50:21,715 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:50:21,813 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:21,920 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:22,039 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:50:22,167 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:50:22,269 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+[warn] 馏析 run_queue.py 第2次 GPU 瞬时段错误(0xC0000005)，再试（冷却 12s 让 CUDA 驱动恢复）
+2026-07-19 12:50:34,640 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:50:34,642 [INFO] DownloadManager 初始化完成
+2026-07-19 12:50:34,642 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:50:34,642 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:50:34,642 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:50:35,129 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:50:35,176 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:50:35,218 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:35,219 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:50:36,996 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:50:36,996 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:50:37,086 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:37,183 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:37,315 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:50:37,438 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:50:37,536 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+[warn] 馏析 run_queue.py 第3次 GPU 瞬时段错误(0xC0000005)，再试（冷却 12s 让 CUDA 驱动恢复）
+2026-07-19 12:50:49,901 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:50:49,903 [INFO] DownloadManager 初始化完成
+2026-07-19 12:50:49,903 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:50:49,903 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:50:49,903 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:50:50,369 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:50:50,424 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:50:50,478 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:50,479 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:50:52,588 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:50:52,588 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:50:52,673 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:52,765 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:50:52,903 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:50:52,991 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:50:53,087 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+[warn] 馏析 run_queue.py 第4次 GPU 瞬时段错误(0xC0000005)，再试（冷却 12s 让 CUDA 驱动恢复）
+2026-07-19 12:51:05,481 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:51:05,483 [INFO] DownloadManager 初始化完成
+2026-07-19 12:51:05,483 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:51:05,483 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:51:05,483 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:51:05,989 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:51:06,027 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:51:06,060 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:06,063 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:51:07,944 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:51:07,944 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:51:08,019 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:08,101 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:08,233 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:51:08,360 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:51:08,457 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+[warn] 馏析 run_queue.py 第5次 GPU 瞬时段错误(0xC0000005)，放弃（冷却 12s 让 CUDA 驱动恢复）
+2026-07-19 12:51:20,825 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:51:20,827 [INFO] DownloadManager 初始化完成
+2026-07-19 12:51:20,827 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:51:20,827 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:51:20,827 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:51:21,289 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,321 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,359 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,361 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:51:23,086 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:51:23,086 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:51:23,159 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,267 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,395 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,552 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:51:23,660 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+2026-07-19 12:51:20,825 [INFO] 队列中有 1 个待处理地址，开始自动处理...
+2026-07-19 12:51:20,827 [INFO] DownloadManager 初始化完成
+2026-07-19 12:51:20,827 [INFO] 处理: https://www.bilibili.com/video/BV1AbPrzJEba/
+2026-07-19 12:51:20,827 [INFO] 检测到平台: bilibili, URL: https://www.bilibili.com/video/BV1AbPrzJEba/...
+2026-07-19 12:51:20,827 [INFO] 获取视频信息: BV1AbPrzJEba
+2026-07-19 12:51:21,289 [INFO] HTTP Request: GET https://api.bilibili.com/x/frontend/finger/spi "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,321 [INFO] HTTP Request: POST https://api.bilibili.com/x/internal/gaia-gateway/ExClimbWuzhi "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,359 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:21,361 [INFO] 下载音频: BV1AbPrzJEba
+2026-07-19 12:51:23,086 [INFO] 音频下载完成: D:\nigredo\data\cache\audio\BV1AbPrzJEba.wav
+2026-07-19 12:51:23,086 [INFO] 提取字幕: BV1AbPrzJEba
+2026-07-19 12:51:23,159 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,267 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/view?bvid=BV1AbPrzJEba&aid=116175308655424 "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,395 [INFO] HTTP Request: GET https://api.bilibili.com/x/web-interface/nav "HTTP/1.1 200 OK"
+2026-07-19 12:51:23,552 [INFO] 启动 Whisper ASR: BV1AbPrzJEba
+2026-07-19 12:51:23,660 [INFO] 加载 Whisper 模型: D:\nigredo\data\models\faster-whisper-large-v3 / cuda
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\opus-magnum\acceptance\cli.py", line 62, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\opus-magnum\acceptance\cli.py", line 54, in main
+    res = flow.run(args.url)
+  File "D:\opus-magnum\acceptance\flows\bilibili_video.py", line 64, in run
+    transit1 = run_nigredo(url, timeout=NIGREDO_TIMEOUT)
+  File "D:\opus-magnum\acceptance\core\services.py", line 259, in run_nigredo
+    raise RuntimeError(f"馏析 run_queue.py 失败 (rc={last_rc})")
+RuntimeError: 馏析 run_queue.py 失败 (rc=3221225477)
+=== B站视频验收流程启动: https://www.bilibili.com/video/BV1AbPrzJEba/ ===
+[2/5] 馏析下载（先于拉起炼真，捕获中转①）…
