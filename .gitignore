@@ -32,3 +32,12 @@ Thumbs.db
 front_half/nigredo/
 front_half/albedo/
 front_half/citrinitas/
+
+# 验收运行产物（运行/中转/比对日志，不纳入版本库）
+acceptance/runs/
+acceptance/_staging/
+front_half/e2e_compare/run1/
+front_half/e2e_compare/run2/
+front_half/e2e_compare/compare_report.md
+front_half/e2e_compare/ingest_3x_result.json
+front_half/transit/

@@ -1,10 +1,0 @@
-<frozen runpy>:130: RuntimeWarning: 'watcher.run' found in sys.modules after import of package 'watcher', but prior to execution of 'watcher.run'; this may result in unpredictable behaviour
-2026-07-22 02:37:59,661 [albedo-watcher] INFO 炼真监控启动：监控 D:\opus-magnum\front_half\transit\nigredo_out（每 5.0s 轮询）
-2026-07-22 02:39:13,652 [albedo-watcher] INFO AE1 确定性水主张过滤：剔除 10 条水词/过渡句/碎片
-2026-07-22 02:39:13,653 [albedo-watcher] INFO AE1 可证伪性闸门：剔除 11 条非可证伪/水主张
-Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 9088.03it/s]
-2026-07-22 02:39:16,770 [albedo-watcher] INFO Layer2 mDeBERTa-XNLI 已加载（local=E:/tmp/mdeberta_xnli, gpu=True）
-2026-07-22 02:39:17,299 [albedo-watcher] INFO 中转②已落盘: D:\opus-magnum\acceptance\_staging\albedo_out\BV1DEKJ6WETH_acceptance_rerun1_refined.md (status=accepted, 人审=关)
-2026-07-22 02:39:17,299 [albedo-watcher] WARNING [验收保留] 失败，回退归档: [WinError 2] 系统找不到指定的文件。
-2026-07-22 02:39:17,300 [albedo-watcher] WARNING 归档失败 D:\opus-magnum\front_half\transit\nigredo_out\BV1DEKJ6WETH_acceptance_rerun1.md: [WinError 2] 系统找不到指定的文件。
-2026-07-22 02:39:17,300 [albedo-watcher] INFO 本轮回处理的文件：1
