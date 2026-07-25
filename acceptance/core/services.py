@@ -16,6 +16,7 @@ import json
 import os
 import socket
 import subprocess
+import shutil
 import sys
 import time
 from pathlib import Path
@@ -110,6 +111,32 @@ def ensure_qdrant(timeout: int = 60) -> bool:
     return wait_port(6333, timeout=timeout)
 
 
+def _clear_pycache(root: Path) -> None:
+    """启动炼真前清空 root 下所有 __pycache__，避免改代码后 Python 仍跑旧编译字节码。
+
+    验收由本流程编排启动炼真，须保证跑的是最新代码（#4 表达力改名不生效的根因即旧字节码）。
+    """
+    for p in root.rglob("__pycache__"):
+        if p.is_dir():
+            shutil.rmtree(p, ignore_errors=True)
+
+
+def _clear_albedo_claim_cache(video_id: str) -> None:
+    """验收 step④ 每轮注入前清掉该视频的炼真主张缓存，确保三轮之间不共享缓存、每轮独立重抽。
+
+    复刻 scripts/run_robustness_test.py 的 _clear_claim_cache 模式（用户要求「轮间无缓存、轮内有缓存」）。
+    仅删缓存文件，不动炼真源码、不改 video_id、不加开关。缓存键 = 真实 BV 号。
+    """
+    if not video_id:
+        return
+    p = ALBEDO / "cache" / f"{video_id}.claims.json"
+    try:
+        if p.exists():
+            p.unlink()
+    except OSError:
+        pass
+
+
 def start_albedo() -> Service:
     """拉起炼真监控（带验收开关 ACCEPTANCE_KEEP_FILES=1 + 输出重定向到暂存）。
 
@@ -117,9 +144,12 @@ def start_albedo() -> Service:
     绝不会被熔知自动摄入；step⑤ 再把选中的那份复制进收件箱触发摄入，避免内容去重撞车。
     强制 ALBEDO_REQUIRE_HUMAN_REVIEW=false：中转②直接落进 OUTPUT_DIR 根目录。
     ACCEPTANCE_KEEP_FILES=1：保留中转①（改名 .keep），防误删；验收结束停服即恢复。
+    启动前无条件清空炼真编译缓存(__pycache__)：保证验收跑的是最新炼真代码，不被旧字节码坑
+    （#4 表达力改名不生效的根因）。主张缓存不动——#291 的 form_sig 指纹已精准失效，无需全禁。
     """
     py = find_python(ALBEDO)
     STAGING_DIR.mkdir(parents=True, exist_ok=True)
+    _clear_pycache(ALBEDO)   # 无条件：确保验收跑的是最新炼真代码（非平行开关，不绕过主张缓存）
     env = dict(os.environ,
                ACCEPTANCE_KEEP_FILES="1",
                ALBEDO_OUTPUT_DIR=str(STAGING_DIR),

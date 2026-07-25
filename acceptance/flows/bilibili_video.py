@@ -28,7 +28,7 @@ from pathlib import Path
 from ..core.services import (
     WATCH_DIR, INBOX_DIR, STAGING_DIR, INGEST_LOG, CITRINITAS,
     find_python, start_albedo, start_citrinitas, start_nigredo_ui,
-    run_nigredo, purge_acceptance_docs,
+    run_nigredo, purge_acceptance_docs, _extract_bvid, _clear_albedo_claim_cache,
 )
 from ..core.polling import poll_new_file, poll_ingest_log
 from ..core.registry import register
@@ -134,7 +134,9 @@ class BilibiliVideoFlow:
             STAGING_DIR.mkdir(parents=True, exist_ok=True)
             seen_staging = {p.name for p in STAGING_DIR.glob("*_refined.md")}
             bv = local_transit.stem
+            real_bv = _extract_bvid(url)   # 真实 BV 号（用于清炼真主张缓存，非本地文件名 stem）
             for r in range(1, 4):
+                _clear_albedo_claim_cache(real_bv)   # 轮间清缓存：下一轮不复用上一轮冻结主张→真稳定测试
                 inj = WATCH_DIR / f"{bv}_acc_r{r}.md"
                 shutil.copy(local_transit, inj)
                 self._say(f"  第{r}次：已注入 {inj.name}，等待炼真产出（≤{ALBEDO_TIMEOUT}s，每{ALBEDO_INTERVAL}s探）…")
