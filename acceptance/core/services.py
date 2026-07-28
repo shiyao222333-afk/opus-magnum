@@ -38,6 +38,34 @@ INGEST_LOG = CITRINITAS / "local_data" / "ingest_log.jsonl"
 STAGING_DIR = Path(os.getenv("ACCEPTANCE_STAGING_DIR", r"D:\opus-magnum\acceptance\_staging\albedo_out"))
 
 
+# ── 净化子进程环境（关键修复 2026-07-27）──────────────────────────────────
+# 验收 harness 通常在 WorkBuddy 的 Git Bash 里运行，该 shell 会被注入一批
+# WorkBuddy / CodeBuddy 专有环境变量。其中 ACC_PRODUCT_CONFIG_V3 是一个 300KB+
+# 的巨型 JSON 配置——一旦被 subprocess 继承进炼真 / 熔知子进程，炼真惰性
+# `import torch` 时会触发原生访问违规（segmentation fault，无 Python traceback、
+# 进程直接消失），导致验收在 [3/5] 无限空等 / 被看门狗强杀。
+# 子进程（用户产品：炼真 / 熔知）根本不需要这些 WB 内部变量，且 MSYS2 系列
+# 变量（Git Bash 仿真壳特有）对原生 Windows 子进程也无意义。因此拉起子进程前
+# 一律剥掉它们，只保留 PATH / SystemRoot / TEMP / CUDA_* 等运行所需的环境。
+# 实测：清掉 ACC_PRODUCT_CONFIG_V3 后 `import torch` 在 Git Bash 下 100% 恢复正常。
+_ENV_PREFIXES_TO_STRIP = ("WORKBUDDY_", "CODEBUDDY_", "ACC_")
+_ENV_NAMES_TO_STRIP = {
+    "CLIENT_INFO_PRODUCT_NAME",
+    "NODE_OPTIONS",    # WorkBuddy 注入的 genie-safe-delete.cjs require，可能干扰子进程
+    "PYTHONPATH",      # WorkBuddy shim 目录，会污染子进程 Python 搜索路径
+    "MSYSTEM", "MINGW_PREFIX", "MSYS2_PATH", "ORIGINAL_PATH",  # MSYS2 / Git Bash 仿真壳特有
+}
+
+
+def _clean_env() -> dict:
+    """返回一份剥除 WorkBuddy 注入变量的干净环境副本，供 subprocess 继承。"""
+    return {
+        k: v for k, v in os.environ.items()
+        if not any(k.startswith(p) for p in _ENV_PREFIXES_TO_STRIP)
+        and k not in _ENV_NAMES_TO_STRIP
+    }
+
+
 def find_python(project: Path) -> str:
     """解析运行某项目的 Python 解释器。
 
@@ -121,6 +149,120 @@ def _clear_pycache(root: Path) -> None:
             shutil.rmtree(p, ignore_errors=True)
 
 
+def _kill_existing_albedo_watchers() -> None:
+    """启动炼真前，强杀所有遗留的 watcher.run 进程并确认已死。
+
+    验收每轮 start_albedo 本只应起 1 个 watcher.run；但早期轮次结束（或 rm -rf 删产物目录）
+    时未杀子进程，会留下僵尸一直监控同一目录，用旧代码抢文件写出旧报告
+    （#4 表达力改名不生效的根因）。此处启动前先清场，保证只跑最新代码、不留僵尸。
+
+    杀法要点：必须用 taskkill /F（TerminateProcess 强制），不能用 wmic call terminate——
+    后者是异步通知、对半死进程无效，导致进程挂半死不活地占用文件（上一轮 r1 卡死根因）。
+    杀完轮询确认进程已退出，避免新旧 watcher 竞抢同一文件。
+    """
+    WMIC_FILTER = (
+        "CommandLine like '%watcher.run%' and not CommandLine like '%wmic%' "
+        "and not CommandLine like '%bash%' and not CommandLine like '%grep%'"
+    )
+    try:
+        out = subprocess.run(
+            ["wmic", "process", "where", WMIC_FILTER, "get", "ProcessId"],
+            capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=30,
+        ).stdout
+        pids = [ln.strip() for ln in out.splitlines() if ln.strip().isdigit()]
+    except Exception:
+        return
+    for pid in pids:
+        try:
+            subprocess.run(["taskkill", "/F", "/T", "/PID", pid],
+                           capture_output=True, timeout=15)
+        except Exception:
+            pass
+    # 轮询确认全部死亡（最多 ~3 秒），避免新 watcher 与残留竞抢
+    deadline = time.time() + 3.0
+    while time.time() < deadline and pids:
+        time.sleep(0.5)
+        try:
+            out = subprocess.run(
+                ["wmic", "process", "where", WMIC_FILTER, "get", "ProcessId"],
+                capture_output=True, text=True, encoding="gbk", errors="ignore", timeout=30,
+            ).stdout
+            alive = {ln.strip() for ln in out.splitlines() if ln.strip().isdigit()}
+            pids = [p for p in pids if p in alive]
+            if not pids:
+                break
+        except Exception:
+            break
+
+
+def _kill_existing_citrinitas_watchers() -> None:
+    """启动熔知前，强杀所有遗留的 citrinitas main.py 进程并确认已死。
+
+    与 _kill_existing_albedo_watchers 对称：验收每轮 start_citrinitas 本只应起 1 个
+    main.py（内含守望文件夹 watcher）；但早期轮次结束（或 rm -rf 删产物目录）时未杀子进程，
+    会留下僵尸一直占用 8080 端口与文件锁，并用旧代码抢收件箱（#4 改名不生效的根因之一）。
+    此处启动前先清场，保证只跑最新代码、不被旧进程挡端口——
+    单实例锁有效 → 新 main.py 绑 8080 失败会变僵尸，验收误判就绪、附到旧进程。
+
+    杀法同 albedo：必须用 taskkill /F（TerminateProcess 强制），并轮询确认死亡。
+    """
+    pids: list[str] = []
+    # 优先：读单实例锁文件里的 PID 精确击杀。
+    # 非管理员 + 中文 Windows 下 wmic 读不到 CommandLine 且输出 GBK 解码会崩，
+    # 靠命令行过滤既不可靠又易误判；锁文件存纯数字 PID，跨环境稳定。
+    lock_path = CITRINITAS / "local_data" / ".citrinitas.lock"
+    try:
+        if lock_path.exists():
+            _lp = lock_path.read_text(encoding="utf-8", errors="ignore").strip()
+            if _lp.isdigit():
+                pids.append(_lp)
+    except Exception:
+        pass
+    # 兜底：wmic 按 CommandLine 查（GBK 安全解码；非管理员可能读不到，仅作补充）
+    WMIC_FILTER = (
+        "CommandLine like '%main.py%' and CommandLine like '%citrinitas%' "
+        "and not CommandLine like '%wmic%' and not CommandLine like '%bash%' "
+        "and not CommandLine like '%grep%'"
+    )
+    try:
+        out = subprocess.run(
+            ["wmic", "process", "where", WMIC_FILTER, "get", "ProcessId"],
+            capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=30,
+        ).stdout
+        pids += [ln.strip() for ln in out.splitlines() if ln.strip().isdigit()]
+    except Exception:
+        pass
+    pids = list(dict.fromkeys(pids))  # 去重保序
+    for pid in pids:
+        try:
+            subprocess.run(["taskkill", "/F", "/T", "/PID", pid],
+                           capture_output=True, timeout=15)
+        except Exception:
+            pass
+    # 轮询确认全部死亡（最多 ~3 秒），避免新 watcher 与残留竞抢
+    deadline = time.time() + 3.0
+    while time.time() < deadline and pids:
+        time.sleep(0.5)
+        alive = set()
+        try:
+            if lock_path.exists():
+                _lp = lock_path.read_text(encoding="utf-8", errors="ignore").strip()
+                if _lp.isdigit():
+                    _raw = subprocess.run(
+                        ["tasklist", "/FI", f"PID eq {_lp}"],
+                        capture_output=True, timeout=10,
+                    ).stdout
+                    if isinstance(_raw, bytes):
+                        _raw = _raw.decode("utf-8", errors="ignore")
+                    if _lp in _raw:
+                        alive.add(_lp)
+        except Exception:
+            pass
+        pids = [p for p in pids if p in alive]
+        if not pids:
+            break
+
+
 def _clear_albedo_claim_cache(video_id: str) -> None:
     """验收 step④ 每轮注入前清掉该视频的炼真主张缓存，确保三轮之间不共享缓存、每轮独立重抽。
 
@@ -150,15 +292,31 @@ def start_albedo() -> Service:
     py = find_python(ALBEDO)
     STAGING_DIR.mkdir(parents=True, exist_ok=True)
     _clear_pycache(ALBEDO)   # 无条件：确保验收跑的是最新炼真代码（非平行开关，不绕过主张缓存）
-    env = dict(os.environ,
+    _kill_existing_albedo_watchers()  # 杀遗留僵尸，避免旧代码进程抢文件（#4 改名不生效根因）
+    env = dict(_clean_env(),
                ACCEPTANCE_KEEP_FILES="1",
                ALBEDO_OUTPUT_DIR=str(STAGING_DIR),
                ALBEDO_REQUIRE_HUMAN_REVIEW="false",
                ALBEDO_WATCHER_IDLE_EXIT_MINUTES="0")
+    # ⚠️ 根因修复（2026-07-27，7/7 回归基线已验证）：
+    # 主因 = WorkBuddy/Git-Bash 注入的 ACC_PRODUCT_CONFIG_V3（300KB+ 巨型 JSON）被 subprocess 继承进炼真，
+    #   炼真惰性 import torch 时触发原生访问违规(0xC0000005)，进程静默消失 → 验收在 [3/5] 空等/被看门狗强杀
+    #   （即"轮2 总被强杀两次才成功"的真凶）。根本修复 = 上方 env=_clean_env() 已剥掉该变量（见 _clean_env 定义）。
+    #   **勿回退 _clean_env()，否则必复发。**
+    # 附加防御（无害）：子进程输出写日志文件（albedo_watcher.log）而非未读管道，规避任何缓冲相关崩溃。
+    _albedo_log = STAGING_DIR.parent / "albedo_watcher.log"
+    _albedo_log.parent.mkdir(parents=True, exist_ok=True)
+    _logf = open(str(_albedo_log), "w", encoding="utf-8", errors="ignore")
     proc = subprocess.Popen(
         [py, "-m", "watcher.run"], cwd=str(ALBEDO), env=env,
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+        stdout=_logf, stderr=subprocess.STDOUT,
     )
+    # 探活:确认炼真进程稳定存活,避免其静默退出后验收在 [3/5] 无限空等(本轮卡死根因)
+    import time
+    for _ in range(20):
+        if proc.poll() is not None:
+            raise RuntimeError("炼真启动即退出（可能依赖缺失或启动报错），请检查炼真日志")
+        time.sleep(0.5)
     return Service("albedo", proc)
 
 
@@ -169,13 +327,21 @@ def start_citrinitas() -> Service:
     """
     ensure_qdrant()
     py = find_python(CITRINITAS)
-    # 验收期放宽守望文件夹单文件处理超时：默认 30s 会掐断 classify(LLM)+embed 步骤，
-    # 导致同一份文件被反复超时重入队、第 3 次提交卡死（熔知第3次超时未摄入）。
-    # 改为 600s，足够单次摄入完成。仅经环境变量覆盖，不改 citrinitas 源码。
-    env = dict(os.environ, ACCEPTANCE_KEEP_FILES="1", KB_WATCH_V2_PROCESS_TIMEOUT="600")
+    _kill_existing_citrinitas_watchers()  # 杀遗留僵尸，避免旧代码进程抢端口/收件箱（对称于 start_albedo）
+    # 验收期不再用 600s 硬杀：熔知摄入已改为「心跳看门狗」(#308)——
+    # 子进程逐页/逐嵌入上报进度，仅当心跳停滞 > progress_stall_timeout(默认300s)
+    # 或 超绝对上限 processing_timeout(默认3600s) 才强杀。慢但在动的大文件永不误杀。
+    # 显式覆盖默认心跳阈值（与 citrinitas 默认一致，此处仅作文档化）。
+    env = dict(_clean_env(), ACCEPTANCE_KEEP_FILES="1",
+               KB_WATCH_V2_PROCESSING_TIMEOUT="3600",
+               KB_WATCH_V2_PROGRESS_STALL_TIMEOUT="300")
+    # ⚠️ 同 start_albedo：主因是 _clean_env() 已剥掉的 ACC_PRODUCT_CONFIG_V3 污染；输出写日志文件(citrinitas_watcher.log)为附加防御。勿回退 _clean_env()。
+    _citra_log = STAGING_DIR.parent / "citrinitas_watcher.log"
+    _citra_log.parent.mkdir(parents=True, exist_ok=True)
+    _clogf = open(str(_citra_log), "w", encoding="utf-8", errors="ignore")
     proc = subprocess.Popen(
         [py, "main.py"], cwd=str(CITRINITAS), env=env,
-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+        stdout=_clogf, stderr=subprocess.STDOUT,
     )
     if not wait_port(PORTS["citrinitas"], timeout=120):
         proc.terminate()
@@ -192,6 +358,7 @@ def start_nigredo_ui() -> Service | None:
         proc = subprocess.Popen(
             ["cmd", "/c", str(run_bat)], cwd=str(NIGREDO),
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            env=_clean_env(),
         )
         return Service("nigredo", proc)
     except Exception as e:  # pragma: no cover
@@ -376,7 +543,17 @@ def run_nigredo(url: str, timeout: int = 1800) -> Path:
       4. 失败时把 run_queue.py 内部输出透出，便于排查（之前被 PIPE 吞掉）。
     """
     bv_id = _extract_bvid(url)
-    before = {p.name for p in WATCH_DIR.glob("*.md")}
+    run_start = time.time()
+    # 同视频重复跑时，上一轮按 BV 命名的中转①(.md)仍留在 WATCH_DIR，
+    # 会干扰「新文件检测」（before 快照已含同名 → after 为空 → 误报未产出）。
+    # 跑前清掉该视频的残留中转①，改以「修改时间晚于本次启动」判定新文件，
+    # 彻底解决同输入重复跑的伪失败（不删 .keep 保留副本供查验）。
+    for stale in WATCH_DIR.glob(f"{bv_id}*.md"):
+        if not stale.name.endswith(".keep"):
+            try:
+                stale.unlink()
+            except OSError:
+                pass
     py = find_python(NIGREDO)
     last_rc = None
     proc = None
@@ -395,8 +572,8 @@ def run_nigredo(url: str, timeout: int = 1800) -> Path:
             _clear_nigredo_cache_gate(bv_id)   # 每次尝试前清残留+索引，保证取到 .wav 并重跑
         proc = subprocess.run(
             [py, "run_queue.py"], cwd=str(NIGREDO), timeout=timeout,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-            env=dict(os.environ),
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="gbk", errors="ignore",
+            env=_clean_env(),
         )
         last_rc = proc.returncode
         if proc.returncode == 0:
@@ -417,7 +594,9 @@ def run_nigredo(url: str, timeout: int = 1800) -> Path:
         if proc and proc.stdout:
             print(proc.stdout, file=sys.stderr)
         raise RuntimeError(f"馏析 run_queue.py 失败 (rc={last_rc})")
-    after = [p for p in WATCH_DIR.glob("*.md") if p.name not in before]
+    # 新文件判定改为基于修改时间（晚于本次启动），不依赖文件名差异——
+    # 否则同视频重跑时中转①同名导致误判「未产出」。
+    after = [p for p in WATCH_DIR.glob("*.md") if p.stat().st_mtime > run_start]
     if not after:
         if proc and proc.stdout:
             print(proc.stdout, file=sys.stderr)

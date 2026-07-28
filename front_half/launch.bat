@@ -2,9 +2,19 @@
 chcp 437 >nul
 title Opus Magnum - Front-Half Launcher
 setlocal enabledelayedexpansion
-set "OPUS_DIR=D:\opus-magnum"
+
+REM --- Self-resolve from this script's own location (no hardcoded drive letter) ---
+REM launch.bat lives in opus-magnum\front_half, so %~dp0 is that folder.
+set "FRONT_DIR=%~dp0"
+if "%FRONT_DIR:~-1%"=="\" set "FRONT_DIR=%FRONT_DIR:~0,-1%"
+REM Go up one level -> opus-magnum
+for %%I in ("%FRONT_DIR%.") do set "OPUS_DIR=%%~dpI"
+if "%OPUS_DIR:~-1%"=="\" set "OPUS_DIR=%OPUS_DIR:~0,-1%"
+REM Go up another level -> same level where sibling projects live.
+for %%I in ("%OPUS_DIR%.") do set "ROOT=%%~dpI"
+
 set "SUP_DIR=%OPUS_DIR%\front_half\supervisor"
-set "CIT_DIR=D:\citrinitas"
+set "CIT_DIR=%ROOT%citrinitas"
 
 echo **************************************************
 echo   * Opus Magnum Front-Half Launcher

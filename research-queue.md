@@ -1439,3 +1439,95 @@
   国内最火本地私有化 RAG 方案（35k+ Star），基于 LangChain，支持 Qwen/ChatGLM/LLaMA 本地模型 + Faiss/Milvus 向量库，纯内网甚至单机离线运行、物理屏蔽公网。对 SSS 军工背景是「数据不出域」刚需——把涉密行业手册/规范灌进纯内网 RAG，既满足合规又沉淀知识资产；作为 Citrinitas（熔知）对外私有化交付的参考底座，与 RAGFlow/WeKnora 形成「开源三选一」。
 
 > 📡 **机会雷达补扫（2026-07-24 · 18:12）**：检测到本日 09:00 已写入 2026-07-24 主段（16 条：🔴3 + 🟡10 + ⚪3，覆盖 北京智能体新政 / Gemma 4 E2B Hybrid / HELMSMAN / MAI / Cursor Router / DeepSeek-OCR / BISHENG / FLUX 3 / AISI 作弊 / RECAP 等）。本次为二次扫描，复用 aihot 24h+7d 精选 + WebSearch 副业/一人公司/开源设计/OCR·语音·RAG 多组，仅补主段未覆盖的新信号 **6 条**（与主段及 6/23–7/22 全量去重零重复）：🔴2（Open Design 开源设计→代码 / 腾讯 Miora 设计 Agent 平台）+ 🟡4（OpenRouter 音频转写 API / Claude-thermos 缓存降本 / Claude·ChatGPT 语音指挥多智能体 / Langchain-Chatchat 内网离线 RAG）。项目分布：Rubedo 4 + Nigredo 1 + Citrinitas 1；**无 💡 探索区**（强信号均命中现有项目，无干净的非项目战略储备）。本补扫主线：SSS 设计师本行直变现工具补强（Open Design + Miora 双开源/免费设计入口）+ 摄入管线降本补点（Nigredo 统一转写 / Citrinitas 内网私有 RAG / Rubedo 语音指挥+缓存降本）。
+
+
+## 2026-07-26
+
+> 📡 **机会雷达扫描（2026-07-26）**：数据源 aihot.virxact.com 直连恢复（24h 精选仅 2 条且偏安全事件，扩展 7d 精选 100 条）+ WebSearch 4 组（AI副业/一人公司 / 小红书变现 / 独立开发者收入 / AI设计接单）。24h 精选偏模型发布与安全事件、剔除率约 85%；本段为 7/24 之后未被收录的新鲜信号，与 6/23–7/24 全量去重零重复。主线：**SSS 设计师本行直变现三连击（效果图代画 / AI设计接单范式 / 内容自动化流水线）+ 设计工具链升级（Midjourney V8.2 / Runway 工作流 / 百度搭子）+ 低成本推理底座补强（蚂蚁 Ling-3.0-flash）**。项目分布：Rubedo 9 + Citrinitas 1 + OpusMagnum 1；Nigredo / Albedo 本轮无新鲜命中（相关语音/字幕/事实核查信号已在 7/19–7/24 收录，本周无新增）。
+
+### 🔴 本周可试
+
+- [ ] **【AI 装修/效果图代画：酷家乐 AI 一句话 1 分钟出 3 套方案，月入 3 万路径】** | 来源：[今日头条](https://m.toutiao.com/article/7628216511626330658/) | 🎯 Rubedo 凝华
+  SSS 是军工结构/效果图设计师，这正撞本行——酷家乐 AI、MJ、SD 一句话出效果图，单张 300–800 元、全屋 8 张 2000–3500 元，效率翻 10 倍且客单价不降。研究切入点：把「AI 效果图代画」作为一人公司第一条现金牛，先服务装修公司/工长/中介做外包设计部，验证 SSS 审美+AI 提效的定价权。
+
+- [ ] **【AI 设计变现手册：电商主图/小红书封面/Logo 接单定价+模板库范式（月入 4 万模型）】** | 来源：[douchuanghui 设计社区](https://www.douchuanghui.com/forum.php?goto=lastpost&mod=redirect&tid=21781) | 🎯 Rubedo 凝华
+  给了可直接抄的定价表（主图 50–150/张、详情页 300–800/套、Logo 200–500/个）和「模板库规模化」打法（同类需求套模板，单张 30 分钟→5 分钟）。研究切入点：SSS 建自己的设计模板资产库（背景图/字体/配色/版式），把高频需求产品化，从「接单劳力」转「资产复利」，这正是 Rubedo 要沉淀的副业方法论。
+
+- [ ] **【AI 自动化内容流水线：一人运营 6 个号月入 4.2 万 OPC 实战】** | 来源：[今日头条](https://www.toutiao.com/article/7663458682558104104) | 🎯 Rubedo 凝华
+  真实 OPC 案例：AI 流水线一人管 6 个头条号，日均 8–12 篇，月广告分成+商单+知识付费合计 4.2 万。核心认知「AI 不是替你干活，是需要你搭流水线的原材料」——先踩坑「人操作 AI」假高效，后靠智能体中枢+自动化发布跑通。研究切入点：把该架构迁移到 SSS 的内容获客（小红书/公众号矩阵自动发设计案例引流），用 SOP 把获客成本压到近零。
+
+### 🟡 关注
+
+- [ ] **【Midjourney V8.2 发布：美学质量+个性化理解升级，废图率大降】** | 来源：[Midjourney Updates](https://updates.midjourney.com/version-8-2) | 🎯 Rubedo 凝华
+  重点提升美学质量、创意与个性化（更大更优的个性化图池），低质量图出现频率显著降低。对 SSS 设计接单是出图质量兜底——客户稿一次过率更高、精修返工更少，延续「AI 做数量、人做质量」的接单工作流。
+
+- [ ] **【Runway Agent 新增自然语言工作流：说话即建/跑/改节点流程】** | 来源：[Runway (@runwayml)](https://x.com/runwayml/status/2080649234672439389) | 🎯 Rubedo 凝华
+  在 Runway Agent 里用自然语言构建、运行、编辑基于节点的视频工作流，可大规模解锁高质量视频输出。对 SSS 是「设计→短视频营销」闭环工具——把效果图/案例自动转成带工作流的营销视频，服务跨境电商/本地商家的内容需求。
+
+- [ ] **【百度搭子更新：电脑手机接力+桌面内嵌浏览器，复杂任务跨端连续执行】** | 来源：[百度智能云（文心）](https://mp.weixin.qq.com/s/HRySK1LU53clPe2I_M-Fug) | 🎯 Rubedo 凝华
+  双端互联同步上下文，桌面端内嵌浏览器可自动开多网页做调研、下载，手机端云端远程操控；平均任务耗时降 20%、积分消耗最高降 75%。对一人公司是「零代码自动化员工」——把资料搜集/竞品监控/素材下载等脏活交给它，SSS 只做决策。
+
+- [ ] **【蚂蚁百灵 Ling-3.0-flash：124B 总参/5.1B 激活的原生混合推理模型】** | 来源：[蚂蚁百灵（Ling）](https://mp.weixin.qq.com/s/5ic54FCsy334JJsQcyBr1g) | 🎯 Citrinitas 熔知
+  原生混合线性注意力 + 1/64 稀疏 MoE，长输入 TTFT 降 60%–80%，对标上一代旗舰。低成本高吞吐的国产开放推理底座，可作 Citrinitas（熔知）摄入管线/知识问答的省钱模型选项，与 Ollama/MiniCPM5 形成「端侧+云侧」混合成本梯队。
+
+- [ ] **【小红书 0 粉变现路径：笔记带货/素人通告/虚拟资料，当天见钱】** | 来源：[ukezhitan 副业拆解](https://www.ukezhitan.com/article-u8D5Au94B1u8D44u8BAF/17969) | 🎯 Rubedo 凝华
+  2026 小红书 0 粉与百万粉同一起跑线、中长视频持续推荐 90 天；5 条 0 粉能跑的变现路（App 拉新 15–35/单、视频代发 2–15/条、短剧切片分成、技能接单 50 起、虚拟资料售卖）。研究切入点：SSS 用设计案例做 0 粉冷启动，把小红书当免费获客引擎喂给 Rubedo 内容变现闭环。
+
+- [ ] **【一人公司真实收入分化：73% 独立开发者收入涨，但 80% 月入不足 5 千】** | 来源：[w2solo 行业观察](https://w2solo.com/topics/7803) | 🎯 Rubedo 凝华
+  交叉验证数据：Indie Hackers 1.6 万产品仅 34% 盈利（均值 997 美元/月），B 端工具 > AI 类产品；头部 2% 年入 500 万+、毛利率 90%，底层 80% 月营不足 5 千。核心差距在「选品能力」而非技术——给 SSS 的战略提醒：先找愿意持续付费的小需求（如效果图代画/设计模板），别一上来堆功能。
+
+- [ ] **【xAI 发布 Grok CLI 并支持 /tutorial：开源命令行编码智能体】** | 来源：[X：Elon Musk](https://x.com/elonmusk/status/2081174079969632347) | 🎯 Rubedo 凝华
+  免费下载的命令行编码 CLI，输入 /tutorial 即可引导式上手。对一人公司是零成本 MVP 搭建入口——配合 Vibe Coding 把想法一步变可用产品，降低 SSS 做内部工具/Athanor 周边小品的开发门槛。
+
+### 💡 探索
+
+- [ ] **【英伟达/微软/Meta 联合警告：避免对开放权重模型过度监管】** | 来源：[CNBC](https://www.cnbc.com/2026/07/24/nvidia-microsoft-meta-open-weight-ai-models.html) | 🎯 OpusMagnum 巨作
+  三家联合公开信警告过度监管开放权重模型会削弱竞争力（OpenAI、Anthropic 未签署）。这直接关系到 OpusMagnum 总指挥部「低成本开源」战略的生死线——若开放模型被收紧，SSS 一人公司的成本底座（自托管/开源替代）将受冲击；列为战略储备信号，持续盯政策走向。
+
+
+## 2026-07-27
+
+> 📡 **机会雷达扫描（2026-07-27）**：数据源 aihot.virxact.com 直连恢复（24h 精选 5 条 + feed.xml 7d 精选 50 条）+ WebSearch 7天 1 组（AI副业/一人公司/AI设计/平台红利/开源工具）。24h 精选 5 条中 3 条为安全/泄露事件（索要毒药配方、Claude Opus 5 系统提示词泄露、HF 入侵延续）直接剔除，仅 2 条过筛；与 6/23–7/26 全量去重后，本日净新增 3 条（aihot 24h 2 条 + WebSearch 1 条），其余 7d 窗口内容（Grok CLI / Midjourney V8.2 / 蚂蚁 Ling / 百度搭子 / Cactus / 北京新政 / HELMSMAN / AISI / Miora 等）均已在 7/22–7/26 收录，零重复注水。主线：**开放权重政策走向再升级（OpusMagnum 战略储备）+ 极端端侧低成本推理（Citrinitas 底座）+ 把「自动化搭建」本身当可售服务（Rubedo 副业）**。项目分布：Rubedo 1 / Citrinitas 1 / OpusMagnum 1；Nigredo / Albedo 本轮无新鲜命中。
+
+### 🟡 关注
+
+- [ ] **【AI 工作流代搭建：帮中小企业用 AI 降本，单次收费 3000–8000 元、半天交付】** | 来源：[今日头条](https://www.toutiao.com/article/7665733029641404980) | 🎯 Rubedo 凝华
+  OPC 变现三条路之一：把「帮老板用 AI 搭自动化工作流」包装成标准服务（如外贸店「自动生成商品图 + 多语种文案」），成本近零、半天交付、毛利极高。研究切入点：SSS 在做 Athanor/Rubedo 自动化，可把这套能力直接外卖成「AI 工作流代搭建」服务——不卖技术、卖「省时间」，老板最舍得为效率买单；与 7/26「自己跑内容流水线」互补，这是「教别人跑」的 B 端现金牛。
+
+### ⚪ 了解
+
+- [ ] **【在 8 美元 ESP32-S3 上跑通 28.9M 参数 LLM：端侧推理成本再探底】** | 来源：[AI HOT](https://aihot.virxact.com/items/cms1ao381037kro0wqp7mg4x3) | 🎯 Citrinitas 熔知
+  28.9M 参数模型塞进 8 美元微控制器跑推理，把「本地/端侧 LLM」的硬件成本压到个位数美元。延续 7/15 Bonsai / 7/22 LiteRT.js 端侧趋势——印证 OpusMagnum「低成本开源」底座可行；对 Citrinitas 是极端低成本推理的研究方向（涉密场景可彻底离线、零云成本），但当前模型太小仅作信号，不等同可用。
+
+### 💡 探索
+
+- [ ] **【OpenAI、Anthropic 游说美国限制中国开源模型，黄仁勋与马斯克公开反对】** | 来源：[AI HOT](https://aihot.virxact.com/items/cms1uvdxz0016rog2smc5vo7m) | 🎯 OpusMagnum 巨作
+  开放权重监管博弈升级：OpenAI/Anthropic 推动限制中国开源模型，而英伟达、马斯克公开反对收紧。这是 7/26「NV/微软/Meta 联合警告避免过度监管」的直接延续与对立面——政策天平仍在摇摆。列为 OpusMagnum 战略储备：若美国真收紧中国开放模型获取，SSS 一人公司的「低成本开源」底座（自托管/国产开源替代）将受冲击，须持续盯紧并准备国产模型兜底（蚂蚁 Ling / 美团 LongCat / 千问）。
+
+## 2026-07-27
+
+> 📡 **机会雷达扫描（2026-07-27）**：数据源 aihot.virxact.com 直连恢复（24h 精选仅 5 条，偏安全事件/系统提示词泄露，剔除率约 80%；扩展 7d 精选 99 条）+ WebSearch 5 组（小红书新规 / AI 设计接单 / 一人公司案例 / 低成本副业 / 平台红利私域）。本段为 7/26 之后未被收录的新鲜信号，与 6/23–7/26 全量去重零重复。主线：**小红书 7 月新规（AI 标注强制）倒逼 SSS 内容 SOP 合规 + ChatGPT 广告成新获客位 + 开源底座补强（微软 MagenticLite / Ollama 融资）**。项目分布：Rubedo 3 + Citrinitas 2 + OpusMagnum 1；Nigredo / Albedo 本轮无新鲜命中（行为指纹验真已 7/22 收录、语音/字幕信号已在 7/19–7/24 收录，本周无新增）。
+
+### 🔴 本周可试
+
+- [ ] **【小红书 7 月新规：AI 内容强制标注 + 私域导流严查 + 商业报备门槛升级】** | 来源：[云运营](https://www.yunyingbu.com/yanjiusuo/xinwen/664.html) · [搜狐](https://m.sohu.com/a/1045179482_121124358) | 🎯 Rubedo 凝华
+  7 月起小红书要求所有 AI 生成/辅助内容必须勾选"AI 辅助创作"标注（不标首次下架、三次永久封号）；私域导流谐音变体（"加V""绿泡泡"）全部失效，改用语义追踪+行为轨迹双重检测；商业合作人准入从 5000 粉升到 1 万粉+近 30 天均曝 5 万。SSS 用 AI 出设计图/封面发小红书，必须本周把"标注"加进发布 SOP，否则号没了；同时获客不能再靠站外导流，得走蒲公英/店铺正规通道——倒逼把小红书当"合规获客引擎"而非"私域引流口"。
+
+### 🟡 关注
+
+- [ ] **【OpenAI 在 ChatGPT 内推原生广告：AI 对话成新广告位】** | 来源：[OpenAI Ads](https://ads.openai.com/) · [buzzing.cc 译](https://www.ithome.com/0/981/137.htm) | 🎯 Rubedo 凝华
+  OpenAI 在 ChatGPT 推出原生广告，用户探索/比较/决策时投相关广告，首批 Best Buy、Lowe's、VistaPrint 入驻。对一人公司是"AI 搜索广告位"新获客渠道——继 SEO→GEO/AEO 之后，ChatGPT 内广告成品牌曝光新入口；研究 SSS 设计服务能否进 ChatGPT 推荐/广告位，把"被 AI 主动推荐"做成获客杠杆。
+
+- [ ] **【微软 MagenticLite 模型全面开源：MagenticBrain + Fara 1.5 开放权重上 HF】** | 来源：[Microsoft Research](https://x.com/MSFTResearch/status/2079989338994069511) | 🎯 Citrinitas 熔知
+  微软把 MagenticLite 的应用、测试工具、堆栈里每个模型全开源到 Hugging Face。对 Citrinitas（熔知）是又一块"低成本开放推理底座"——继 Qwen/DeepSeek/MiniCPM/Ollama 之后，微软系开源模型补进自托管选项池，强化 SSS 一人公司"零授权成本"的知识管理底座。
+
+- [ ] **【Ollama 完成 8800 万美元融资，开放模型生态加速 mainstream】** | 来源：[Ollama Blog](https://ollama.com/blog/all-aboard-open-models) | 🎯 Citrinitas 熔知
+  Ollama 获 Benchmark 等领投 8800 万美元，已服务 890 万开发者、85% 财富 500 强，云端 token 月均翻倍。验证了"自托管/开放模型"不是小众玩具而是主流底座——对 Citrinitas（熔知）是把 Athanor 知识库跑在本地 Ollama 上的路线得到生态背书，成本与隐私双护城河更稳。
+
+- [ ] **【Anthropic 推 Economic Index 连接器：直接问"哪些职业用 AI 最多"】** | 来源：[Anthropic](https://www.anthropic.com/news/anthropic-economic-index-connector) | 🎯 Rubedo 凝华
+  Claude 新增连接器，可在对话里直接查 AI 对各职业/经济影响的真实数据（无需安装、基于公开 Index）。对 SSS 是"副业选品/定位雷达"——用它查"设计/内容/咨询类职业的 AI 渗透率与缺口"，反推哪些服务该重点卖、哪些会被替代，把一人公司的方向决策从拍脑袋变成看数据。
+
+### 💡 探索
+
+- [ ] **【OpenAI/Anthropic 游说美国限制中国开源模型，黄仁勋马斯克等公开反对】** | 来源：[IT之家](https://www.ithome.com/0/981/797.htm) · [TechCrunch 制裁威胁](https://techcrunch.com/2026/07/21/us-threatens-sanctions-against-chinese-ai-models-over-ip-theft) | 🎯 OpusMagnum 巨作
+  OpenAI 与 Anthropic 正游说美监管机构限制中国开源 AI 模型，美方更威胁因 IP 问题制裁中国模型；黄仁勋/纳德拉/马斯克/扎克伯格及近 200 家硅谷创企联署反对。这直接关系到 OpusMagnum「低成本开源」战略底座的生死线——若中国开源模型（Qwen/DeepSeek/MiniCPM，即 SSS 自托管与降本的全部依赖）被地缘政策针对，一人公司的成本优势可能被动摇；列为战略储备信号，持续盯政策走向，并评估"国产开源 + 端侧自托管"双保险路线。

@@ -40,7 +40,10 @@ FAST_INTERVAL = 60      # 馏析 / 熔知快
 # 单步超时
 NIGREDO_TIMEOUT = 1800
 ALBEDO_TIMEOUT = 1800
-CITRINITAS_TIMEOUT = 900
+CITRINITAS_TIMEOUT = 1800
+
+# 熔知删测试数据后，等 Qdrant 完成碎片整理再喂下一份（修「删后立即写→写入阻塞超时」）
+QDRANT_SETTLE_SEC = 30
 
 
 @register("bilibili_video")
@@ -59,6 +62,7 @@ class BilibiliVideoFlow:
     # ───────────────────────── 主流程 ─────────────────────────
     def run(self, url: str) -> dict:
         self._say(f"=== B站视频验收流程启动: {url} ===")
+        _moved_originals: list[Path] = []  # 暂存被隔离移出的真实中转①（finally 还原）
 
         # 【步骤③】先馏析，趁炼真未启动立即捕获中转①（避免被炼真改名 .keep）
         self._say("[2/5] 馏析下载（先于拉起炼真，捕获中转①）…")
@@ -67,6 +71,26 @@ class BilibiliVideoFlow:
         self._say(f"  中转①: {transit1}")
         local_transit = self.out_dir / "01_nigredo_transit1.md"
         shutil.copy(transit1, local_transit)
+
+        # 【轮1 捡漏修复】拉起炼真前，把 WATCH_DIR 里预存的真实中转①（非 _acc_r 命名）移出监控目录，
+        # 避免炼真 watcher 在测试注入前就把它炼成「bonus」中转②被轮1 误捡（且该份在 mDeBERTa 加载前产出，
+        # 与轮2/3 的 acc_r*_refined 结构不一致，污染稳定性对比）。内容会以 acc_r*.md 重注入，无损；
+        # 测试结束（finally）还原，用户真实中转①不丢失。
+        _watch_backup = STAGING_DIR.parent / "_watch_backup"
+        _watch_backup.mkdir(parents=True, exist_ok=True)
+        for f in WATCH_DIR.glob("*.md"):
+            if "_acc_r" in f.name or f.name.endswith(".keep"):
+                continue
+            _dest = _watch_backup / f.name
+            if _dest.exists():
+                _dest = _watch_backup / f"{int(time.time())}_{f.name}"
+            try:
+                shutil.move(str(f), str(_dest))
+                _moved_originals.append(_dest)
+            except OSError:
+                pass
+        if _moved_originals:
+            self._say(f"  [隔离] 已把 {len(_moved_originals)} 个预存中转①移出监控目录（测试后还原）")
 
         # 【步骤①】拉起炼真 / 熔知（带验收开关 ACCEPTANCE_KEEP_FILES；此步后才开始自动处理）
         self._say("[1/5] 拉起炼真 / 熔知（带验收开关 ACCEPTANCE_KEEP_FILES；炼真输出重定向暂存）…")
@@ -125,6 +149,22 @@ class BilibiliVideoFlow:
             except OSError as _e:
                 self._say(f"  [清理] 警告：file_state.jsonl 清理失败: {_e}")
 
+        # 清理 ingest_log.jsonl 中历次验收残留的 _acc_r 摄入记录行。
+        # 原因：delete_doc 删测试数据时会重写 ingest_log（移除本轮行），但上一轮 step⑤
+        # 的 _acc_r 行可能残留；若本轮 poll_ingest_log 在「当前轮 _acc_r 行尚未写入」时
+        # 抢先命中残留旧行（已删 doc），会导致 get_fields 失败。清理后仅剩真实/本轮行。
+        if INGEST_LOG.exists():
+            try:
+                _lines = INGEST_LOG.read_text(encoding="utf-8").splitlines()
+                _kept = [ln for ln in _lines if "_acc_r" not in ln]
+                if len(_kept) != len(_lines):
+                    INGEST_LOG.write_text(
+                        "\n".join(_kept) + ("\n" if _kept else ""), encoding="utf-8"
+                    )
+                    self._say(f"  [清理] 已清 {len(_lines) - len(_kept)} 条验收测试摄入日志（ingest_log）")
+            except OSError as _e:
+                self._say(f"  [清理] 警告：ingest_log 清理失败: {_e}")
+
         try:
             # 【步骤④】炼真 ×3（同输入）
             self._say("[3/5] 炼真 ×3（同输入）…")
@@ -158,6 +198,7 @@ class BilibiliVideoFlow:
             chosen = random.choice(refined_paths)  # 选一次：从 3 份炼真中随机选 1 份
             self._say(f"  选中炼真文件: {chosen.name}（同一份提交 3 次）")
             pos_holder = [INGEST_LOG.stat().st_size if INGEST_LOG.exists() else 0]
+            seen_doc_ids: set = set()  # 跨轮去重：delete_doc 重写日志后避免重复/回退命中旧行
             py = find_python(CITRINITAS)
             for r in range(1, 4):
                 inj = INBOX_DIR / f"{chosen.stem}_acc_r{r}.md"
@@ -166,9 +207,11 @@ class BilibiliVideoFlow:
                 doc_id = poll_ingest_log(
                     INGEST_LOG, pos_holder, timeout=CITRINITAS_TIMEOUT,
                     interval=FAST_INTERVAL, match_source=inj.name,
+                    seen=seen_doc_ids,
                 )
                 if doc_id is None:
                     raise TimeoutError(f"熔知第{r}次超时未摄入（doc_id 未出现）")
+                seen_doc_ids.add(doc_id)
                 # 摄入确认后立刻移除收件箱原文件：避免守望文件夹因 ACCEPTANCE_KEEP_FILES 保留
                 # 而重新探测、反复超时重入队（第 3 次卡死的根因）。测试数据已记入 out_dir，删原文件无害。
                 try:
@@ -186,6 +229,8 @@ class BilibiliVideoFlow:
                 # 删测试数据（清掉 content_hash，供下一轮同内容再次摄入）
                 subprocess.run([py, "scripts/delete_doc.py", doc_id], cwd=str(CITRINITAS), check=True)
                 self._say(f"  第{r}次：已删除测试数据 doc_id={doc_id}")
+                # 等 Qdrant 完成碎片整理，避免下一轮写入阻塞超时（方案X）
+                time.sleep(QDRANT_SETTLE_SEC)
 
             # 【步骤⑥】报告 + 清理
             self._say("[5/5] 生成报告 + 清理监控夹残留测试文件…")
@@ -198,6 +243,12 @@ class BilibiliVideoFlow:
         finally:
             albedo_svc.stop()
             citrinitas_svc.stop()
+            # 【轮1 捡漏修复】还原被隔离的真实中转①（测试期间移出监控目录）
+            for _f in _moved_originals:
+                try:
+                    shutil.move(str(_f), str(WATCH_DIR / _f.name))
+                except OSError:
+                    pass
 
     # ───────────────────────── 辅助 ─────────────────────────
     def _write_report(self, url, transit1, refined_paths, field_files) -> None:

@@ -3,11 +3,17 @@ chcp 437 >nul
 title Opus Magnum - Start All (One-Click Workshop Launcher)
 setlocal enabledelayedexpansion
 
-set "OPUS=D:\opus-magnum"
-set "NIGREDO=D:\nigredo"
-set "ALBEDO=D:\albedo"
-set "CITRINITAS=D:\citrinitas"
-set "SUP=%OPUS%\front_half\supervisor"
+REM --- Self-resolve script directory (no hardcoded drive letter) ---
+REM start_all.bat lives inside the opus-magnum folder, so %~dp0 IS the project dir.
+set "OPUS_DIR=%~dp0"
+if "%OPUS_DIR:~-1%"=="\" set "OPUS_DIR=%OPUS_DIR:~0,-1%"
+REM Derive the parent of opus-magnum -> same level where sibling projects live.
+for %%I in ("%OPUS_DIR%.") do set "ROOT=%%~dpI"
+
+set "NIGREDO=%ROOT%nigredo"
+set "ALBEDO=%ROOT%albedo"
+set "CITRINITAS=%ROOT%citrinitas"
+set "SUP=%OPUS_DIR%\front_half\supervisor"
 
 set "RESTART=0"
 if /i "%~1"=="--restart" set "RESTART=1"
@@ -30,16 +36,16 @@ echo **************************************************
 echo.
 
 REM --- Ensure Opus venv exists (shared by Opus dashboard + Supervisor) ---
-set "VENV_PY=%OPUS%\venv\Scripts\python.exe"
+set "VENV_PY=%OPUS_DIR%\venv\Scripts\python.exe"
 if exist "%VENV_PY%" goto venv_ok
 where python >nul 2>nul
 if errorlevel 1 goto no_python
 echo [SETUP] First run: creating Opus venv...
-python -m venv "%OPUS%\venv"
+python -m venv "%OPUS_DIR%\venv"
 if not exist "%VENV_PY%" goto venv_create_failed
 :venv_ok
 "%VENV_PY%" -c "import streamlit" >nul 2>&1
-if errorlevel 1 "%VENV_PY%" -m pip install -r "%OPUS%\requirements.txt"
+if errorlevel 1 "%VENV_PY%" -m pip install -r "%OPUS_DIR%\requirements.txt"
 "%VENV_PY%" -c "import nicegui" >nul 2>&1
 if errorlevel 1 "%VENV_PY%" -m pip install -r "%SUP%\requirements.txt"
 goto after_venv
@@ -47,20 +53,20 @@ goto after_venv
 echo [ERROR] Python not found on PATH. Install Python 3.x, then re-run start_all.bat.
 goto after_venv
 :venv_create_failed
-echo [ERROR] Failed to create Opus venv at %OPUS%\venv.
+echo [ERROR] Failed to create Opus venv at %OPUS_DIR%\venv.
 goto after_venv
 :after_venv
 
 REM --- Launch each service (skip if port already listening = reuse) ---
-call :maybe_start 8500 "Opus Magnum" "D:\opus-magnum\run.bat"
+call :maybe_start 8500 "Opus Magnum" "%OPUS_DIR%\run.bat"
 if exist "%VENV_PY%" (
-    call :maybe_start 8503 "Supervisor" "%VENV_PY% D:\opus-magnum\front_half\supervisor\app.py"
+    call :maybe_start 8503 "Supervisor" "%VENV_PY% %SUP%\app.py"
 ) else (
     echo [SKIP] Supervisor : Opus venv missing (Python not installed). Start it manually later.
 )
-call :maybe_start 8502 "Nigredo" "D:\nigredo\run.bat"
-call :maybe_start 8501 "Albedo" "D:\albedo\run.bat"
-call :maybe_start 8080 "Citrinitas" "D:\citrinitas\run.bat"
+call :maybe_start 8502 "Nigredo" "%NIGREDO%\run.bat"
+call :maybe_start 8501 "Albedo" "%ALBEDO%\run.bat"
+call :maybe_start 8080 "Citrinitas" "%CITRINITAS%\run.bat"
 
 echo.
 echo ==================================================
