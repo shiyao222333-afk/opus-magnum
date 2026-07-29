@@ -435,7 +435,14 @@ def purge_acceptance_docs(substr: str = "_acc_r") -> int:
 
 
 def enqueue_nigredo(url: str) -> None:
-    """把 URL 写入馏析队列 data/queue.json（去重）。"""
+    """把 URL 写入馏析队列 data/queue.json（去重）。
+
+    契约对齐 nigredo/core/queue.py：队列项是 dict
+    {url, status, retries, updated_at, pid}，run_queue.py 的
+    recover_stale/claim_next/complete/fail 均按此结构处理。
+    旧版此处直接写字符串导致 recover_stale 对 it.get('status') 抛
+    AttributeError（'str' object has no attribute 'get'）——此为根因修复。
+    """
     queue = NIGREDO / "data" / "queue.json"
     items: list = []
     if queue.exists():
@@ -445,8 +452,15 @@ def enqueue_nigredo(url: str) -> None:
                 items = data
         except Exception:
             items = []
-    if url not in items:
-        items.append(url)
+    # 去重：仅当不存在同 url 的 dict 项时才入队
+    if not any(isinstance(it, dict) and it.get("url") == url for it in items):
+        items.append({
+            "url": url,
+            "status": "pending",
+            "retries": 0,
+            "updated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "pid": None,
+        })
     queue.parent.mkdir(parents=True, exist_ok=True)
     queue.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -495,11 +509,13 @@ def _extract_bvid(url: str) -> str | None:
 
 
 def _clear_nigredo_cache_gate(bv_id: str) -> None:
-    """清理该视频在馏析缓存里的「非音频残留」与索引条目（兼容 L3 目录拆分前后）。
+    """清理该视频在馏析缓存里的全部生成物（含 .wav 音频）+ 索引条目（兼容 L3 目录拆分前后）。
 
     L3 前：缓存全在 data/cache/ 根（{bv}.wav/.srt/.txt）。
     L3 后：音频在 data/cache/audio/、字幕在 data/cache/outputs/。
-    两种布局都清，保证 download_audio 取到 .wav，且 index.json 不短路。
+    两种布局都清（含 .wav），强制重跑时 download_audio 真正重新下载并走完整管线，
+    避免「.wav 命中缓存 → downloader 返回 cached → 守护进程判定成功出队但不生成 transit①」
+    导致验收重跑在下载阶段空等超时的根因。index.json 同步移除该视频条目防短路。
     仅动缓存生成物（非源码），守铁律。
     """
     cache = NIGREDO / "data" / "cache"
@@ -513,11 +529,10 @@ def _clear_nigredo_cache_gate(bv_id: str) -> None:
     if out_dir.exists():
         candidates += list(out_dir.glob(f"{bv_id}.*"))
     for f in candidates:
-        if f.suffix.lower() != ".wav":
-            try:
-                f.unlink()
-            except OSError:
-                pass
+        try:
+            f.unlink()
+        except OSError:
+            pass
     idx = cache / "index.json"
     if idx.exists():
         try:
@@ -529,77 +544,123 @@ def _clear_nigredo_cache_gate(bv_id: str) -> None:
             pass
 
 
-def run_nigredo(url: str, timeout: int = 1800) -> Path:
-    """喂入 URL 并运行 run_queue.py 处理，返回新产出的中转①路径（在 WATCH_DIR）。
+def _pid_alive(pid: int) -> bool:
+    """跨平台进程存活判定：Windows 下 os.kill(pid,0) 对不存在的 PID 抛
+    ProcessLookupError（=死），对存在但无信号权限的抛 PermissionError/OSError（=活）。"""
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except (PermissionError, OSError):
+        return True
+    return True
 
-    加固（解决 L4 验收实测的两个坑，均不改兄弟项目源码）：
-      1. 每次跑前清掉该视频的缓存「非音频残留」+ 索引条目 → 保证 download_audio 取到
-         .wav（否则会误取上一次生成的 .srt 字幕当音频，导致 Whisper 解码崩溃）。
-      2. 对 Windows 原生段错误 0xC0000005（GPU 加载模型时偶发坏态、需 TDR 驱动复位）
-         最多重试 8 次，冷却采用几何退避 12→30→60→120s（总上限约 10 分钟）等 GPU 真正
-         复位，而非固定 12s（固定 12s 远短于 TDR 复位，会把偶发坏态放大成必崩）。
-      3. 不强制 CUDA_MODULE_LOADING：实测 EAGER 救不活已坏态 GPU、健康 GPU 下 LAZY 同等
-         稳定，故保持纯 LAZY（CUDA 默认）。恢复韧性由第 2 点的退避冷却承担。
-      4. 失败时把 run_queue.py 内部输出透出，便于排查（之前被 PIPE 吞掉）。
+
+def _find_nigredo_daemon_pid() -> int | None:
+    """返回正在运行的馏析 run_queue.py 的 PID（优先锁文件，兜底 wmic 扫 CommandLine）。
+
+    用于验收「打开/复用馏析自带守护」而非另起竞争实例。GBK 安全解码。
+    """
+    # 1) 锁文件（馏析 run_queue.py 启动即写 data/queue_consumer.lock）
+    lock = NIGREDO / "data" / "queue_consumer.lock"
+    try:
+        if lock.exists():
+            pid = int(lock.read_text(encoding="utf-8", errors="ignore").strip())
+            if _pid_alive(pid):
+                return pid
+    except Exception:
+        pass
+    # 2) wmic 按 run_queue.py 扫（GBK 安全；非管理员可能读不到，仅作补充）。
+    #    进程在 OS 列表里即被捕获，故即便刚拉起尚未写锁也能复用，消除启动竞态。
+    try:
+        out = subprocess.run(
+            ["wmic", "process", "where",
+             "CommandLine like '%run_queue.py%' and not CommandLine like '%wmic%' "
+             "and not CommandLine like '%bash%' and not CommandLine like '%grep%'",
+             "get", "ProcessId"],
+            capture_output=True, text=True, encoding="utf-8", errors="ignore", timeout=30,
+        ).stdout
+        for ln in out.splitlines():
+            ln = ln.strip()
+            if ln.isdigit():
+                pid = int(ln)
+                if _pid_alive(pid):
+                    return pid
+    except Exception:
+        pass
+    return None
+
+
+def _ensure_nigredo_daemon() -> None:
+    """确保馏析队列常驻消费器在跑（方案B：验收打开/复用馏析自带守护，绝不另起竞争实例）。
+
+    瘦身适配：run_queue.py 是馏析的常驻守护，空队列不退出。验收不拥有独立守护——
+    只负责「确保它在跑」：若已运行（无论谁启动）直接复用；仅当确实没有任何
+    run_queue.py 在跑时，才拉起馏析的 run_queue.py（DETACHED，脱离父进程，harness
+    退出不杀它）。真正的处理由守护异步完成，run_nigredo 改为轮询 WATCH_DIR 等新中转①。
+    """
+    existing = _find_nigredo_daemon_pid()
+    if existing is not None:
+        print(f"[info] 复用馏析已有守护进程 (pid={existing})，验收不另起。", file=sys.stderr)
+        return
+    py = find_python(NIGREDO)
+    try:
+        proc = subprocess.Popen(
+            [py, "run_queue.py"], cwd=str(NIGREDO),
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            env=_clean_env(),
+            creationflags=0x00000008,  # DETACHED_PROCESS：脱离父进程，harness 退出不杀它
+        )
+        print(f"[info] 已拉起馏析守护进程 (pid={proc.pid})。", file=sys.stderr)
+    except Exception as e:  # pragma: no cover
+        print(f"[warn] 馏析守护进程拉起失败: {e}", file=sys.stderr)
+
+
+def run_nigredo(url: str, timeout: int = 1800) -> Path:
+    """喂入 URL 给馏析常驻消费器，返回新产出的中转①路径（WATCH_DIR）。
+
+    瘦身适配（根因修复）：run_queue.py 是常驻守护进程（PID 锁保证单消费者、
+    空队列不退出），用 subprocess.run 阻塞等它退出会永久挂起——这是验收卡死第二步的
+    根因。改为：确保守护进程在跑 → 入队 → 轮询 WATCH_DIR 等新中转①出现即返回。
+    守护进程内部已对处理异常做 fail()/重试吸收；GPU 段错误由其在队列层重试。
+
+    保留原 L4 加固精神：
+      - 每次跑前清掉该视频旧中转①，改以「修改时间晚于本次启动」判定新文件，
+        解决同输入重复跑的伪失败（不删 .keep 保留副本供查验）。
+      - 每 ~2min 重新入队一次 + 探一次守护进程，吸收「守护进程崩溃后队列空转」极端情况
+        （基础韧性；不再在 harness 内做 GPU TDR 长冷却，交给守护进程队列层重试）。
     """
     bv_id = _extract_bvid(url)
     run_start = time.time()
-    # 同视频重复跑时，上一轮按 BV 命名的中转①(.md)仍留在 WATCH_DIR，
-    # 会干扰「新文件检测」（before 快照已含同名 → after 为空 → 误报未产出）。
-    # 跑前清掉该视频的残留中转①，改以「修改时间晚于本次启动」判定新文件，
-    # 彻底解决同输入重复跑的伪失败（不删 .keep 保留副本供查验）。
+    # 同视频重跑时清掉旧中转①，改以「修改时间晚于本次启动」判定新文件（见原注释）。
     for stale in WATCH_DIR.glob(f"{bv_id}*.md"):
         if not stale.name.endswith(".keep"):
             try:
                 stale.unlink()
             except OSError:
                 pass
-    py = find_python(NIGREDO)
-    last_rc = None
-    proc = None
-    # GPU 稳定性：本机 CUDA 13.2 + WDDM 下，ctranslate2 创建 CUDA context 加载 Whisper
-    # 模型时偶发原生段错误(0xC0000005)，GPU 随即进入需 TDR 驱动复位的「坏态」。
-    # 实测：EAGER 并不能救活已坏态 GPU（仅降概率），健康 GPU 下 LAZY 与 EAGER 同等稳定；
-    # 真正能扛住的是「崩后等待驱动完成 TDR 复位再重试」→ 故采用几何退避冷却，保持纯 LAZY。
-    # 0xC0000005 = 3221225477：仅对此错误重试；其它错误直接放弃，避免掩盖真实 bug。
-    BACKOFF = [12, 30, 60, 120, 120, 120, 120]   # 各次失败后的冷却秒数；总上限约 10 分钟
-    MAX_ATTEMPTS = len(BACKOFF) + 1              # 8 次（含首跑）
-    for attempt in range(1, MAX_ATTEMPTS + 1):
-        # run_queue.py 是「读取即清空队列」：失败后重试必须重新喂入 URL，否则
-        # 重试时队列已空 → 直接「无待处理任务」退出 → 重试失效。故每次尝试前重写队列。
-        enqueue_nigredo(url)
-        if bv_id:
-            _clear_nigredo_cache_gate(bv_id)   # 每次尝试前清残留+索引，保证取到 .wav 并重跑
-        proc = subprocess.run(
-            [py, "run_queue.py"], cwd=str(NIGREDO), timeout=timeout,
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="gbk", errors="ignore",
-            env=_clean_env(),
-        )
-        last_rc = proc.returncode
-        if proc.returncode == 0:
-            break
-        if proc.returncode == 3221225477:
-            print(f"[warn] 馏析 run_queue.py 第{attempt}次 GPU 段错误(0xC0000005)，"
-                  f"坏态 GPU 需等 TDR 驱动复位", file=sys.stderr)
-            if proc.stdout:
-                print(proc.stdout, file=sys.stderr)
-            if attempt < MAX_ATTEMPTS:
-                cooldown = BACKOFF[min(attempt - 1, len(BACKOFF) - 1)]
-                print(f"        冷却 {cooldown}s 后重试（几何退避，总上限约 10 分钟）",
-                      file=sys.stderr)
-                time.sleep(cooldown)
-            continue
-        break  # 其它错误不重试
-    if last_rc != 0:
-        if proc and proc.stdout:
-            print(proc.stdout, file=sys.stderr)
-        raise RuntimeError(f"馏析 run_queue.py 失败 (rc={last_rc})")
-    # 新文件判定改为基于修改时间（晚于本次启动），不依赖文件名差异——
-    # 否则同视频重跑时中转①同名导致误判「未产出」。
-    after = [p for p in WATCH_DIR.glob("*.md") if p.stat().st_mtime > run_start]
-    if not after:
-        if proc and proc.stdout:
-            print(proc.stdout, file=sys.stderr)
-        raise RuntimeError("馏析未产出中转①（WATCH_DIR 无新 .md）")
-    after.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-    return after[0]
+    _ensure_nigredo_daemon()
+    poll_interval = 30
+    last_enqueue = -9999.0
+    last_daemon_check = -9999.0
+    deadline = run_start + timeout
+    while time.time() < deadline:
+        # 每 ~2min 重新入队一次，吸收「守护进程崩溃后队列空转」的极端情况
+        if time.time() - last_enqueue > 120:
+            enqueue_nigredo(url)
+            if bv_id:
+                _clear_nigredo_cache_gate(bv_id)   # 清残留+索引，保证取到 .wav 并重跑
+            last_enqueue = time.time()
+        # 每 ~2min 探一次守护进程，死了就重启（基础韧性，不等 TDR 长冷却）
+        if time.time() - last_daemon_check > 120:
+            _ensure_nigredo_daemon()
+            last_daemon_check = time.time()
+        after = [
+            p for p in WATCH_DIR.glob("*.md")
+            if p.stat().st_mtime > run_start and not p.name.endswith(".keep")
+        ]
+        if after:
+            after.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+            return after[0]
+        time.sleep(poll_interval)
+    raise RuntimeError("馏析未在超时内产出中转①（守护进程可能崩溃，见日志）")
