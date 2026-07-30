@@ -9,7 +9,7 @@
 
 ```mermaid
 flowchart TB
-    Start([Streamlit 启动]) --> Config[N_CONFIG<br/>加载 .env + settings.py]
+    Start([NiceGUI 启动]) --> Config[N_CONFIG<br/>加载 .env + settings.py]
     Config --> Token{Q1<br/>GITHUB_TOKEN<br/>存在?}
     Token -->|No| NoToken[W1_TOKEN<br/>部分功能不可用]
     Token -->|Yes| Init
@@ -23,13 +23,13 @@ flowchart TB
 
     GH --> Aggr
 
-    Aggr --> Dash[P_DASHBOARD<br/>🏠 总仪表盘<br/>在线状态+Issue数+Stars]
-    Aggr --> Progress[P_PROGRESS<br/>📋 开发进度<br/>跨仓库 Issue 列表]
-    Aggr --> Hub[P_HUB<br/>🔗 项目连接器<br/>手动 API 测试]
+    Aggr --> Dash[📊 周看板<br/>本周熔知新录入看板]
+    Aggr --> Progress[🎛️ 总指挥部<br/>健康+GitHub+任务]
+    Aggr --> Hub[📥 摄入入口<br/>投递+三器启停+日志]
 
     Hub --> AthAPI[Athanor /search]
-    Hub --> AleAPI[Alembic /health]
-    Hub --> CruAPI[Crucible /health]
+    Hub --> AleAPI[Alembic 无头·PID 锁]
+    Hub --> CruAPI[Crucible 无头·PID 锁]
     Hub --> AluAPI[Aludel /health]
 
     style Start fill:#8A2BE2,color:#fff
@@ -57,7 +57,7 @@ flowchart TB
 
 | 节点 | 名称 | 输入 | 输出 | 逻辑 |
 |:--:|------|------|------|------|
-| H_HEALTH | 健康检测循环 | ProjectConfig ×4 | 在线/离线状态 | requests.get(/health) → 200=在线 其他=离线 |
+| H_HEALTH | 健康检测循环 | ProjectConfig ×4 | 在线/离线状态 | 熔知/凝华探 /health；馏析/炼真查 PID 锁文件（headless 无 HTTP） |
 | GH_SYNC | GitHub 数据同步 | GITHUB_TOKEN + repo 名 | Issue 列表 + 仓库统计 | requests → list_issues + stars/forks/last_commit |
 
 ### 数据聚合
@@ -70,9 +70,9 @@ flowchart TB
 
 | 节点 | 名称 | 输入 | 输出 | 逻辑 |
 |:--:|------|------|------|------|
-| P_DASHBOARD | 总仪表盘 | dashboard_df | 在线状态卡片 + Issue 数 | Streamlit st.metric + st.dataframe |
-| P_PROGRESS | 开发进度 | issues_df | 跨仓库 Issue 表格 | 按仓库分组 → 筛选 Open/Closed |
-| P_HUB | 项目连接器 | settings | API 连通性测试结果 | 手动触发 → athanor_search / alembic_health / crucible_health / aludel_health |
+| P_DASHBOARD（周看板） | 本周熔知新录入 | week_docs | 来源/主题/时间卡片 | NiceGUI ui.card + ui.label（直读 Qdrant） |
+| P_PROGRESS（总指挥部） | 健康+GitHub+任务 | health/issues/repo | 状态灯+Issue 表 | NiceGUI ui.label 渲染 |
+| P_HUB（摄入入口） | 投递+三器启停 | ingest_router + launcher | 队列概览+日志 | 贴链接/上传/笔记 → route_*；启停按钮 → launcher |
 
 ---
 
@@ -80,7 +80,7 @@ flowchart TB
 
 | 起 → 止 | 触发条件 | 说明 |
 |---------|---------|------|
-| Start → N_CONFIG | Streamlit 启动 | 自动 |
+| Start → N_CONFIG | NiceGUI 启动 | 自动 |
 | N_CONFIG → Q1 | 配置加载完成 | — |
 | Q1 → W1_TOKEN | GITHUB_TOKEN 为空或无效 | 降级模式 |
 | Q1 → N_INIT | Token 有效 | 全功能模式 |
@@ -105,11 +105,11 @@ flowchart TB
 |------|------|------|----------|
 | Athanor | `http://localhost:8080/health` | 健康检测 | 仪表盘显示离线 |
 | Athanor | `http://localhost:8080/api/search` | 项目连接器 | 连接器搜索失败 |
-| Alembic | `http://localhost:8502/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
-| Crucible | `http://localhost:8501/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
+| Alembic（馏析） | 无头常驻（无 HTTP） | 健康检测改查 PID 锁 | 摄入入口状态灯显示离线 |
+| Crucible（炼真） | 无头常驻（无 HTTP） | 健康检测改查 PID 锁 | 摄入入口状态灯显示离线 |
 | Aludel | `http://localhost:8765/health` | 健康检测 + 连接器 | 仪表盘显示离线 |
 | GitHub API | `api.github.com` | Issues + Stats 同步 | 仪表盘回退到健康检测 |
 
 ---
 
-> **版本**: v1.1 | **更新日期**: 2026-07-12
+> **版本**: v1.2 | **更新日期**: 2026-07-27（框架收尾：巨作迁 NiceGUI、馏析/炼真改无头）

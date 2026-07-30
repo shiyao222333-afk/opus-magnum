@@ -10,10 +10,64 @@ OpusMagnum · 巨作 / GreatWork — 服务健康检测
 """
 
 import socket
+import subprocess
+import sys
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
 from config.settings import settings, ProjectConfig
+
+# 无端口服务的 PID 锁文件（与各自 run.bat / 消费器一致）
+# 馏析队列消费：data/queue_consumer.lock（run_queue.py 自管，单消费者）
+# 炼真中转监控：.watcher.pid（watcher.run 自管）
+_PID_FILES = {
+    "Nigredo · 馏析": Path(r"D:\nigredo\data\queue_consumer.lock"),
+    "Albedo · 炼真": Path(r"D:\albedo\.watcher.pid"),
+}
+
+
+def _pid_alive(pid: int) -> bool:
+    """跨平台进程存活判定（Windows 用 STILL_ACTIVE=259，避免 WinError 87 误判）。"""
+    if pid <= 0:
+        return False
+    if sys.platform == "win32":
+        try:
+            import ctypes
+
+            kernel32 = ctypes.windll.kernel32
+            handle = kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+            if handle == 0:
+                return False
+            try:
+                ec = ctypes.c_ulong()
+                if kernel32.GetExitCodeProcess(handle, ctypes.byref(ec)):
+                    return ec.value == 259
+                return False
+            finally:
+                kernel32.CloseHandle(handle)
+        except Exception:  # noqa: BLE001
+            pass
+    try:
+        out = subprocess.run(
+            ["tasklist", "/FI", f"PID eq {pid}"],
+            capture_output=True, timeout=10,
+        ).stdout
+        if isinstance(out, bytes):
+            out = out.decode("utf-8", errors="ignore")
+        return str(pid) in out
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _pid_file_alive(pf: Path) -> bool:
+    if not pf.exists():
+        return False
+    try:
+        pid = int(pf.read_text(encoding="utf-8").strip())
+    except (ValueError, OSError):
+        return False
+    return _pid_alive(pid)
 
 
 def _tcp_port_open(host: str, port: int, timeout: float = 1.0) -> bool:
@@ -47,6 +101,19 @@ def check_health(project: ProjectConfig, timeout: float = 2.0) -> dict:
     except Exception:
         # 连接失败 / 超时 / 解析错误 → 退化到 TCP 探测
         pass
+
+    # ── 无端口服务：用 PID 锁文件判定存活 ──
+    pf = _PID_FILES.get(project.name)
+    if pf is not None:
+        if _pid_file_alive(pf):
+            return {
+                "online": True,
+                "status": "pid-lock",
+                "project": project.name,
+                "version": "n/a",
+                "latency_ms": None,
+            }
+        return {"online": False, "status": "offline", "project": project.name}
 
     # ── 退化策略：TCP 端口探测 ──
     parsed = urlparse(project.url)

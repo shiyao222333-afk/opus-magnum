@@ -8,7 +8,7 @@ cd /d "%PROJECT_DIR%"
 
 echo **************************************************
 echo   * Opus Magnum (GreatWork)  * Opus Magnum Front-Half
-echo   Port: 8500   *   One-click launcher
+echo   Port: 8501   *   One-click launcher
 echo **************************************************
 echo.
 
@@ -31,7 +31,7 @@ if exist "%PROJECT_DIR%\venv\Scripts\python.exe" (
 )
 
 REM --- Dependency check ---
-%PY% -c "import streamlit" >nul 2>&1
+%PY% -c "import nicegui" >nul 2>&1
 if errorlevel 1 (
     echo [INSTALL] Installing dependencies...
     %PY% -m pip install -r "%PROJECT_DIR%\requirements.txt"
@@ -45,10 +45,9 @@ if not exist "%PROJECT_DIR%\.env" (
     )
 )
 
-REM --- Launch ---
-echo [START] Opus Magnum on http://127.0.0.1:8500
-start "" http://127.0.0.1:8500
-%PY% -m streamlit run app.py --server.port 8500 --server.address localhost
+REM --- Launch (NiceGUI, headless server on 8501) ---
+echo [START] Opus Magnum on http://127.0.0.1:8501
+%PY% app.py
 set EXIT_CODE=%errorlevel%
 if %EXIT_CODE% NEQ 0 goto error_exit
 goto normal_exit
@@ -59,10 +58,9 @@ echo ==================================================
 echo   App exited abnormally (exit code %EXIT_CODE%)
 echo   Check error messages above
 echo ==================================================
-pause
-cmd /k
+exit /b 1
 
 :normal_exit
 echo.
 echo [STOP] App stopped.
-pause
+exit /b 0

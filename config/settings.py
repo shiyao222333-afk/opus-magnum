@@ -37,8 +37,8 @@ class Settings:
         self.api_key = get_env("OPUS_API_KEY", "opus-magnum-local")
 
         # OpusMagnum 自身
-        self.opus_port = int(get_env("OPUSMAGNUM_PORT", "8500"))
-        self.opus_url = get_env("OPUSMAGNUM_URL", "http://localhost:8500")
+        self.opus_port = int(get_env("OPUSMAGNUM_PORT", "8501"))
+        self.opus_url = get_env("OPUSMAGNUM_URL", "http://localhost:8501")
 
         # 各子项目
         self.citrinitas = ProjectConfig(

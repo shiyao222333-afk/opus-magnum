@@ -1,8 +1,8 @@
 # OpusMagnum · 巨作 / GreatWork
 # 一人公司总指挥部 - 依赖清单
 
-# --- Streamlit（前端框架）---
-streamlit>=1.35.0
+# --- NiceGUI（前端框架，替代 Streamlit）---
+nicegui>=3.0.0
 
 # --- GitHub API 客户端 ---
 requests>=2.31.0

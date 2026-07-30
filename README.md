@@ -30,7 +30,7 @@
 2. **跨仓库 Issue 聚合** — 在 GitHub 建 / 关 Issue，巨作自动同步，不用四仓库来回切。
 3. **项目连接器** — 手动测试各器 API 是否打通（健康检测 / 搜知识库 / 投视频 / 触发精炼）。
 4. **战略雷达自动化** — 每日 AI 新闻扫描 → 四层过滤 → 按优先级写入 `research-queue.md`。
-5. **前半流水线 Supervisor** — 贴一个 B站 链接，界面点「开始」即自动跑完「下载字幕 → 炼真出鉴定报告 → 丢进熔知入库」。
+5. **摄入入口一键跑流水线** — 在巨作「📥 摄入入口」标签页贴一个 B站 链接 / 上传文件 / 写笔记，点一下即自动跑完「下载字幕 → 炼真出鉴定报告 → 丢进熔知入库」。
 6. **五器可拆可卖** — 整合只加一层轻量传送带，每个器仍是独立仓库、独立可跑、独立可卖，随时能拆走。
 
 ---
@@ -62,19 +62,18 @@
 ```mermaid
 flowchart TB
     Radar["🛰️ 战略雷达<br/>每日 AI 新闻扫描 → research-queue.md"]
-    OM["⚛️ OpusMagnum · 总指挥部 :8500"]
+    OM["⚛️ OpusMagnum · 总指挥部 :8501"]
     Dash["🏠 总仪表盘<br/>健康检测 + GitHub 同步"]
     Prog["📋 开发进度<br/>跨仓库 Issue 聚合"]
     Hub["🔗 项目连接器<br/>API 连通性测试"]
-    Sup["🔧 Supervisor 总管 :8503<br/>前半流水线入口"]
-    N["⚗️ Nigredo 馏析 :8502<br/>B站字幕 / 弹幕"]
-    A["🔬 Albedo 炼真 :8501<br/>验真 + 提质"]
+    N["⚗️ Nigredo 馏析（无头常驻）<br/>B站字幕 / 弹幕"]
+    A["🔬 Albedo 炼真（无头常驻）<br/>验真 + 提质"]
     C["🏭 Citrinitas 熔知 :8080<br/>知识引擎"]
     R["✨ Rubedo 凝华 :8765<br/>副业 SOP 自动化"]
 
     OM --> Dash & Prog & Hub
     Radar -.每日.-> OM
-    Sup --> N --> A --> C
+    OM --> N --> A --> C
     R -.阶段 2 接入.-> C
 ```
 
@@ -84,10 +83,10 @@ flowchart TB
 
 ```mermaid
 flowchart LR
-    subgraph View[视图层 pages/]
-      D1[总仪表盘]
-      D2[开发进度]
-      D3[项目连接器]
+    subgraph View[视图层 app.py]
+      T1[📊 周看板]
+      T2[📥 摄入入口]
+      T3[🎛️ 总指挥部]
     end
     subgraph Core[核心层 core/]
       G[github_client]
@@ -95,8 +94,9 @@ flowchart LR
       P[project_hub]
       DB[dashboard]
     end
-    subgraph Orch[编排层 front_half/supervisor/]
-      O[orchestrator]
+    subgraph Orch[编排层 front_half/]
+      IR[ingest_router]
+      LN[supervisor/launcher]
     end
     subgraph Tools[四器联接]
       TN[nigredo] 
@@ -111,9 +111,9 @@ flowchart LR
 
 | 层 | 目录 | 职责 |
 |------|------|------|
-| 视图层 | `pages/` | Streamlit 多页 UI（仪表盘 / 进度 / 连接器） |
+| 视图层 | `app.py` | NiceGUI 单页（周看板 / 摄入入口 / 总指挥部） |
 | 核心层 | `core/` | GitHub 客户端、健康检测、项目连接器、数据聚合 |
-| 编排层 | `front_half/supervisor/` | 前半流水线编排（贴链接 → 馏析 → 炼真 → 熔知） |
+| 编排层 | `front_half/` | 投递路由 ingest_router + 启停 launcher（贴链接 → 馏析 → 炼真 → 熔知） |
 | 四器联接 | `front_half/{nigredo,albedo,citrinitas}` + 目录联接 | 指向真实仓库，统一传送 |
 
 ---
@@ -131,8 +131,9 @@ opus-magnum/
 ├── .env.example            # 环境变量模板（复制为 .env 使用）
 ├── .gitignore
 ├── requirements.txt
-├── run.bat                 # 总指挥部启动（:8500）
-├── app.py                  # Streamlit 主入口
+├── run.bat                 # 总指挥部启动（:8501）
+├── start_all.bat          # 一键启动器（先起熔知 → 起三器 + 巨作）
+├── app.py                  # NiceGUI 主入口（三标签：周看板 / 摄入入口 / 总指挥部）
 ├── config/
 │   └── settings.py         # 全局配置（五器地址、API Key）
 ├── core/                   # 核心逻辑层
@@ -140,13 +141,10 @@ opus-magnum/
 │   ├── health_check.py      # 服务健康检测（熔知 8080 NiceGUI）
 │   ├── project_hub.py       # 项目连接器客户端
 │   └── dashboard.py         # 仪表盘数据聚合
-├── pages/                  # Streamlit 多页 UI
-│   ├── 1_🏠_总仪表盘.py
-│   ├── 2_📋_开发进度.py
-│   └── 3_🔗_项目连接器.py
 ├── front_half/             # 前半部分整合
-│   ├── launch.bat          # 总启动器（先起熔知 → 起总管）
-│   ├── supervisor/         # 前半流水线编排（NiceGUI :8503）
+│   ├── launch.bat          # 总启动器（先起熔知 → 起三器 + 巨作）
+│   ├── ingest_router.py    # 投递路由（B站 / 文件 / 笔记 → 各器）
+│   ├── supervisor/         # 启停编排（launcher 拉起/停止三器，无界面）
 │   ├── nigredo/            # 目录联接 → D:\nigredo
 │   ├── albedo/             # 目录联接 → D:\albedo
 │   └── citrinitas/         # 目录联接 → D:\citrinitas
@@ -155,9 +153,7 @@ opus-magnum/
 ├── docs/                   # 审计 / 研究 / 模板 / 端口表
 │   └── PORTS.md            # 统一端口分配
 ├── strategy/               # 一人公司战略白皮书
-├── assets/                 # logo 等
-└── utils/
-    └── ui_utils.py         # 侧边栏、CSS 注入
+└── assets/                 # logo 等
 ```
 
 ---
@@ -166,14 +162,13 @@ opus-magnum/
 
 | 层 | 技术 | 授权 / 理由 |
 |---|------|------|
-| 前端（总指挥部）| **Streamlit** | 快速迭代，持续可用 |
-| 前端（总管）| **NiceGUI** | SPA 流水线界面 |
+| 前端（总指挥部 + 摄入入口）| **NiceGUI** | SPA 单页（周看板 / 摄入入口 / 总指挥部） |
 | 数据 | **pandas** | 表格展示 |
 | 外部 API | **requests（GitHub REST API）** | 读 Issues，无 PyGithub（LGPL） |
 | 项目间调用 | **requests** | HTTP REST 客户端 |
-| 启动 | Windows `run.bat` / `launch.bat` | 一键启动 |
+| 启动 | Windows `run.bat` / `start_all.bat` | 一键启动 |
 
-> **注**：熔知已从 Streamlit 迁移到 NiceGUI（SPA），巨作自身仍保持 Streamlit；总管 Supervisor 用 NiceGUI。
+> **注**：熔知、巨作均已迁移到 NiceGUI（SPA）；原 Streamlit 网页与独立 Supervisor(:8503) 已退役，摄入功能并入巨作「📥 摄入入口」标签页。馏析 / 炼真改为无头常驻（无 Web 端口）。
 
 ---
 
@@ -225,18 +220,19 @@ GITHUB_TOKEN=ghp_xxxxxxxxxx
 .\run.bat
 ```
 
-访问 [http://localhost:8500](http://localhost:8500)
+访问 [http://localhost:8501](http://localhost:8501)
 
-### 5. 跑前半流水线（可选）
+### 5. 跑前半流水线（摄入入口）
 
-前半流水线依赖「熔知收件箱在监听」，所以先起熔知，再起总管：
+巨作已内置「📥 摄入入口」标签页：贴 B站 链接 / 上传文件 / 写笔记，点一下即自动跑完「馏析 → 炼真 → 熔知入库」。
+先确保熔知已启动（收件箱在监听），再打开巨作即可。
 
 ```bash
 # 终端一：先起熔知
 D:\citrinitas\run.bat
 
-# 终端二：再起总管（贴 B站 链接一键跑流水线）
-D:\opus-magnum\front_half\launch.bat
+# 终端二：再起巨作（总指挥部 + 摄入入口）
+D:\opus-magnum\run.bat
 ```
 
 > 统一端口分配见 [docs/PORTS.md](docs/PORTS.md)。所有服务均监听 `127.0.0.1`（本机）。

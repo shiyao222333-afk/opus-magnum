@@ -23,11 +23,13 @@ API Key 各项目统一从环境变量 `OPUS_API_KEY` 读取，默认值：`opus
 
 | 项目 | 端口 | 说明 |
 |------|------|------|
-| OpusMagnum | `8500` | 总指挥部 |
+| OpusMagnum | `8501` | 总指挥部（NiceGUI） |
 | Athanor | `8080` | 知识库引擎 (NiceGUI) |
-| Alembic | `8502` | 视频→知识提炼 |
-| Crucible | `8501` | 认知精炼（验真+提质） |
+| Alembic | 无（无头常驻） | 视频→知识提炼（队列消费，文件夹投递，无 HTTP 端口） |
+| Crucible | 无（无头常驻） | 认知精炼（验真+提质，文件夹监控，无 HTTP 端口） |
 | Aludel | `8765` | 副业 SOP 自动化 |
+
+> **注**：馏析（Alembic）/ 炼真（Crucible）已改为无头常驻，不再暴露 HTTP 端点；前半流水线通过「文件夹投递 + 队列」联通（见 `front_half/ingest_router.py`），不经本文的 `/api/videos/*`、`/api/scan` 等端点。熔知（Athanor）仍为 NiceGUI 服务，实现 `/health` 与 `/api/documents/ingest`。
 
 ---
 

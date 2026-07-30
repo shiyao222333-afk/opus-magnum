@@ -4,25 +4,19 @@ title Opus Magnum - Start All (One-Click Workshop Launcher)
 setlocal enabledelayedexpansion
 
 REM --- Self-resolve script directory (no hardcoded drive letter) ---
-REM start_all.bat lives inside the opus-magnum folder, so %~dp0 IS the project dir.
 set "OPUS_DIR=%~dp0"
 if "%OPUS_DIR:~-1%"=="\" set "OPUS_DIR=%OPUS_DIR:~0,-1%"
-REM Derive the parent of opus-magnum -> same level where sibling projects live.
 for %%I in ("%OPUS_DIR%.") do set "ROOT=%%~dpI"
 
 set "NIGREDO=%ROOT%nigredo"
 set "ALBEDO=%ROOT%albedo"
 set "CITRINITAS=%ROOT%citrinitas"
-set "SUP=%OPUS_DIR%\front_half\supervisor"
 
 set "RESTART=0"
 if /i "%~1"=="--restart" set "RESTART=1"
 
 if "%RESTART%"=="1" (
-    echo [RESTART] Killing services on ports 8500/8503/8502/8501/8080 ...
-    call :kill_port 8500
-    call :kill_port 8503
-    call :kill_port 8502
+    echo [RESTART] Killing services on ports 8501/8080 ...
     call :kill_port 8501
     call :kill_port 8080
     timeout /t 2 /nobreak >nul
@@ -30,12 +24,12 @@ if "%RESTART%"=="1" (
 
 echo **************************************************
 echo   Opus Magnum - Start All Workshop
-echo   8500 Opus      8503 Supervisor
-echo   8502 Nigredo   8501 Albedo   8080 Citrinitas
+echo   8501 Opus      8080 Citrinitas
+echo   (Nigredo / Albedo run headless, PID-lock guarded)
 echo **************************************************
 echo.
 
-REM --- Ensure Opus venv exists (shared by Opus dashboard + Supervisor) ---
+REM --- Ensure Opus venv exists (shared by Opus dashboard) ---
 set "VENV_PY=%OPUS_DIR%\venv\Scripts\python.exe"
 if exist "%VENV_PY%" goto venv_ok
 where python >nul 2>nul
@@ -44,10 +38,8 @@ echo [SETUP] First run: creating Opus venv...
 python -m venv "%OPUS_DIR%\venv"
 if not exist "%VENV_PY%" goto venv_create_failed
 :venv_ok
-"%VENV_PY%" -c "import streamlit" >nul 2>&1
-if errorlevel 1 "%VENV_PY%" -m pip install -r "%OPUS_DIR%\requirements.txt"
 "%VENV_PY%" -c "import nicegui" >nul 2>&1
-if errorlevel 1 "%VENV_PY%" -m pip install -r "%SUP%\requirements.txt"
+if errorlevel 1 "%VENV_PY%" -m pip install -r "%OPUS_DIR%\requirements.txt"
 goto after_venv
 :no_python
 echo [ERROR] Python not found on PATH. Install Python 3.x, then re-run start_all.bat.
@@ -57,30 +49,25 @@ echo [ERROR] Failed to create Opus venv at %OPUS_DIR%\venv.
 goto after_venv
 :after_venv
 
-REM --- Launch each service (skip if port already listening = reuse) ---
-call :maybe_start 8500 "Opus Magnum" "%OPUS_DIR%\run.bat"
+REM --- Launch each service ---
 if exist "%VENV_PY%" (
-    call :maybe_start 8503 "Supervisor" "%VENV_PY% %SUP%\app.py"
+    echo [START] Opus Magnum : port 8501 ...
+    start "Opus Magnum" "%VENV_PY%" "%OPUS_DIR%\app.py"
 ) else (
-    echo [SKIP] Supervisor : Opus venv missing (Python not installed). Start it manually later.
+    echo [SKIP] Opus : venv missing.
 )
-call :maybe_start 8502 "Nigredo" "%NIGREDO%\run.bat"
-call :maybe_start 8501 "Albedo" "%ALBEDO%\run.bat"
+call :start_headless "Nigredo" "%NIGREDO%\run.bat"
+call :start_headless "Albedo" "%ALBEDO%\run.bat"
 call :maybe_start 8080 "Citrinitas" "%CITRINITAS%\run.bat"
 
 echo.
 echo ==================================================
 echo   Workshop launch complete.
-echo   Opus:       http://127.0.0.1:8500
-echo   Supervisor: http://127.0.0.1:8503
-echo   Nigredo:    http://127.0.0.1:8502
-echo   Albedo:     http://127.0.0.1:8501
+echo   Opus:       http://127.0.0.1:8501
 echo   Citrinitas: http://127.0.0.1:8080
-echo   (Services already running were reused, not restarted.)
-echo   Tip: run start_all.bat as Administrator so Citrinitas
-echo        can elevate/start Qdrant without a second window.
-echo   Usage: start_all.bat           (reuse running services)
-echo           start_all.bat --restart (force kill + fresh start)
+echo   Nigredo / Albedo: headless (check Opus 摄入入口页状态灯)
+echo   (PID-lock guarded: re-running won't double-launch.)
+echo   Tip: run start_all.bat --restart to force restart port-based services.
 echo ==================================================
 echo.
 pause
@@ -99,7 +86,16 @@ if "%PORT_BUSY%"=="1" (
     goto :eof
 )
 echo [START] %NAME% : port %PORT% ...
-start "%NAME%" cmd /k "%CMD%"
+start "%NAME%" "%CMD%"
+timeout /t 2 /nobreak >nul
+goto :eof
+
+
+:start_headless
+set "NAME=%~1"
+set "CMD=%~2"
+echo [START] %NAME% : headless ...
+start "%NAME%" "%CMD%"
 timeout /t 2 /nobreak >nul
 goto :eof
 

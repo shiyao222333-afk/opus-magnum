@@ -1531,3 +1531,76 @@
 
 - [ ] **【OpenAI/Anthropic 游说美国限制中国开源模型，黄仁勋马斯克等公开反对】** | 来源：[IT之家](https://www.ithome.com/0/981/797.htm) · [TechCrunch 制裁威胁](https://techcrunch.com/2026/07/21/us-threatens-sanctions-against-chinese-ai-models-over-ip-theft) | 🎯 OpusMagnum 巨作
   OpenAI 与 Anthropic 正游说美监管机构限制中国开源 AI 模型，美方更威胁因 IP 问题制裁中国模型；黄仁勋/纳德拉/马斯克/扎克伯格及近 200 家硅谷创企联署反对。这直接关系到 OpusMagnum「低成本开源」战略底座的生死线——若中国开源模型（Qwen/DeepSeek/MiniCPM，即 SSS 自托管与降本的全部依赖）被地缘政策针对，一人公司的成本优势可能被动摇；列为战略储备信号，持续盯政策走向，并评估"国产开源 + 端侧自托管"双保险路线。
+
+## 2026-07-29
+
+> 📡 **机会雷达扫描（2026-07-29）**：数据源 aihot.virxact.com 直连恢复（24h 精选 ~30 条 + 7d 精选 50 条）+ WebSearch 6 组（AI副业/一人公司 / 小红书红利 / AI设计接单 / 低成本开源自托管 / 平台红利私域 / 新兴市场）。24h 精选偏大模型/安全事件（微软 MAI-Cyber、HF 自主攻击、OpenAI rogue agent 入侵 Modal、Claude 加密弱点等）剔除率约 65%；本段为与 6/23–7/27 全量去重后的新鲜信号。主线：**①Citrinitas 双线爆发（豆包可信搜索零成本接入 + 私有化 RAG 外卖成 2-5 万 B2B 现金牛）；②Rubedo 一人公司战略验证（OpenAI 数据证跨岗能力 + WAIC 七类模式现金流排序 + 临港/深圳/北京新补贴）；③设计/内容工具链补强（FeyNoBg 去背景 / qiaomu PPT Skill / Suno MIDI / Perplexity 本地 Agent）**。项目分布：Citrinitas 4（🔴2+🟡2）+ Rubedo 11（🔴1+🟡9+⚪1）+ Nigredo 1（🟡）；Nigredo 仅 1 条新鲜命中（OpenAI 转录 API），Albedo 炼真本轮无新信号（事实核查/验真类本周无新增）。**无 💡 探索区**：开放权重政策博弈已在 7/26–7/27 收录，本日无干净的非项目战略储备新项。
+
+### 🔴 本周可试
+
+- [ ] **【火山引擎豆包搜索服务上线：为 AI Agent 提供实时可信搜索，每月 500 次免费额度】** | 来源：[微信公众号](https://mp.weixin.qq.com/s/1nZqQHYqclsIF6__WLscgA) | 🎯 Citrinitas 熔知
+  字节推出跨语言、多模态、多垂类联网搜索 API，从站点/创作者维度做权威分级、过滤低质，支持 API/Skill/MCP 多形态接入，每月送 500 次免费搜索。研究切入点：把豆包搜索接进 Athanor 熔知知识库作「实时可信检索补层」，让知识库问答能拉取最新权威信息且零成本起步，直接补强 Citrinitas「知识管理 + 置信度」的实时性短板。
+
+- [ ] **【OpenAI 数据：43.5% 的岗位查询其实在干"别人岗位"的活，小公司尤甚】** | 来源：[The Decoder](https://the-decoder.com/openai-says-more-workers-are-using-chatgpt-to-do-other-peoples-jobs) | 🎯 Rubedo 凝华
+  OpenAI 分析 80 万条工作消息：43.5% 岗位相关查询涉及另一职业，营销与工程交叉最多，且「缺乏专业团队的小公司」这种跨岗现象最明显。研究切入点：这等于给一人公司正名——SSS 用 AI 一人 cover 多角色（设计+内容+运营+轻开发）正是趋势所指；把它当「副业选品雷达」：优先接"营销×工程"交叉、小企业最痛的活（如帮商家做 AI 内容+落地页），而非单点工具。
+
+- [ ] **【企业内网私有化 RAG 知识库部署：一单 2-5 万，律所/工厂/医院刚需】** | 来源：[今日头条](https://www.toutiao.com/article/7664265157757714982) | 🎯 Citrinitas 熔知
+  中小企业不敢把合同/病历/工艺手册传云端，催生「本地私有化 RAG 部署」副业——会基础 Docker 即可交付，单笔 2-5 万，运维还能按月收续费。研究切入点：这正是 SSS 正在做的 Athanor 熔知能力「外卖化」——把熔知私有化部署包装成给律所/工厂/医院的合规知识库服务，零硬件成本（客户自备 8 核 32G 服务器）、用 RAGFlow+开源模型，把 SSS 的技术资产直接变成 B2B 现金牛。
+
+### 🟡 关注
+
+- [ ] **【OpenAI 推出两款新转录模型 API：GPT-Live-Transcribe + GPT-Transcribe】** | 来源：[OpenAI Devs](https://x.com/OpenAIDevs/status/2082201169443905798) | 🎯 Nigredo 馏析
+  一个低延迟实时转录、一个面向已完成音频/批量异步优化，跨口音/语言/专业术语/噪点环境更准。对 Nigredo 语音摄入链路是「云端高质量转写」新选项——和本地 transcribe.cpp / FluidVoice / Qwen-Audio 形成「本地+云端双轨」，高噪/强口音场景用云端兜底，客户稿转写交付更稳。
+
+- [ ] **【Gemini API Managed Agents 默认升级 3.6 Flash，新增免费套餐 + cron 定时触发 + 环境钩子】** | 来源：[Google Blog](https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks) | 🎯 Rubedo 凝华
+  Google 把托管 Agent 默认模型升到 3.6 Flash，新增免费档、预算控制、基于 cron 的定时触发，还能在沙箱工具调用前后挂自定义脚本（安全审查/格式化）。对一人公司是「零成本定时自动化」——把日报生成、竞品监控、素材采集等脏活交给免费档托管 Agent 按 cron 跑，SSS 只管看结果。
+
+- [ ] **【FeyNoBg 开源自动背景去除模型登顶 SOTA，BiRefNet 架构 + 训练库 NoBg 全开源】** | 来源：[FeyNoBg](https://usefeyn.com/blog/feynobg) | 🎯 Rubedo 凝华
+  263M 参数的开源去背景模型，八项基准四项 SOTA、其余差距 2% 内，模型与训练代码（NoBg）放 HuggingFace/GitHub。对 SSS 设计师是电商产品图/人像/效果图去底的零成本利器——替代商用抠图 API，把接单工作流里的「去背景」环节成本压到零，提升效果图/主图交付效率。
+
+- [ ] **【Perplexity 推出 Windows 版个人电脑智能体：本地文件+应用+网络统一调度】** | 来源：[Perplexity](https://x.com/perplexity_ai/status/2082103880155046176) | 🎯 Rubedo 凝华
+  Perplexity 把「Personal Computer」本地 Agent 搬上 Windows——跨本地文件、已连应用、网络统一协调，研究/编码/浏览/构建一个系统搞定。对一人公司是「桌面级自动化员工」——把资料搜集、跨应用整理、草稿生成交给它，SSS 把操作摩擦降到最低；注意它依赖云端能力、敏感涉密内容慎走。
+
+- [ ] **【NVIDIA Jetson 紧凑型边缘 AI 套件：67 TOPS、本地跑 Mistral 等开源模型、无需云/API Key】** | 来源：[NVIDIA Jetson](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/) | 🎯 Citrinitas 熔知
+  Jetson Orin Nano Super 仅手提包大小、67 TOPS，可本地 GPU 加速跑 Mistral 等开源模型，全程无云端、无 API Key。延续 7/27 ESP32 端侧趋势——印证 Citrinitas 摄入/推理「彻底离线、零云成本」可行，涉密场景（SSS 军工背景）可把知识库推理锁死在本地硬件，数据物理不出域。
+
+- [ ] **【OpenRouter 上线 Classifiers 测试版：自动标记每次 AI 请求的用途与成本归属】** | 来源：[OpenRouter](https://openrouter.ai/blog/announcements/classifiers) | 🎯 Citrinitas 熔知
+  支持最多 8 个维度自定义分类法，异步标记每次请求的任务类型/部门/合规类别，不增加推理延迟，推荐 Gemini 3.5 Flash Lite 作分类模型。对一人公司多 Agent 并行跑是「成本归因」刚需——把 Athanor 各模块的 token 消耗按任务/项目打标，量化「哪个功能最烧钱」，延续 7/03 起的 AI 成本管控 SOP。
+
+- [ ] **【用 AI Skill 自动生成可协作 HTML PPT（qiaomu-bento-ppt，一行命令安装）】** | 来源：[Vista @X](https://x.com/vista8/status/2081568902241513786) | 🎯 Rubedo 凝华
+  基于 bento PPT 改造的 Skill，输入主题即生成可编辑、可在线演示、支持协作的 HTML PPT，`npx skills add joeseesun/qiaomu-bento-ppt` 安装，推荐 Kimi K3/Opus 4.8+ 等审美好的模型。对 SSS 设计师是「提案/作品集/课程」零成本生产器——客户提案、设计汇报、知识付费课件都能一键出可协作网页版，绕开 PPT 订阅与排版耗时。
+
+- [ ] **【开源 Leader.skill：把模糊需求转成 Agent 可独立执行数小时的目标任务书】** | 来源：[微信公众号](https://mp.weixin.qq.com/s/AwOk3di8m6eVeIUjzNftgg) | 🎯 Rubedo 凝华
+  作者开源 Leader.skill，基于「目标七问」（目的/完成态/反作弊/边界等）把人话需求转成 Agent 可长跑的目标任务书，推荐用 Fable 5/Kimi K3 规划、GPT-5.6 Sol/GLM-5.2 长程执行。对 Rubedo 自动化 SOP 是「目标定义层」补强——把 SSS 的获客/交付/运营流程写成可交给 Agent 长跑的任务书，减少人盯进度。
+
+- [ ] **【Suno 新功能：音轨分离 + MIDI 导出 + 歌词合写，面向短视频配乐工作流】** | 来源：[Suno @X](https://x.com/suno/status/2081443050312843765) | 🎯 Rubedo 凝华
+  Suno 网页/移动端新增高级音轨分离、导出 MIDI、歌词合写与自动保存、CarPlay/Android Auto。对 SSS 内容获客飞轮是「配乐提效」——短视频营销/案例展示的背景音乐可自生成并导出 MIDI 精修，零版权顾虑，把设计案例包装成带原创配乐的短视频更省力。
+
+- [ ] **【Andrew Ng 创办 LearnVector 做 AI 一对一学习，获 Coursera 1 亿美元投资】** | 来源：[Andrew Ng @X](https://x.com/AndrewYNg/status/2082199333920027009) | 🎯 Rubedo 凝华
+  Andrew Ng 押注「AI 把一对多教育变一对一」，结合 Coursera 权威课程库做可信任个性化学习。信号：AI 教育/知识付费赛道获顶级资本背书——对 SSS 是「知识付费 2.0」参照：把军工/效果图/AI设计经验做成「一对一陪跑式」付费产品，而非录播课，贴合 Rubedo 内容变现主线。
+
+- [ ] **【Google AI Overviews 搜索出现率一年从 15% 升到 43%，AI Mode 月访 2.79 亿】** | 来源：[TechCrunch](https://techcrunch.com/2026/07/27/googles-ai-search-is-rapidly-becoming-the-default-new-data-shows) | 🎯 Rubedo 凝华
+  Google AI 搜索成默认入口、用户查询变长变对话式。对 SSS 获客是「SEO→GEO/AEO」拐点——小红书/官网内容要按「问题+场景+痛点」长尾词重构，让 AI 摘要主动引用 SSS 的设计服务，把「被 AI 推荐」做成新获客位，延续 7/27 ChatGPT 广告位逻辑。
+
+- [ ] **【WAIC 一人 AI 创业全指南：7 类商业模式按现金流速度排序 + 临港/深圳/北京新补贴】** | 来源：[腾讯新闻](https://new.qq.com/rain/a/20260724A06THY00) | 🎯 Rubedo 凝华
+  报告把一人 AI 模式按变现速度排：最快=AI+垂直咨询/服务（单项目 2-5 万、1-2 周成交），最稳=代运营/数据服务；并披露新补贴——上海临港零界魔方 36 个月免租+最高 30 万免费算力、深圳百万级训力券/模型券、北京中关村单人扶持。研究切入点：补强 7/15「政策套利地图」，把 SSS 公司/算力主体落临港或深圳吃补贴，同时用「现金流速度」框架给副业排序、优先打快变现咨询单。
+
+### ⚪ 了解
+
+- [ ] **【AI 框架（Harness）对模型性能的影响超过模型本身：同模型跨框架差 25+ 百分点】** | 来源：[AI HOT 日报](https://aihot.virxact.com/daily/2026-07-29) | 🎯 Rubedo 凝华
+  Endor Labs 测试：GPT-5.5 在原生 Codex 框架功能正确率 61.5%，在 Cursor 上 87.2%；Opus 4.7 在 Claude Code 87.2%、Cursor 91.1%。对 SSS 搭 Agent 产品的启示：别只追最强模型，框架/编排层（Harness）才是性价比开关——用对框架比换模型更省钱，做 Athanor/Rubedo 自动化时优先调编排而非盲目升模型。
+
+> 📡 **机会雷达独立补扫（2026-07-29）**：在 AiHot 专家主段（🔴3 + 🟡11 + ⚪1，已写入同日节）之外，本机会雷达扫描补出 **3 条主段未覆盖新维度**：① DesignJoy 产品化设计订阅（SSS 设计师直接对标的高阶变现模式，比按张收费高段位）；② Kimi Linear 开源线性注意力（Citrinitas 低成本推理底座补强，长上下文省 KV）；③ Claude-thermos 缓存预热省 22% 账单（SSS 用 Claude Code 推进 Athanor 的直接省钱工具）。与 6/23–7/27 及主段三重去重，3 条零重复。本补扫段项目分布：Rubedo 2 + Citrinitas 1；全节合计 Rubedo 13 / Citrinitas 5 / Nigredo 1。
+
+### 🔴 本周可试（补扫）
+
+- [ ] **【DesignJoy 模式：一个人靠"设计订阅"做到月入 20 万美元的产品化设计代理】** | 来源：[Solo Business Hub](https://www.solobusinesshub.com/success-stories/one-person-company-examples) | 🎯 Rubedo 凝华
+  DesignJoy 是一个人运营的设计订阅服务（客户按月付费、不限量提需求），月流水 20 万美元、毛利极高——这是 SSS 设计师身份最直白的变现对标，比"按张收费"高一个段位。研究切入点：本周起草 SSS 自己的"设计订阅套餐"（如 ¥999/月 含 N 张效果图+改稿），把一次性接单升级成可预期月收入，正是 Rubedo 要沉淀的副业方法论。
+
+### 🟡 关注（补扫）
+
+- [ ] **【Kimi Linear 开源：混合线性注意力，KV cache 降 75%、1M 上下文 6 倍吞吐】** | 来源：[aihot](https://aihot.virxact.com/items/cms4t5zra01o1roa10b19hmbh) | 🎯 Citrinitas 熔知
+  月之暗面开源了 Kimi Linear 的模型权重、KDA 内核和 vLLM 实现，长上下文下 KV 占用大降、解码吞吐翻几倍。对 Citrinitas（熔知）是又一块"低成本开源推理底座"——长文档/长知识库问答时更省显存和钱，延续 7/24 Ollama/MagenticLite、7/26 蚂蚁 Ling 的自托管省钱梯队。
+
+- [ ] **【Claude-thermos：本地反向代理预热会话缓存，实测省下约 22% 重新编码账单】** | 来源：[aihot](https://aihot.virxact.com/items/cmryrjtlb04ehrolgi1zd6eqv) | 🎯 Rubedo 凝华
+  SSS 用 Claude Code 推进 Athanor，子智能体等待时空闲超 5 分钟缓存就过期、重新编码烧钱。这个小工具自动发预热请求保活缓存，实测省 22% 账单，uvx 一行跑起来。研究切入点：把成本管控加进 SSS 的 Claude 使用习惯，呼应 7/15 Ploy、7/24 模型路由与同日主段"AI 框架 Harness"的"省钱"主线。
