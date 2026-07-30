@@ -43,3 +43,19 @@ front_half/e2e_compare/ingest_3x_result.json
 front_half/transit/
 _acc_*.log
 acceptance/_*_run.log
+
+# 临时测试/入口复现脚本（不入库）
+_entrytest_logs/
+_entrytest_result.json
+_recover_and_test.py
+_test_entry.py
+
+# 运行时日志（总管/服务运行日志，不入库）
+logs/
+launcher/logs/
+
+# 验收临时日志（_run_*.log 模式）
+acceptance/_run*.log
+
+# 运行时锁文件（drop_watcher 单例锁）
+drop/drop_watcher.lock
