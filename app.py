@@ -1,86 +1,50 @@
 """
-OpusMagnum · 巨作 / GreatWork — 一人公司总指挥部（NiceGUI 重写）
+OpusMagnum · 巨作 / GreatWork — 一人公司总指挥部
 
-单页应用，三个标签页：
-  ① 周看板：直读熔知共享 Qdrant，展示本周新录入。
-  ② 摄入入口：投递（B站/文件/笔记）+ 三器启停 + 队列概览 + 日志。
-  ③ 总指挥部：服务健康 + GitHub 仓库 + 任务看板 + API 规范 + 路线。
-
-设计说明（AI 设计决策，非用户指令，待确认）：
-  - 原 Streamlit 网页（app.py / pages/ / utils/ui_utils.py）已删除；
-    原独立 Supervisor(:8503) 与摄入入口功能重复，已删除，摄入功能并入本页。
-  - 已删除打「已下线的 8502/8503 网页 API」的手动联动按钮
-    （对应 core/project_hub.py 的 alembic_*/crucible_* 死函数已清）。
-  - 后端数据层（qdrant_bridge / health_check / dashboard / launcher / ingest_router）
-    框架无关，直接复用，未做增殖。
+布局对齐熔知（Citrinitas）：左侧抽屉导航 + 页面路由 + 深色主题。
+  - /         → 周看板（本周新录入）
+  - /ingest   → 摄入入口（投递 + 三器启停 + 队列 + 日志）
+  - /hq       → 总指挥部（健康 / GitHub / 任务 / 路线）
 """
 from __future__ import annotations
 
 import json
+import os
 import sys
+import urllib.request
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from nicegui import ui
+from nicegui import app, run, ui
 
 from config.settings import settings
-from core.qdrant_bridge import fetch_week_docs, qdrant_reachable, week_bounds
+from core.qdrant_bridge import (
+    fetch_dashboard_docs,
+    is_starred,
+    qdrant_reachable,
+    set_starred,
+    week_bounds,
+)
 from core.health_check import check_all
 from core.dashboard import get_all_repo_summaries, get_all_tasks
 from front_half.ingest_router import route_bilibili, route_file, route_note
 from front_half.supervisor.launcher import (
-    LOGS_DIR,
-    SERVICES,
-    is_running,
-    start_all as launcher_start_all,
-    start_service,
-    stop_all as launcher_stop_all,
-    stop_service,
+    LOGS_DIR, SERVICES, is_running,
+    start_all as launcher_start_all, start_service,
+    stop_all as launcher_stop_all, stop_service,
 )
 
-# 馏析队列文件（只读概览）
 QUEUE_FILE = Path(r"D:\nigredo\data\queue.json")
 UPLOAD_TMP = PROJECT_ROOT / "drop" / "_upload_tmp"
 UPLOAD_TMP.mkdir(parents=True, exist_ok=True)
 
 
-# ────────────────────────────────────────────────────────────
-# Tab 1: 周看板
-# ────────────────────────────────────────────────────────────
-def render_dashboard(container: ui.column) -> None:
-    container.clear()
-    with container:
-        monday, now = week_bounds()
-        ui.label(
-            f"本周录入一览 · 周一 {monday.strftime('%Y-%m-%d')} ~ 今天 {now.strftime('%Y-%m-%d')}"
-            f" ｜ 数据来自 🏭 熔知"
-        ).classes("text-sm text-gray-500")
-        if not qdrant_reachable():
-            ui.label("⚠️ 连不上熔知数据库（Qdrant）。请确认 Qdrant 已启动，并已运行 start_all.bat。")
-            return
-        docs = fetch_week_docs()
-        if not docs:
-            ui.label("📭 本周还没有新录入。去 🏭 熔知 添加知识后，这里会自动出现本周卡片。")
-            return
-        sources: dict = {}
-        for d in docs:
-            sources.setdefault(d.get("source") or "未知来源", []).append(d)
-        ui.label(f"本周新增 {len(docs)} 条 · 来源 {len(sources)} 个").classes("text-lg font-bold")
-        with ui.row().classes("flex-wrap"):
-            for src, items in sources.items():
-                with ui.card().classes("w-64"):
-                    ui.label(src).classes("font-bold")
-                    ui.label(f"{len(items)} 条")
-                    for d in items[:8]:
-                        ui.label(f"• {(d.get('title') or '(无标题)')}").classes("text-sm")
-
-
-# ────────────────────────────────────────────────────────────
-# Tab 2: 摄入入口
-# ────────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════
+# 共享辅助
+# ═══════════════════════════════════════════════════════════
 def _notify_res(res: dict) -> None:
     if res.get("ok"):
         ui.notify(res.get("message", "完成"), type="positive")
@@ -88,69 +52,269 @@ def _notify_res(res: dict) -> None:
         ui.notify(res.get("message", "失败"), type="negative")
 
 
-def _on_bilibili(bili_input: ui.input) -> None:
-    url = (bili_input.value or "").strip()
-    if not url:
-        ui.notify("请先贴入地址", type="warning")
-        return
-    _notify_res(route_bilibili(url))
+# ═══════════════════════════════════════════════════════════
+# 左侧抽屉（所有页面共用，对齐熔知 ui_shared.build_left_drawer）
+# ═══════════════════════════════════════════════════════════
+def _nav_class(page_key) -> str:
+    """当前页高亮（蓝紫），其他页悬停变深。对齐熔知 _nav_class。"""
+    active = getattr(ui, "_active_opus_page", "")
+    if active == page_key:
+        return "w-full text-left p-2 rounded bg-blue-700 no-underline text-white font-bold"
+    return "w-full text-left p-2 rounded hover:bg-blue-700 transition no-underline text-white"
 
 
-def _on_upload(e) -> None:
-    for f in e:
-        try:
-            tmp = UPLOAD_TMP / f.name
-            tmp.write_bytes(f.content)
-            _notify_res(route_file(str(tmp)))
-        except Exception as ex:
-            ui.notify(f"上传失败：{ex}", type="negative")
+def build_left_drawer(active_page: str = "") -> None:
+    # 存当前页面标识，供 _nav_class 使用
+    ui._active_opus_page = active_page
 
+    with ui.left_drawer(value=True, fixed=False, bordered=True).classes("bg-gray-900 text-white") as drawer:
+        with ui.column().classes("w-full items-center p-4"):
+            ui.markdown("## ⚛️ OpusMagnum")
+            ui.markdown("##### 巨作 · GreatWork")
+            ui.label("一人公司总指挥部").classes("text-sm text-gray-400")
+            ui.separator()
 
-def _on_note(note_area: ui.textarea) -> None:
-    note = (note_area.value or "").strip()
-    if not note:
-        ui.notify("笔记为空", type="warning")
-        return
-    _notify_res(route_note(note))
+        # 系统状态
+        with ui.column().classes("w-full px-4"):
+            ui.markdown("### 📊 系统状态")
+            _qdrant_ok = qdrant_reachable()
+            ui.badge("Qdrant 在线" if _qdrant_ok else "Qdrant 离线",
+                     color="green" if _qdrant_ok else "red")
+            # 服务运行数（只统计在网页面板展示的服务）
+            _web_keys = [s["key"] for s in SERVICES if s.get("web_visible")]
+            _running = sum(1 for k in _web_keys if is_running(k))
+            _total = len(_web_keys)
+            ui.label(f"服务: {_running}/{_total} 运行中").classes("text-sm")
+            ui.separator()
 
-
-def render_services(container: ui.column) -> None:
-    container.clear()
-    with container:
-        for name, spec in SERVICES.items():
-            running = is_running(name)
-            with ui.row().classes("items-center"):
-                ui.label(f"{'🟢' if running else '🔴'} {spec['label']}")
-                ui.button("启动", on_click=lambda n=name: (start_service(n), render_services(container)))
-                ui.button("停止", on_click=lambda n=name: (stop_service(n), render_services(container)))
-
-
-def render_ingest(container: ui.column) -> None:
-    container.clear()
-    with container:
-        ui.label("① 投递").classes("text-lg font-bold")
-        with ui.row().classes("items-end"):
-            bili_input = ui.input(
-                "B站链接（支持 b23.tv 短链）",
-                placeholder="https://www.bilibili.com/video/BV...",
-            ).classes("w-96")
-            ui.button("🚀 加入馏析队列", on_click=lambda: _on_bilibili(bili_input))
-        ui.upload(on_upload=_on_upload, multiple=True).classes("w-full")
-        ui.label("支持 md/pdf/txt/png/jpg → 送入熔知收件箱").classes("text-xs")
-        note_area = ui.textarea("✏️ 闪念笔记（生成标准 .md 送入熔知收件箱）").classes("w-full")
-        ui.button("💾 保存笔记", on_click=lambda: _on_note(note_area))
+        # 导航链接（配合 @ui.page 路由，对齐熔知导航）
+        with ui.column().classes("w-full px-2 gap-1"):
+            ui.link("📊 周看板", "/").classes(_nav_class(""))
+            ui.link("📥 摄入入口", "/ingest").classes(_nav_class("ingest"))
+            ui.link("🎛️ 总指挥部", "/hq").classes(_nav_class("hq"))
 
         ui.separator()
-        ui.label("② 三器启停（薄壳 · 不编排流程）").classes("text-lg font-bold")
-        ui.label("打开本页不会自动启动任何服务；关闭网页也不会杀掉它们。需手动启动。").classes("text-xs text-gray-500")
-        svc_col = ui.column()
-        with ui.row():
-            ui.button("🚀 一键启动摄入管线", on_click=lambda: (launcher_start_all(), render_services(svc_col)))
-            ui.button("🛑 一键停止摄入管线", on_click=lambda: (launcher_stop_all(), render_services(svc_col)))
-        render_services(svc_col)
+        with ui.column().classes("w-full px-4"):
+            ui.link("🔗 熔知", settings.citrinitas.endpoint("/")).classes("text-xs text-blue-300")
+            ui.link("🔗 GitHub", "https://github.com/shiyao222333-afk/OpusMagnum").classes("text-xs text-blue-300")
 
+        return drawer
+
+
+# ═══════════════════════════════════════════════════════════
+# 周看板辅助：熔知可达性探测 + 收藏交互 + 单行渲染 + 可刷新主体
+# ═══════════════════════════════════════════════════════════
+def _citrinitas_reachable() -> bool:
+    """探测熔知 8080 是否可达（决定标题外链 vs 本地弹窗兜底）。
+
+    零新依赖：仅标准库 urllib，GET 熔知根路径即可判定进程在不在。
+    """
+    try:
+        url = settings.citrinitas.endpoint("/")
+        with urllib.request.urlopen(url, timeout=3) as resp:
+            return resp.status == 200
+    except Exception:
+        return False
+
+
+def _preview_line(label: str, value) -> None:
+    """本地预览弹窗里的一行；值为空则整行省略。"""
+    if value is None or value == "" or value == []:
+        return
+    ui.label(f"{label}：{value}").classes("text-sm")
+
+
+def _doc_row(d: dict, online: bool) -> None:
+    """渲染一行文档：★收藏按钮 + 标题（外链熔知 / 离线降级弹窗）+ 👁本地预览兜底。
+
+    - online=True  → 标题外链熔知 /doc/{doc_id}（新标签页）；
+    - online=False → 熔知不可达，标题降级为点击打开本地预览弹窗。
+    - 👁 本地预览按钮始终存在作为兜底，展示 title / auto_summary / subject /
+      keywords / source / timeline / text（text 截断）。
+    - 已收藏条目 ★ 黄色高亮（按钮 + 标题均变黄）。
+    """
+    starred = bool(d.get("_starred", is_starred(d)))
+    title = (d.get("title") or "(无标题)")[:40]
+    doc_id = d["doc_id"]
+    detail_url = settings.citrinitas.endpoint(f"/doc/{doc_id}")
+
+    # 本地预览弹窗（每行一个，互不干扰）
+    preview_dialog = ui.dialog()
+    with preview_dialog, ui.card().classes("w-[560px] max-w-[90vw] p-4"):
+        ui.label(title).classes("text-lg font-bold text-blue-200")
         ui.separator()
-        ui.label("③ 馏析队列概览").classes("text-lg font-bold")
+        _preview_line("主题", d.get("subject"))
+        _preview_line("关键词", "、".join(d.get("keywords") or []))
+        _preview_line("来源", d.get("source"))
+        _preview_line("来源项目", d.get("source_project"))
+        timeline = d.get("timeline") or {}
+        _preview_line("录入时间", timeline.get("ingested") if isinstance(timeline, dict) else None)
+        _preview_line("摘要", d.get("auto_summary"))
+        text = (d.get("text") or "").strip()
+        if len(text) > 1500:
+            text = text[:1500] + " ……（正文截断，完整内容请到熔知查看）"
+        _preview_line("正文", text)
+        with ui.row().classes("w-full justify-end mt-2"):
+            ui.button("关闭", on_click=preview_dialog.close).props("flat")
+
+    with ui.row().classes("w-full items-center gap-2"):
+        star_btn = ui.button("★" if starred else "☆").props("flat round dense size=sm")
+        star_btn.classes("text-yellow-300" if starred else "text-gray-400")
+        star_btn.on_click(lambda d=d, btn=star_btn: _on_toggle_star(d, btn))
+
+        title_class = "text-sm no-underline " + ("text-yellow-200" if starred else "text-blue-300")
+        if online:
+            ui.link(title, detail_url, new_tab=True).classes(title_class)
+        else:
+            ui.link(title, on_click=preview_dialog.open).classes(title_class)
+
+        ui.button("👁", on_click=preview_dialog.open).props("flat round dense size=sm").classes("text-blue-300")
+        ui.tooltip("本地预览（熔知离线兜底）")
+
+
+async def _on_toggle_star(d: dict, btn) -> None:
+    """async 收藏切换：先 disable 防连点 → io_bound 写 Qdrant → 成功刷新 / 失败恢复。
+
+    ui.notify 的 positive/negative 按 set_starred 返回的 ok 区分。
+    """
+    new_val = not d.get("_starred", False)
+    btn.disable()
+    res = await run.io_bound(set_starred, d["doc_id"], new_val)
+    if res.get("ok"):
+        ui.notify(
+            ("⭐ 已收藏 " if new_val else "已取消收藏 ") + (d.get("title") or "")[:20],
+            type="positive",
+        )
+        dashboard_body.refresh()
+    else:
+        ui.notify(f"收藏操作失败：{res.get('error')}", type="negative")
+        btn.enable()
+
+
+@ui.refreshable
+def dashboard_body() -> None:
+    """看板主体（可局部刷新，不用 ui.update() 或整页跳转）。
+
+    布局：⭐ 收藏区置顶（前 20 + 共 N 篇计数）→ 📥 本周区在下按 source_project 分组。
+    两区默认双显、各自 doc_id 去重；空态保留「📭 本周还没有新录入。」。
+    """
+    data = fetch_dashboard_docs()
+    week_docs = data["week"]
+    starred_docs = data["starred"]
+    online = _citrinitas_reachable()
+
+    # 空态：两区都空
+    if not week_docs and not starred_docs:
+        with ui.card().classes("w-full"):
+            ui.label("📭 本周还没有新录入。").classes("text-gray-400")
+        return
+
+    # ⭐ 收藏区（置顶，前 20 + 计数）
+    if starred_docs:
+        with ui.card().classes("w-full"):
+            with ui.row().classes("w-full items-center gap-3"):
+                ui.label("⭐ 收藏区").classes("font-bold text-lg text-yellow-300")
+                ui.badge(f"共 {len(starred_docs)} 篇", color="yellow-8", outline=True)
+            ui.separator()
+            for d in starred_docs[:20]:
+                _doc_row(d, online)
+
+    # 📥 本周区（按来源项目分组，维持原样）
+    with ui.card().classes("w-full"):
+        with ui.row().classes("w-full items-center gap-3"):
+            ui.label("📥 本周新录入").classes("font-bold text-lg text-blue-300")
+            ui.badge(f"{len(week_docs)} 篇", color="blue-8", outline=True)
+        ui.separator()
+        if not week_docs:
+            ui.label("（本周暂无新录入）").classes("text-sm text-gray-400")
+        else:
+            sources: dict = {}
+            for d in week_docs:
+                key = d.get("source_project") or d.get("source") or "未知来源"
+                sources.setdefault(key, []).append(d)
+            with ui.row().classes("flex-wrap gap-4 mt-2"):
+                for src, items in sources.items():
+                    with ui.card().classes("w-80"):
+                        ui.label(src[:50]).classes("font-bold text-sm text-blue-200")
+                        ui.label(f"{len(items)} 篇").classes("text-xs text-gray-400")
+                        ui.separator()
+                        for d in items[:8]:
+                            _doc_row(d, online)
+
+
+# ═══════════════════════════════════════════════════════════
+# 页面: 周看板 (/)
+# ═══════════════════════════════════════════════════════════
+@ui.page("/")
+def page_dashboard():
+    build_left_drawer("")
+    with ui.column().classes("w-full p-6"):
+        ui.markdown("## 📊 周看板")
+        monday, now = week_bounds()
+        ui.label(
+            f"周一 {monday.strftime('%Y-%m-%d')} ～ 今天 {now.strftime('%Y-%m-%d')} ｜ 数据来自 熔知"
+        ).classes("text-sm text-gray-400 mb-4")
+
+        if not qdrant_reachable():
+            ui.label("⚠️ 连不上熔知数据库（Qdrant）。").classes("text-orange-400")
+            return
+
+        dashboard_body()
+
+
+# ═══════════════════════════════════════════════════════════
+# 页面: 摄入入口 (/ingest)
+# ═══════════════════════════════════════════════════════════
+@ui.page("/ingest")
+def page_ingest():
+    build_left_drawer("ingest")
+    with ui.column().classes("w-full p-6"):
+        ui.markdown("## 📥 摄入入口")
+
+        # ① 投递
+        ui.markdown("### 投递")
+        with ui.card().classes("w-full"):
+            with ui.row().classes("w-full items-end"):
+                bili_input = ui.input(
+                    "B站链接（支持 b23.tv 短链）",
+                    placeholder="https://www.bilibili.com/video/BV...",
+                ).classes("flex-grow")
+                ui.button("加入馏析队列",
+                          on_click=lambda: _notify_res(route_bilibili(bili_input.value or ""))).props("color=blue")
+            ui.separator()
+            ui.upload(on_upload=lambda e: [
+                _notify_res(route_file(str(_write_tmp(f))))
+                for f in e
+            ], multiple=True).classes("w-full")
+            ui.label("支持 md / pdf / txt / png / jpg → 送入熔知收件箱").classes("text-xs text-gray-400")
+            ui.separator()
+            note_area = ui.textarea("闪念笔记（生成标准 .md 送入熔知收件箱）").classes("w-full")
+            ui.button("保存笔记",
+                      on_click=lambda: _notify_res(route_note(note_area.value or ""))).props("color=blue outline")
+
+        # ② 三器启停
+        ui.markdown("### 三器启停")
+        ui.label("打开本页不会自动启动任何服务；关闭网页也不会杀掉它们。").classes("text-xs text-gray-400")
+        with ui.card().classes("w-full"):
+            with ui.row().classes("gap-2"):
+                ui.button("一键启动摄入管线", on_click=launcher_start_all).props("color=positive")
+                ui.button("一键停止摄入管线", on_click=launcher_stop_all).props("color=negative")
+            ui.separator()
+            # 只展示 web_visible 的服务
+            for s in [s for s in SERVICES if s.get("web_visible")]:
+                name = s["key"]
+                spec = s
+                running = is_running(name)
+                badge = "🟢" if running else "🔴"
+                with ui.card().classes("w-full"):
+                    with ui.row().classes("w-full items-center justify-between"):
+                        ui.label(f"{badge} {spec['label']}").classes("font-bold text-sm")
+                        with ui.row().classes("gap-1"):
+                            ui.button("启动", on_click=lambda n=name: start_service(n)).props("outline size=sm color=positive")
+                            ui.button("停止", on_click=lambda n=name: stop_service(n)).props("outline size=sm color=negative")
+
+        # ③ 馏析队列概览
+        ui.markdown("### 馏析队列概览")
         total = pending = processing = 0
         if QUEUE_FILE.exists():
             try:
@@ -160,117 +324,127 @@ def render_ingest(container: ui.column) -> None:
                 processing = sum(1 for i in items if i.get("status") == "processing")
             except Exception:
                 pass
-        with ui.row():
-            ui.label(f"队列总数：{total}")
-            ui.label(f"待处理：{pending}")
-            ui.label(f"处理中：{processing}")
-        ui.label("队列不写 'done' 记录：成功才移除，崩溃不丢项。").classes("text-xs text-gray-500")
+        with ui.card().classes("w-full"):
+            with ui.row().classes("gap-8"):
+                with ui.column().classes("items-center"):
+                    ui.label(f"{total}").classes("text-2xl font-bold text-blue-300")
+                    ui.label("总数").classes("text-xs text-gray-400")
+                with ui.column().classes("items-center"):
+                    ui.label(f"{pending}").classes("text-2xl font-bold text-yellow-300")
+                    ui.label("待处理").classes("text-xs text-gray-400")
+                with ui.column().classes("items-center"):
+                    ui.label(f"{processing}").classes("text-2xl font-bold text-green-300")
+                    ui.label("处理中").classes("text-xs text-gray-400")
 
-        ui.separator()
-        ui.label("④ 三器日志").classes("text-lg font-bold")
-        for name, spec in SERVICES.items():
-            with ui.expansion(f"📜 {spec['label']} 日志"):
+        # ④ 日志
+        ui.markdown("### 服务日志")
+        for s in [s for s in SERVICES if s.get("web_visible")]:
+            name = s["key"]
+            spec = s
+            with ui.expansion(f"📜 {spec['label']}").classes("w-full"):
                 p = LOGS_DIR / f"{name}.log"
-                txt = "(无日志：服务未启动或未产生输出)"
                 if p.exists():
                     lines = p.read_text(encoding="utf-8", errors="ignore").splitlines()
                     txt = "\n".join(lines[-200:])
-                ui.code(txt)
+                else:
+                    txt = "(服务未启动或未产生输出)"
+                ui.code(txt).classes("w-full text-xs")
 
 
-# ────────────────────────────────────────────────────────────
-# Tab 3: 总指挥部
-# ────────────────────────────────────────────────────────────
-def render_hq(container: ui.column) -> None:
-    container.clear()
-    with container:
-        ui.label("① 服务健康状态").classes("text-lg font-bold")
-        for h in check_all():
-            if h["online"]:
-                extra = f"{h.get('latency_ms')}ms" if h.get("latency_ms") is not None else "在线"
-                ui.label(f"✅ {h['project']} — {extra}")
-            else:
-                ui.label(f"❌ {h['project']} — {h.get('status', 'unknown')}")
+def _write_tmp(f):
+    tmp = UPLOAD_TMP / f.name
+    tmp.write_bytes(f.content)
+    return str(tmp)
 
-        ui.separator()
-        ui.label("② GitHub 仓库状态").classes("text-lg font-bold")
+
+# ═══════════════════════════════════════════════════════════
+# 页面: 总指挥部 (/hq)
+# ═══════════════════════════════════════════════════════════
+@ui.page("/hq")
+def page_hq():
+    build_left_drawer("hq")
+    with ui.column().classes("w-full p-6"):
+        ui.markdown("## 🎛️ 总指挥部")
+
+        # ① 服务健康
+        ui.markdown("### 服务健康状态")
+        with ui.card().classes("w-full"):
+            for h in check_all():
+                if h["online"]:
+                    extra = f"{h.get('latency_ms')}ms" if h.get("latency_ms") else "在线"
+                    ui.label(f"✅ {h['project']} — {extra}").classes("text-green-400")
+                else:
+                    ui.label(f"❌ {h['project']} — {h.get('status', 'unknown')}").classes("text-red-400")
+
+        # ② GitHub 仓库
+        ui.markdown("### GitHub 仓库状态")
         try:
             repo_sum = get_all_repo_summaries()
         except Exception as e:
             repo_sum = {}
-            ui.label(f"⚠️ GitHub 读取失败：{e}")
+            ui.label(f"⚠️ GitHub 读取失败：{e}").classes("text-orange-400")
         REPO_ALIAS = {
             "Citrinitas": "🏭 熔知", "Nigredo": "⚗️ 馏析",
             "Albedo": "🔬 炼真", "Rubedo": "✨ 凝华", "OpusMagnum": "⚛️ 巨作",
         }
-        for key, alias in REPO_ALIAS.items():
-            data = repo_sum.get(key, {})
-            if "error" in data:
-                ui.label(f"{alias} — ⚠️ GitHub Token 未配置")
-            else:
-                ui.label(f"{alias} — {data.get('open_issues', 0)} open issues · ⭐ {data.get('stars', 0)}")
+        with ui.card().classes("w-full"):
+            for key, alias in REPO_ALIAS.items():
+                data = repo_sum.get(key, {})
+                if "error" in data:
+                    ui.label(f"{alias} — GitHub Token 未配置").classes("text-orange-400 text-sm")
+                else:
+                    ui.label(f"{alias} — {data.get('open_issues', 0)} issues · ⭐ {data.get('stars', 0)}").classes("text-sm")
 
-        ui.separator()
-        ui.label("③ 任务看板（来自 GitHub Issues）").classes("text-lg font-bold")
+        # ③ 任务看板
+        ui.markdown("### 任务看板")
         try:
             tasks = get_all_tasks(state="open")
         except Exception as e:
             tasks = []
-            ui.label(f"⚠️ 任务读取失败：{e}")
-        if not tasks:
-            ui.label("暂无任务数据。")
-        else:
-            done = sum(1 for t in tasks if t.get("status") == "done")
-            ui.label(f"总任务 {len(tasks)} · 进行中 {len(tasks) - done} · 已完成 {done}")
-            for t in tasks[:30]:
-                ui.label(f"• [{t.get('project_label', '')}] {t.get('title', '')}")
+            ui.label(f"⚠️ 任务读取失败：{e}").classes("text-orange-400")
+        with ui.card().classes("w-full"):
+            if not tasks:
+                ui.label("暂无任务数据。").classes("text-gray-400")
+            else:
+                done = sum(1 for t in tasks if t.get("status") == "done")
+                ui.label(f"总任务 {len(tasks)} · 进行中 {len(tasks) - done} · 已完成 {done}").classes("font-bold")
+                ui.separator()
+                for t in tasks[:30]:
+                    ui.label(f"[{t.get('project_label', '')}] {t.get('title', '')}").classes("text-sm")
 
-        ui.separator()
-        ui.label("④ API 规范速查（各器需实现的端点）").classes("text-lg font-bold")
-        ui.markdown(
-            "| 项目 | 端点 | 用途 |\n"
-            "|------|------|------|\n"
-            "| 🏭 熔知 | GET /health | 健康检查 |\n"
-            "| 🏭 熔知 | POST /api/documents/ingest | 入库文档 |\n"
-            "| 🏭 熔知 | GET /api/documents/search | 搜索（熔知 API 待实现，巨作暂直读 Qdrant） |\n"
-        )
-
-        ui.separator()
-        ui.label("⑤ 开发路线").classes("text-lg font-bold")
-        ui.markdown(
-            "| 阶段 | 项目 | 状态 |\n"
-            "|------|------|:--:|\n"
-            "| Phase 1 地基 | 🏭 熔知 | ✅ MVP |\n"
-            "| Phase 2 摄取 | ⚗️ 馏析 | B站→字幕→文档 |\n"
-            "| Phase 3 验证 | 🔬 炼真 | 认知精炼 |\n"
-            "| Phase 4 输出 | ✨ 凝华 | 进行中 |\n"
-        )
+        # ④ 开发路线
+        ui.markdown("### 开发路线")
+        with ui.card().classes("w-full"):
+            ui.markdown(
+                "| 阶段 | 项目 | 状态 |\n"
+                "|------|------|:--:|\n"
+                "| Phase 1 地基 | 🏭 熔知 | ✅ MVP |\n"
+                "| Phase 2 摄取 | ⚗️ 馏析 | ✅ 可用 |\n"
+                "| Phase 3 验证 | 🔬 炼真 | ✅ 可用 |\n"
+                "| Phase 4 输出 | ✨ 凝华 | 进行中 |"
+            )
 
 
-# ────────────────────────────────────────────────────────────
-# 页面装配
-# ────────────────────────────────────────────────────────────
-ui.label("⚛️ OpusMagnum · 巨作 / GreatWork").classes("text-2xl font-bold")
-ui.label("一人公司总指挥部 · 周看板 + 摄入入口 + 总指挥部").classes("text-sm text-gray-500")
-
-with ui.tabs() as tabs:
-    t_dash = ui.tab("📊 周看板")
-    t_ingest = ui.tab("📥 摄入入口")
-    t_hq = ui.tab("🎛️ 总指挥部")
-
-with ui.tab_panels(tabs, value=t_dash):
-    with ui.tab_panel(t_dash):
-        dash_col = ui.column()
-        ui.button("🔄 刷新", on_click=lambda: render_dashboard(dash_col))
-        render_dashboard(dash_col)
-    with ui.tab_panel(t_ingest):
-        ingest_col = ui.column()
-        render_ingest(ingest_col)
-    with ui.tab_panel(t_hq):
-        hq_col = ui.column()
-        ui.button("🔄 刷新", on_click=lambda: render_hq(hq_col))
-        render_hq(hq_col)
+# ═══════════════════════════════════════════════════════════
+# 路由兜底 & 启动
+# ═══════════════════════════════════════════════════════════
+@ui.page("/health")
+def page_health():
+    """总管探活端点"""
+    return {"status": "ok", "project": "opus-magnum"}
 
 
 if __name__ in {"__main__", "__mp_main__"}:
-    ui.run(port=settings.opus_port, title="OpusMagnum · 巨作", reload=False)
+    # /health 注册为 API 端点（纯 JSON，不走页面渲染）
+    @app.get("/api/health")
+    def _health():
+        return {"status": "ok", "project": "opus-magnum"}
+
+    _show_browser = os.environ.get("OM_AUTO_OPEN_BROWSER", "1") != "0"
+    ui.run(
+        port=settings.opus_port,
+        title="OpusMagnum · 巨作",
+        reload=False,
+        show=_show_browser,
+        dark=True,
+    )
