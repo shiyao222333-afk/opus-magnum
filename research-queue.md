@@ -1604,3 +1604,89 @@
 
 - [ ] **【Claude-thermos：本地反向代理预热会话缓存，实测省下约 22% 重新编码账单】** | 来源：[aihot](https://aihot.virxact.com/items/cmryrjtlb04ehrolgi1zd6eqv) | 🎯 Rubedo 凝华
   SSS 用 Claude Code 推进 Athanor，子智能体等待时空闲超 5 分钟缓存就过期、重新编码烧钱。这个小工具自动发预热请求保活缓存，实测省 22% 账单，uvx 一行跑起来。研究切入点：把成本管控加进 SSS 的 Claude 使用习惯，呼应 7/15 Ploy、7/24 模型路由与同日主段"AI 框架 Harness"的"省钱"主线。
+
+## 2026-07-31
+
+> 📡 **机会雷达扫描（2026-07-31）**：数据源 aihot.virxact.com RSS 直连（feed.xml 50 条，覆盖 7/28–7/31）+ WebSearch 7 天 2 轮（AI副业/一人公司/独立开发者收入 + AI设计/平台红利/新兴变现）。24h 窗口剔除率约 60%（机器人/安全事件/政策诉讼/学术占大头：Gemini Robotics 2、FCC 禁令、HF 入侵系列、Vending-Bench 欺骗、1100 人联名减速等均砍）。与 6/23–7/29 全量去重后净新增 13 条（🔴2 + 🟡7 + ⚪3 + 💡1）。主线：**①平台红利实锤——闲鱼官方数据 AI 服务半年 981.6 万单（+157%），接单赛道从"攻略"变"官方验证"；②降本三连——Token Saver 本地 RAG 削 92-99% token、GPT-5.6 Luna/Terra 降价、2GB 内存跑 Gemma 4 26B；③设计工具地震——Replit Design 喊出"你不需要成为设计师"；④工具链风险——Anthropic 封号潮再敲 Claude 依赖警钟**。项目分布：Rubedo 9 / Citrinitas 3 / OpusMagnum 1；Nigredo、Albedo 本轮无新鲜命中（转录/事实核查信号已在 7/19–7/29 收录）。
+
+### 🔴 本周可试
+
+- [ ] **【Token Saver：本地混合 RAG 削减 Claude PDF token 消耗 92%–99%，开源 MCP 扩展】** | 来源：[aihot](https://aihot.virxact.com/items/cms782fxi02w4ro2evmcwz6uj) | 🎯 Citrinitas 熔知
+  面向 Claude Desktop 的开源 MCP 扩展，在本地设备端做混合 RAG 检索 PDF，文件不用上传、无需 Python 环境，token 消耗直降 92-99%。研究切入点：SSS 用 Claude Code 推进 Athanor 时长文档喂料最烧钱，这个工具双重命中——既是熔知「本地检索层」的现成参照实现（架构可直接借鉴），又立刻能省 SSS 自己的账单，本周就能装上实测。
+
+- [ ] **【闲鱼官方数据：AI 服务半年 981.6 万单同比 +157%，近 500 万人购买，技能接单占 45%】** | 来源：[扬子晚报](https://www.toutiao.com/article/7667922749922279942) | 🎯 Rubedo 凝华
+  闲鱼 7/29 官方披露：上半年 AI 服务订单 981.6 万单，AI 绘画设计/漫剧/视频/编程等技能接单占 45.1%，AI 部署与技术服务单笔可达数万元（企业客户）。研究切入点：接单赛道从「博主攻略」升级为「平台官方验证的爆发市场」——SSS 可本周直接在闲鱼上架两类服务试水：AI 效果图/设计（对标 45% 主赛道）+ 私有化知识库部署（对标单笔数万的技术服务，与 7/29 私有化 RAG 外卖闭环）。
+
+### 🟡 关注
+
+- [ ] **【Replit Design 发布："你不需要成为设计师"，内置数百真实设计师模板】** | 来源：[aihot 发布](https://aihot.virxact.com/items/cms6kdopf05tbrohzoim2kpeg) · [模板库](https://aihot.virxact.com/items/cms87droz020crot087s6upwp) | 🎯 Rubedo 凝华
+  Replit 推出 AI 驱动设计工具，覆盖手机界面/落地页/社媒帖，宣言直指"想法与屏幕之间的差距消失了"。对 SSS 是双面信号：低端拼图类设计单会被此类工具进一步挤压（印证转向效果图/空间类高门槛赛道的必要性）；同时它也是 SSS 自己做落地页/社媒素材的零成本提效工具，值得试用评估边界。
+
+- [ ] **【Anthropic 封号潮：SEPA 漏洞连坐封禁，作者转投 Kimi K3 / GPT-5.6 / WorkBuddy】** | 来源：[aihot](https://aihot.virxact.com/items/cms5k3il000narobkhjrg843v) | 🎯 Rubedo 凝华
+  Anthropic 因支付漏洞"零元购"事件大规模回收并封禁关联账号，半年老号也被误伤；作者实测结论：编程用 Kimi K3 + GPT-5.6 Sol、办公用 WorkBuddy+K3 已可平替，国产模型凭 1/20 算力摸到第一梯队。研究切入点：延续 7/08 阿里禁 Claude 的工具链风险主线——SSS 全部工作流押在 Claude Code 上有单点风险，本周值得把 Kimi K3 编码路径跑一遍当备胎。
+
+- [ ] **【开源引擎让 Gemma 4 26B 在任意 M 系列 Mac 上仅用 2GB 内存运行】** | 来源：[aihot](https://aihot.virxact.com/items/cms6arrc700rbrotzo1wseql3) | 🎯 Citrinitas 熔知
+  GitHub 开源项目把 26B 模型的本地运行内存门槛压到 2GB，普通笔记本即可跑。对熔知的意义：自托管推理的硬件成本再降一档——涉密知识库（SSS 军工背景）可在现有设备上离线推理，延续 7/27 ESP32、7/29 Jetson 的端侧梯队，且这次是"零新增硬件"。
+
+- [ ] **【OpenRouter 下调 GPT-5.6 Terra/Luna 价格：Luna 输入低至 $0.1/M】** | 来源：[aihot](https://aihot.virxact.com/items/cms7teqy003lfropbgykvnbjy) | 🎯 Rubedo 凝华
+  OpenAI 官方降价 + OpenRouter 50% 独家折扣叠加，Luna 输入 $0.1/M、输出 $0.6/M，官方称 GPT-5.6 Sol 以不到一半成本超越 Fable 5 编码得分。对一人公司成本 SOP：批量/低难度任务（摘要、打标、格式化）切 Luna 档，把 Athanor 管线里非关键 LLM 调用的单价打到地板，延续 7/15 Ploy、7/24 模型路由的省钱主线。
+
+- [ ] **【Gemini Spark 集成 Chrome 自动浏览：Agent 直接在你的浏览器里干活】** | 来源：[aihot](https://aihot.virxact.com/items/cms7yv0bp02mwro20ov2cktzi) | 🎯 Rubedo 凝华
+  Gemini Spark 经用户许可后可在 Chrome 中自动处理网页任务（预约、填表等）。对 Rubedo 自动化 SOP 是「浏览器层 RPA」新选项——素材采集、平台后台重复操作（如接单平台报名、上架商品）可交给它，与 7/12 Claude 沙盒浏览器、7/30 Perplexity 形成竞品矩阵，等国内可用性再深测。
+
+- [ ] **【Perplexity Computer 推出 Projects：多智能体协作 OS，持久记忆+文件+跨会话】** | 来源：[aihot](https://aihot.virxact.com/items/cms7sw59802yyropbrio5ml9u) | 🎯 Rubedo 凝华
+  在 7/29 已收的 Windows 本地 Agent 基础上的增量：Projects 把 Computer 升级为带持久化内存和文件的多 Agent 协作系统，向所有用户开放。信号：桌面级"数字员工"从单任务走向长期项目制——SSS 可观察其项目组织方式，反哺 Rubedo 自动化 SOP 的任务编排设计。
+
+- [ ] **【腾讯混元开源 AngelSpec 投机解码框架：端到端 1.98–2.4 倍加速】** | 来源：[aihot](https://aihot.virxact.com/items/cms639jt416x6robksy69dzel) | 🎯 Citrinitas 熔知
+  端到端投机解码框架开源（训练+部署+草稿模型权重），Hy3-A21B 上实测约 2 倍加速。对熔知自托管推理是「同硬件白拿 2 倍吞吐」的降本选项，与 Kimi Linear（7/29）、AngelSlim 同属国产开源推理提效梯队，待熔知推理层选型时纳入对比。
+
+### ⚪ 了解
+
+- [ ] **【两项 API 设置让 GPT-5.6 在 ARC-AGI-3 得分翻 3 倍：保留推理 + 启用压缩】** | 来源：[aihot](https://aihot.virxact.com/items/cms6p8lnz09o6rohzegz5w5xp) | 🎯 Rubedo 凝华
+  OpenAI 官方测试：开启 retaining reasoning 和 compaction 两个参数，同一模型得分×3 且效率更高。印证 7/29「框架比模型重要」结论——调参/编排的性价比远高于换模型，写进 SSS 的 API 调用 checklist。
+
+- [ ] **【1600 万家一人公司数据全景：73% 独立开发者收入涨了，但仅 34% 产品盈利】** | 来源：[w2solo](https://w2solo.com/topics/7803) | 🎯 Rubedo 凝华
+  截至 2026 上半年国内一人公司破 1600 万家（占新增企业 27.4%）；Indie Hackers 1.6 万产品 Stripe 数据仅 34% 盈利、盈利者平均月入 997 美元；68% 的最大风险是新旧产品间的现金流空窗。增量结论（7/26 收入分化条的深化）：活下来的都是「接单保现金流 + 产品慢慢磨」双轨制——正是 SSS 当前"设计接单 + Athanor 产品"结构的数据背书。
+
+- [ ] **【AITOP100 商单广场 + 7 场 AI 大赛奖金池 985 万：赛事变现新入口】** | 来源：[火山开发者社区](https://developer.volcengine.com/articles/7664872182511779894) | 🎯 Rubedo 凝华
+  AI 赛事聚合平台开放商单广场，6 月底更新 7 场比赛合计奖金 985.88 万元（微短剧创投 800 万、AIGC 出海等），单子少竞争也少。对 SSS 是低竞争补充渠道：AI 设计/视频类比赛既攒作品集又可能拿奖金，优先级低但零成本关注。
+
+### 💡 探索
+
+- [ ] **【算力现货价格自 2 月已涨 40%，测算未来或涨 10 倍以上】** | 来源：[aihot](https://aihot.virxact.com/items/cms69xwp11ej8robk4upl33jq) | 🎯 OpusMagnum 巨作
+  Google/Anthropic 以 2 倍现货价从 SpaceX 租 11 万块 GPU；若 AI 达到人类工程师水平，H100 等效算力年租金可达现货 15 倍。战略含义：云端 API 价格长期看未必一直降（今天的降价靠效率优化对冲），「本地端侧 + 开源小模型」这条 OpusMagnum 降本底座的价值会随算力通胀持续升值——与 7/26–7/27 开放权重政策博弈并列为两大战略环境变量。
+
+
+> 📡 **二次扫描补充（08:50）**：aihot /api/public/daily 24h 精选 24 条 + WebSearch 副业/平台红利 2 组。与本日首段及 6/23–7/29 全量去重：剔除 Token Saver、Perplexity Projects（首段已收）及豆包搜索/Kimi Linear/FeyNoBg/OpenAI转录/Harness（7/29 已收）。净新增 8 条（🟡6 + ⚪1 + 💡1）。
+
+### 🟡 关注（补扫）
+
+- [ ] **【独立开发者三收入流实战：竞品分析 SaaS + Next.js 模板 + AI 转型咨询 = 月入五位数美元】** | 来源：https://blog.51cto.com/u_16492348/14712955 | 🎯 Rubedo 凝华
+  真实拆解：SaaS 月入 $3000（首月 120 付费用户）+ 模板被动收入 $2000（Gumroad $29-79）+ 咨询单项目 $1-2 万。「产品+资产+服务」三条腿组合抗风险，比单押一条路稳——SSS 的设计模板/效果图套餐/咨询完全可以套这个结构。
+
+- [ ] **【AI 独立开发 5 个实操方向拆解：含零代码设计师靠 AI 编程接单月入 2-3 万案例】** | 来源：https://www.douchuanghui.com/thread-17588-1-9.html | 🎯 Rubedo 凝华
+  最相关的一条：一个零编程基础的设计师，学两个月「用 AI 写代码」，接本地小生意管理系统单（8000 元/单、AI 写 95% 代码）月稳 2-3 万——和 SSS 的 vibe coding 路径完全同构。另附 AI 知识库+付费咨询（199 元/月订阅、月入 6 万）玩法，可对照 Athanor 商业化。（与 7/26 同站「内容流水线」为不同文章）
+
+- [ ] **【AI Freelancing 2026 方法论：按价值定价（40 小时做出 $15k 价值就收 $8-10k）+ LinkedIn 直客获客 + 50% 预付款】** | 来源：https://aijobsgate.com/article/ai-freelancing-make-money-2026 | 🎯 Rubedo 凝华
+  三个可直接抄的规则：①不按小时报价按客户价值报价；②2-3 个强案例 > 20 个弱案例，能跑的 demo 胜过十行简历；③新客户 50% 预付过滤不认真的人。做成 SSS 接单 SOP 的定价与合同模板。
+
+- [ ] **【四大平台中长视频政策汇总（截至 2026 年 7 月）：小红书承诺 500 亿流量扶持 3 分钟以上干货视频】** | 来源：https://so.html5.qq.com/page/real/search_news?docid=70000021_5006a63736b26552 | 🎯 Rubedo 凝华
+  抖音 3 分钟+泛知识权重提升、微博观看时长主导+2.5 倍广告分成、B 站 10 分钟+激励翻倍、小红书 500 亿流量+专项基金。平台集体转向「中长干货」，SSS 的设计教程/效果图过程类内容正好是干货体裁——内容策略该从图文短平快转向 3 分钟+教程了。
+
+- [ ] **【Gemini API Managed Agents 默认升级 3.6 Flash，新增免费套餐】** | 来源：https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api-3-6-flash-hooks | 🎯 Citrinitas 熔知
+  托管 Agent 有免费层了——原型验证阶段可以零成本跑 Agent 任务，配合环境钩子做沙箱内工具调用。列入熔知「模型路由」的免费额度池，和豆包搜索（7/29）、OpenRouter 缓存路由（7/22）同一条降本主线。
+
+- [ ] **【OpenRouter 实测：同一模型在不同提供商端点上性能差异巨大，评估延迟/吞吐/在线率后再定路由】** | 来源：https://openrouter.ai/blog/insights/evaluate-llm-provider-performance | 🎯 Citrinitas 熔知
+  量化、负载、路由默认值都会让「同一个模型」表现不同——选提供商和选模型一样重要。给熔知的模型路由策略补上「提供商维度」评估清单，延续 7/03 路由优先设计降本 90% 的主线（与首段「OpenRouter 降价」为不同维度：那条是价格，这条是选商方法论）。
+
+### ⚪ 了解（补扫）
+
+- [ ] **【OpenAI 开源 Codex 安全 CLI 与 TypeScript SDK：扫描仓库、验证并修复安全漏洞】** | 来源：https://github.com/openai/codex | 🎯 Rubedo 凝华
+  vibe coding 产物的安全短板有免费工具兜底了——SSS 用 AI 搭的小程序/网站交付前跑一遍安全扫描，能当接单交付的加分项（「含安全审计」可以加价）。
+
+### 💡 探索（补扫）
+
+- [ ] **【OpenAI、Anthropic、Altman 集体转向「AI 减速」：支持为前沿 AI 发展设定节奏的请愿】** | 来源：https://techcrunch.com/2026/07/28/sam-altman-is-ready-to-decelerate | 🎯 OpusMagnum 巨作
+  首段按「政策/安全新闻」剔除了联名减速，此处从赚钱视角重新收录：若前沿模型迭代放缓，①现有工具栈「保鲜期」变长，一人公司追新压力下降；②开源追赶窗口拉大，利好低成本自托管路线。和 7/26-7/27 开放权重政策博弈是方向相反的对照组，同属战略天气预报。
+
+---

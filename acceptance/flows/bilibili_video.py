@@ -172,7 +172,18 @@ class BilibiliVideoFlow:
             # 方案1：炼真 OUTPUT_DIR 已被 harness 重定向到 STAGING_DIR，中转②落暂存而非收件箱，
             # 故在此轮询暂存目录，绝不会触发熔知自动摄入。
             STAGING_DIR.mkdir(parents=True, exist_ok=True)
-            seen_staging = {p.name for p in STAGING_DIR.glob("*_refined.md")}
+            # 【健壮性修复 2026-07-30】step④ 开局先清掉 STAGING 里所有历史中转②（*_refined.md）。
+            # 否则上轮/上次运行残留的精炼稿会在下面 poll 时被「累积 seen 集合」当成已存在→
+            # poll 永不命中→误报「第N次超时」。原写法用全局 *_{refined}.md + 跨轮累积 seen，
+            # 一旦 STAGING 在 step④ 前就有同名精炼稿（时序差/清理被环境钩子拦掉）必翻车。
+            _stale_refined = list(STAGING_DIR.glob("*_refined.md"))
+            for _old in _stale_refined:
+                try:
+                    _old.unlink()
+                except OSError:
+                    pass
+            if _stale_refined:
+                self._say(f"  [清理] step④ 开局清掉 {len(_stale_refined)} 个残留中转②（防误判超时）")
             bv = local_transit.stem
             real_bv = _extract_bvid(url)   # 真实 BV 号（用于清炼真主张缓存，非本地文件名 stem）
             for r in range(1, 4):
@@ -180,15 +191,26 @@ class BilibiliVideoFlow:
                 inj = WATCH_DIR / f"{bv}_acc_r{r}.md"
                 shutil.copy(local_transit, inj)
                 self._say(f"  第{r}次：已注入 {inj.name}，等待炼真产出（≤{ALBEDO_TIMEOUT}s，每{ALBEDO_INTERVAL}s探）…")
+                # 【健壮性修复】按本轮注入文件名精确轮询该轮中转②（命名含 _acc_r{r}），
+                # seen 每轮用全新空集合，彻底杜绝跨轮误判 / 残留命中。
                 out = poll_new_file(
-                    STAGING_DIR, seen_staging, timeout=ALBEDO_TIMEOUT,
-                    interval=ALBEDO_INTERVAL, pattern="*_refined.md",
+                    STAGING_DIR, set(), timeout=ALBEDO_TIMEOUT,
+                    interval=ALBEDO_INTERVAL, pattern=f"*_acc_r{r}_refined.md",
                 )
                 if out is None:
-                    raise TimeoutError(f"炼真第{r}次超时未产出中转②")
+                    _listing = sorted(p.name for p in STAGING_DIR.glob("*"))
+                    raise TimeoutError(
+                        f"炼真第{r}次超时未产出中转②（期望 {bv}_acc_r{r}_refined.md）；"
+                        f"STAGING 现有文件: {_listing}"
+                    )
                 shutil.copy(out, self.out_dir / f"0{r + 1}_albedo_refined_r{r}.md")
                 refined_paths.append(out)
                 self._say(f"  第{r}次：中转② -> {out.name}")
+                # 本轮中转②已复制走，清掉 STAGING 原文件，保持暂存干净（下一轮用 _acc_r{r+1} 精确轮询，不受影响）。
+                try:
+                    out.unlink()
+                except OSError:
+                    pass
 
             # 【步骤⑤】熔知 ×3（先随机选 1 份，同一份提交 3 次；每次记录 53 字段后删测试数据）
             # 方案1：step④ 中转②在暂存，未进收件箱，故同一份提交 3 次不会在第 1 轮就被内容去重拦截；

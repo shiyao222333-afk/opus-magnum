@@ -113,10 +113,23 @@ def _act_start(key):
     return _f
 
 
-def open_uis(icon, item):
-    for svc in SVC.SERVICES:
-        if svc.get("ui"):
-            webbrowser.open(svc["ui"])
+def open_url(url):
+    """单独打开某一个服务的网页/界面（只开一个，不一次全开）。"""
+    def _f(icon, item):
+        webbrowser.open(url)
+    return _f
+
+
+def open_service_log(key):
+    """打开某一个服务的独立日志文件（单服务日志，便于排错）。"""
+    def _f(icon, item):
+        path = SUP.log_path(key)
+        target = path if os.path.exists(path) else os.path.join(SVC.LAUNCHER_DIR, "logs")
+        try:
+            os.startfile(target)
+        except Exception:
+            pass
+    return _f
 
 
 def open_logs(icon, item):
@@ -135,20 +148,45 @@ def build_menu():
         MenuItem("■ 停止全部", _act_stop_all),
         Menu.SEPARATOR,
     ]
+    # 每个服务的启停子菜单（启动 / 停止 / 重启）
     for svc in SVC.SERVICES:
+        if svc.get("menu_visible") is False:
+            continue
         key = svc["key"]
         st = SUP.status.get(key, {})
         dot = "●" if st.get("running") else "○"
         label = f"{dot} {svc['name']}  —  {st.get('detail', '')}"
         sub = Menu(
-            MenuItem("重启", _act_restart(key)),
-            MenuItem("停止", _act_stop(key)),
             MenuItem("启动", _act_start(key)),
+            MenuItem("停止", _act_stop(key)),
+            MenuItem("重启", _act_restart(key)),
         )
         items.append(MenuItem(label, sub))
     items.append(Menu.SEPARATOR)
-    items.append(MenuItem("🌐 打开界面", open_uis))
-    items.append(MenuItem("📂 查看日志", open_logs))
+
+    # ③ 单独打开某服务的界面（只开一个，不一次全开）
+    #   巨作入口(8501) 现在已是受管服务(见 services.py)，由下面循环自动列出
+    open_items = []
+    for svc in SVC.SERVICES:
+        if svc.get("menu_visible") is False:
+            continue
+        if svc.get("ui"):
+            name = svc["name"].split("（")[0].strip()
+            open_items.append(MenuItem(f"{name} ({svc['ui']})", open_url(svc["ui"])))
+    items.append(MenuItem("🌐 单独打开界面", Menu(*open_items)))
+
+    # ② 单服务日志（点开直接看某个服务的独立日志文件，便于排错）
+    log_items = [
+        MenuItem("📂 查看全部日志", open_logs),
+    ]
+    for svc in SVC.SERVICES:
+        if svc.get("menu_visible") is False:
+            continue
+        key = svc["key"]
+        name = svc["name"].split("（")[0].strip()
+        log_items.append(MenuItem(f"📄 {name} 日志", open_service_log(key)))
+    items.append(MenuItem("📂 单服务日志", Menu(*log_items)))
+
     items.append(MenuItem("⏏ 退出", quit_app))
     return Menu(*items)
 

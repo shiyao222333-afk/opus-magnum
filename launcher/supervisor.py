@@ -39,7 +39,7 @@ class Supervisor:
     def __init__(self):
         self.procs = {}                       # key -> subprocess.Popen
         self.status = {}                      # key -> {running, detail, since}
-        self.desired = {s["key"]: True for s in SVC.SERVICES}
+        self.desired = {s["key"]: s.get("enabled_by_default", True) for s in SVC.SERVICES}
         self._lock = threading.Lock()
         self._stop = threading.Event()
         # 连续重启退避：同一服务连续不健康达到上限就停手，避免无限拉起弹窗
@@ -49,31 +49,36 @@ class Supervisor:
             self.status[s["key"]] = {"running": False, "detail": "未启动", "since": 0.0}
 
     # ───────────────────────── 启动 / 停止 ─────────────────────────
-    def _hidden_popen(self, cmd, cwd, env):
+    def _hidden_popen(self, cmd, cwd, env, log_name="_spawn.log"):
         si = subprocess.STARTUPINFO()
         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         si.wShowWindow = subprocess.SW_HIDE
         return subprocess.Popen(
             cmd, cwd=cwd, env=env,
-            stdout=open(os.path.join(LOG_DIR, "_spawn.log"), "a", encoding="utf-8"),
+            stdout=open(os.path.join(LOG_DIR, log_name), "a", encoding="utf-8"),
             stderr=subprocess.STDOUT,
             creationflags=CREATE_NO_WINDOW | DETACHED_PROCESS,
             startupinfo=si,
         )
 
-    def _spawn(self, svc):
+    def log_path(self, key):
+        """返回某服务的独立日志文件路径（单服务日志，便于排错）。"""
+        return os.path.join(LOG_DIR, f"{key}.log")
+
+    def _spawn(self, svc, suppress_browser=False):
         sp = svc["spawn"]
         env = clean_env()
-        # 受总管监管的服务一律不自动弹浏览器/原生窗口：后台静默运行，
-        # 由托盘「打开界面」手动打开，避免重启时无限弹窗。
-        env["OM_AUTO_OPEN_BROWSER"] = "0"
+        # 仅「监控自动重启」场景（suppress_browser=True）抑制弹浏览器，避免崩溃重启反复弹窗；
+        # 用户主动启动（双击/托盘启动/重启）一律弹浏览器，满足「合并巨作启动」。
+        if suppress_browser:
+            env["OM_AUTO_OPEN_BROWSER"] = "0"
         cwd = sp.get("cwd")
         if sp["kind"] == "python":
             cmd = [sp["python"]] + list(sp["args"])
         else:  # powershell
             cmd = ["powershell"] + list(sp["args"])
         log.info("启动 %s: %s (cwd=%s)", svc["name"], " ".join(cmd), cwd)
-        return self._hidden_popen(cmd, cwd, env)
+        return self._hidden_popen(cmd, cwd, env, log_name=f"{svc['key']}.log")
 
     def _run_pre(self, svc):
         pre = svc.get("pre")
@@ -143,9 +148,11 @@ class Supervisor:
         for lk in locks:
             self._clear_one_lock(lk, svc["key"])
 
-    def start_service(self, key):
+    def start_service(self, key, suppress_browser=False):
         svc = self._by_key(key)
         if svc is None:
+            return
+        if not svc.get("spawn"):   # 非托盘托管（仅网页托管）的服务，托盘不启动
             return
         with self._lock:
             self._clear_stale_lock(svc)
@@ -155,7 +162,7 @@ class Supervisor:
             try:
                 self._run_pre(svc)
                 time.sleep(1)
-                p = self._spawn(svc)
+                p = self._spawn(svc, suppress_browser=suppress_browser)
                 self.procs[key] = p
                 self.status[key] = {"running": True, "detail": "运行中", "since": time.time()}
                 self.desired[key] = True
@@ -184,8 +191,12 @@ class Supervisor:
         self.start_service(key)
 
     def start_all(self):
-        # 按依赖深度从小到大启动，避免上游还没好下游就报错
-        for svc in sorted(SVC.SERVICES, key=lambda s: len(s["depends_on"])):
+        # 按依赖深度从小到大启动，避免上游还没好下游就报错。
+        # 仅启动 enabled_by_default=True 的服务（rubedo 默认关）。
+        enabled = [s for s in SVC.SERVICES
+                   if s.get("enabled_by_default", True)
+                   and s.get("spawn") and s.get("health")]
+        for svc in sorted(enabled, key=lambda s: len(s["depends_on"])):
             self.desired[svc["key"]] = True
             self.start_service(svc["key"])
             time.sleep(2)
@@ -196,6 +207,13 @@ class Supervisor:
 
     # ───────────────────────── 探活 / 自愈 ─────────────────────────
     def _is_healthy(self, svc, proc):
+        # 启动宽限期：宽限期内一律视为健康，不查、不重启。
+        # 核心用途：避免慢启动服务（如 NiceGUI 冷启动要 20~30s 才绑端口）被监控线程
+        # 误判「端口无响应」而反复杀掉重来，永远起不来（opus 巨作即此情况）。
+        since = self.status[svc["key"]].get("since", 0)
+        uptime = time.time() - since
+        if uptime < svc.get("grace", 0):
+            return True, "启动中(宽限期内不查)"
         ephemeral = svc.get("proc_ephemeral", False)
         if not ephemeral:
             if proc is None or proc.poll() is not None:
@@ -237,6 +255,12 @@ class Supervisor:
     def monitor_once(self):
         for svc in SVC.SERVICES:
             key = svc["key"]
+            # 仅「托盘托管」的服务（声明了 spawn + health）才纳入监控自愈；
+            # 纯网页托管的服务（如 drop_watcher，只有 web_visible）托盘不碰，
+            # 否则缺 spawn/health 字段会 KeyError。这样未来即便有人把它的
+            # enabled_by_default 翻成 True，托盘也不会崩。
+            if not svc.get("spawn") or not svc.get("health"):
+                continue
             if not self.desired.get(key):
                 continue
             proc = self.procs.get(key)
@@ -273,7 +297,8 @@ class Supervisor:
                     pass
                 self.procs.pop(key, None)
                 time.sleep(1)
-                self.start_service(key)
+                # 监控触发的自动重启：抑制弹浏览器，避免崩溃重启反复弹窗
+                self.start_service(key, suppress_browser=True)
 
     def run_monitor(self):
         log.info("总管监控线程启动")

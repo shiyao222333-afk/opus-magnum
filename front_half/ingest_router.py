@@ -20,6 +20,7 @@ import json
 import logging
 import shutil
 import sys
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
@@ -152,6 +153,11 @@ def route_file(path: str) -> dict:
 
 def route_note(text: str, title: str = "") -> dict:
     """闪念笔记（纯文本）→ 生成标准头 .md → 写入熔知收件箱。"""
+    # ── 调用栈日志（排查重复入库用） ──
+    stack = "".join(traceback.format_stack()[:-1])
+    logger.info("route_note 被调用 | title=%s | text[:50]=%s\n调用栈:\n%s",
+                title, (text or "")[:50], stack)
+
     text = (text or "").strip()
     if not text:
         return {"ok": False, "kind": "note", "message": "笔记内容为空"}
@@ -161,6 +167,21 @@ def route_note(text: str, title: str = "") -> dict:
     iso = ts.replace(tzinfo=timezone.utc).isoformat()
     raw_slug = (title or text.split("\n")[0])[:20].strip() or "note"
     slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in raw_slug)
+    fname = f"note_{ts.strftime('%Y%m%d-%H%M%S')}_{slug}.md"
+    content = (
+        "---\n"
+        f"title: 闪念笔记 {slug}\n"
+        "source: opus-magnum-note\n"
+        f"created_at: {iso}\n"
+        "type: note\n"
+        "---\n\n"
+        f"{text}\n"
+    )
+    dest = inbox / fname
+    dest.write_text(content, encoding="utf-8")
+    logger.info("route_note 已落盘: %s", fname)
+    return {"ok": True, "kind": "note", "message": f"已写入熔知收件箱: {fname}"}
+    iso = ts.replace(tzinfo=timezone.utc).isoformat()
     fname = f"note_{ts.strftime('%Y%m%d-%H%M%S')}_{slug}.md"
     content = (
         "---\n"

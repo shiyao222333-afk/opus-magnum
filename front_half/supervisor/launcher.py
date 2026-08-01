@@ -7,9 +7,9 @@
   - 启动前按端口/PID 去重，绝不双开（防同地址被两进程各处理一次=串）。
   - 日志重定向到 logs/<name>.log，启动前做 5MB 轮转（留最近3），三器内部零改。
 
-服务定义：
-  - 有端口的（熔知）：用端口判定存活 + 按端口查 PID 停止。
-  - 无端口的（馏析队列消费 / 炼真监控 / 投递箱监听）：用 PID 文件判定存活 + 按 PID 停止。
+服务清单：统一复用 launcher.services.SERVICES（单一权威清单，list[dict]）。
+  本模块只保留"网页端启停 + 存活判定"引擎，数据全部来自 SERVICES，
+  不再各自维护一份字典，避免与托盘启动器出现"形状对不上"的坑。
 """
 from __future__ import annotations
 
@@ -22,58 +22,35 @@ from pathlib import Path
 
 logger = logging.getLogger("opus.launcher")
 
+# 单一权威清单：巨作所有服务定义都在 D:\opus-magnum\launcher\services.py。
+# 这里直接用文件绝对路径加载它，避免与本项目内的 front_half.supervisor.launcher
+# （文件名也叫 launcher）发生包名冲突，也避免改动托盘侧目录结构（它当前可正常用
+# 脚本目录相对导入，不动它）。加载出的模块名特意取别名 opus_launcher_services，
+# 不占用 launcher 这个名字。
 OPUS_DIR = Path(__file__).resolve().parent.parent.parent  # D:\opus-magnum
+
+import importlib.util as _ilu
+
+_SERVICES_FILE = OPUS_DIR / "launcher" / "services.py"
+_spec = _ilu.spec_from_file_location("opus_launcher_services", str(_SERVICES_FILE))
+_launcher_services = _ilu.module_from_spec(_spec)
+_spec.loader.exec_module(_launcher_services)
+SERVICES = _launcher_services.SERVICES  # 单一权威清单（list[dict]）
+
 ROOT = OPUS_DIR.parent  # D:\
 LOGS_DIR = OPUS_DIR / "logs"
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
-NIGREDO = ROOT / "nigredo"
-ALBEDO = ROOT / "albedo"
-CITRINITAS = ROOT / "citrinitas"
-
 LOG_MAX_BYTES = 5 * 1024 * 1024
 LOG_KEEP = 3
 
-# 各项目优先用各自 venv 的 python（与 run.bat 行为一致）
-def _py(project_dir: Path) -> str:
-    v = project_dir / "venv" / "Scripts" / "python.exe"
-    return str(v) if v.exists() else "python"
 
-
-SERVICES = {
-    "nigredo_consumer": {
-        "label": "⚗️ 馏析队列消费",
-        "port": None,
-        # 锁文件(data/queue_consumer.lock)由 run_queue.py 自己管理（单消费者防双开），
-        # 启动器只"读"它做存活判定，不"写"，避免两个组件抢同一把锁导致消费器误判自杀。
-        "pid_file": NIGREDO / "data" / "queue_consumer.lock",
-        "launcher_writes_pid": False,
-        "cmd": [_py(NIGREDO), str(NIGREDO / "run_queue.py")],
-        "cwd": str(NIGREDO),
-    },
-    "drop_watcher": {
-        "label": "📥 AI 投递箱监听",
-        "port": None,
-        "pid_file": OPUS_DIR / "drop" / "drop_watcher.lock",
-        "cmd": [sys.executable, str(OPUS_DIR / "front_half" / "drop_watcher.py")],
-        "cwd": str(OPUS_DIR),
-    },
-    "albedo": {
-        "label": "🔬 炼真",
-        "port": None,
-        "pid_file": ALBEDO / ".watcher.pid",
-        "launcher_writes_pid": False,
-        "cmd": [str(ALBEDO / "run.bat")],
-        "cwd": str(ALBEDO),
-    },
-    "citrinitas": {
-        "label": "🏭 熔知",
-        "port": 8080,
-        "pid_file": None,
-        "cmd": [str(CITRINITAS / "run.bat")],
-        "cwd": str(CITRINITAS),
-    },
-}
+def _by_key(name: str) -> dict | None:
+    """按 key 在权威清单中查服务（SERVICES 现为 list[dict]）。"""
+    for s in SERVICES:
+        if s.get("key") == name:
+            return s
+    return None
 
 
 # ── 进程存活判定 ────────────────────────────────────────────
@@ -142,16 +119,16 @@ def _pid_on_port(port: int) -> int | None:
 
 
 def is_running(name: str) -> bool:
-    spec = SERVICES.get(name)
-    if not spec:
+    spec = _by_key(name)
+    if not spec or not spec.get("web_visible"):
         return False
-    if spec["port"] is not None:
+    if spec.get("port") is not None:
         return _port_listening(spec["port"])
     # 无端口：看 PID 文件
     pf = spec.get("pid_file")
-    if pf and pf.exists():
+    if pf and Path(pf).exists():
         try:
-            pid = int(pf.read_text(encoding="utf-8").strip())
+            pid = int(Path(pf).read_text(encoding="utf-8").strip())
         except (ValueError, OSError):
             return False
         return _pid_alive(pid)
@@ -175,8 +152,8 @@ def _rotate_log(name: str) -> None:
 # ── 启动 / 停止 ─────────────────────────────────────────────
 def start_service(name: str) -> str:
     """启动服务。已运行则返回 'already'，否则拉起返回 'started'。"""
-    spec = SERVICES.get(name)
-    if not spec:
+    spec = _by_key(name)
+    if not spec or not spec.get("web_visible"):
         return f"未知服务: {name}"
     if is_running(name):
         return "already"
@@ -205,28 +182,28 @@ def start_service(name: str) -> str:
 
     pf = spec.get("pid_file")
     if pf and spec.get("launcher_writes_pid", True):
-        pf.parent.mkdir(parents=True, exist_ok=True)
-        pf.write_text(str(proc.pid), encoding="utf-8")
-    logger.info(f"已启动 {spec['label']} (pid={proc.pid})")
+        Path(pf).parent.mkdir(parents=True, exist_ok=True)
+        Path(pf).write_text(str(proc.pid), encoding="utf-8")
+    logger.info(f"已启动 {spec.get('label', name)} (pid={proc.pid})")
     return "started"
 
 
 def stop_service(name: str) -> str:
     """停止服务。按 PID 文件或端口查到的 PID 结束进程。"""
-    spec = SERVICES.get(name)
-    if not spec:
+    spec = _by_key(name)
+    if not spec or not spec.get("web_visible"):
         return f"未知服务: {name}"
     if not is_running(name):
         return "not_running"
 
     pid = None
     pf = spec.get("pid_file")
-    if pf and pf.exists():
+    if pf and Path(pf).exists():
         try:
-            pid = int(pf.read_text(encoding="utf-8").strip())
+            pid = int(Path(pf).read_text(encoding="utf-8").strip())
         except (ValueError, OSError):
             pid = None
-    if pid is None and spec["port"] is not None:
+    if pid is None and spec.get("port") is not None:
         pid = _pid_on_port(spec["port"])
 
     if pid is not None and _pid_alive(pid):
@@ -247,22 +224,22 @@ def stop_service(name: str) -> str:
             if not _pid_alive(pid):
                 break
             time.sleep(0.3)
-    if pf and pf.exists():
+    if pf and Path(pf).exists():
         try:
-            pf.unlink()
+            Path(pf).unlink()
         except OSError:
             pass
     return "stopped"
 
 
 def start_all() -> dict:
-    return {name: start_service(name) for name in SERVICES}
+    return {s["key"]: start_service(s["key"]) for s in SERVICES if s.get("web_visible")}
 
 
 def stop_all() -> dict:
-    return {name: stop_service(name) for name in SERVICES}
+    return {s["key"]: stop_service(s["key"]) for s in SERVICES if s.get("web_visible")}
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    print("状态:", {n: is_running(n) for n in SERVICES})
+    print("状态:", {s["key"]: is_running(s["key"]) for s in SERVICES if s.get("web_visible")})
