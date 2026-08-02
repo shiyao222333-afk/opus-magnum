@@ -16,6 +16,9 @@
 ### Added — 2026-08-01
 - ✨ **周看板升级：文章可点击预览 + 收藏持久化，收藏文跨周恒显**：看板标题点击即可打开文章预览——熔知在线时外链到熔知详情页（URL 统一走 `settings.citrinitas.endpoint`），熔知不可达时看板内弹窗兜底展示标题/摘要/主题/关键词/来源/时间/正文（正文截断）；每篇文章新增收藏按钮，收藏状态写入熔知既有字段 `stats.starred`（不新增字段），收藏的文章跨周恒显在看板顶部收藏区（前 20 + 共 N 篇计数，两区双显、并集去重、已收藏 ★ 高亮）。`core/qdrant_bridge.py` 由纯只读改为「读全量 + 单字段受控写」：新增唯一写入口 `set_starred`（先 count 区分 doc 存在性 → `set_payload?wait=true` + `key:"stats"` 嵌套合并保留 `access_count` + `filter:{doc_id}` 覆盖全 chunk，永不抛异常）、白名单 `WRITABLE_PAYLOAD_KEYS`、`is_starred`/`count_doc_points`/`fetch_dashboard_docs`/`fetch_starred_docs`（瞬态标记 `_starred`/`_this_week` 禁回写），文件头追加诚实变更声明（AI 设计决策、非用户指令、待确认）；`app.py` 拆出 `@ui.refreshable dashboard_body` 局部刷新 + async 收藏回调（防连点 + `run.io_bound`）。依赖零新增（HTTP 仅标准库 urllib）；验收 `acceptance/test_starred_flow.py` 5 项全过（临时集合，测完即删）。
 
+### Changed — 2026-08-01
+- 🔄 **周看板布局改版**：顶部新增总览条——本周篇数 / 来源数 / 收藏数 3 个等宽数字卡（大数字 `text-2xl font-bold`）；本周区分组键由 `source_project` 改为 `content_type`，分组标题显示人话 emoji 显示名（`app.py` 新增静态表 `CONTENT_TYPE_LABELS`，复制自熔知 classifications.py 词表、禁 import 熔知模块，熔知改词表需同步），content_type 缺失或未知归「其他」；本周区改为两列等宽卡片（`ui.grid(columns=2)`），每张卡片极简一行：★收藏 + 标题 + 👁本地预览；收藏区保持置顶全宽列表不变。版本号不升。
+
 ### Added — 2026-07-07
 - ✨ 新增 `bug-triage` skill（疑难杂症处理流程）— 多轮 Bug 未修复时启用，用临时错误记录文件 + 假设银行 + 诊断工具强制转向
 - ✨ PM `EXECUTION.md` Phase 0.5 增加「存在 BUGLOG-*.md 先读精简记录」规则；`SKILL.md` 文件索引加 bug-triage 指针

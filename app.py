@@ -104,6 +104,29 @@ def build_left_drawer(active_page: str = "") -> None:
 # ═══════════════════════════════════════════════════════════
 # 周看板辅助：熔知可达性探测 + 收藏交互 + 单行渲染 + 可刷新主体
 # ═══════════════════════════════════════════════════════════
+
+# 内容类型人话显示名（看板分组用）
+# 复制自熔知 classifications.py 的 CONTENT_TYPE_OPTIONS（仅取显示名），
+# 熔知改词表需同步；禁止 import 熔知模块（五器独立原则）。
+CONTENT_TYPE_LABELS = {
+    "knowledge":     "📖 知识条目",
+    "document":      "📄 原始文档",
+    "video_script":  "🎬 视频脚本",
+    "social_post":   "📱 社媒文案",
+    "article":       "📰 文章/博客",
+    "book":          "📚 书籍",
+    "paper":         "📑 学术论文",
+    "standard":      "📜 标准/规范",
+    "webpage":       "🌐 网页内容",
+    "personal_note": "📝 个人笔记",
+    "project_note":  "📋 项目笔记",
+    "idea":          "💡 想法/灵感",
+    "template":      "📐 模板",
+    "legal_doc":     "⚖️ 法律文件",
+    "other":         "📦 其它",
+}
+
+
 def _citrinitas_reachable() -> bool:
     """探测熔知 8080 是否可达（决定标题外链 vs 本地弹窗兜底）。
 
@@ -166,7 +189,8 @@ def _doc_row(d: dict, online: bool) -> None:
         if online:
             ui.link(title, detail_url, new_tab=True).classes(title_class)
         else:
-            ui.link(title, on_click=preview_dialog.open).classes(title_class)
+            # 熔知离线降级：ui.link 无 on_click 参数，改用元素事件绑定（on() 支持同步 handler）
+            ui.link(title).on("click", preview_dialog.open).classes(title_class)
 
         ui.button("👁", on_click=preview_dialog.open).props("flat round dense size=sm").classes("text-blue-300")
         ui.tooltip("本地预览（熔知离线兜底）")
@@ -195,7 +219,8 @@ async def _on_toggle_star(d: dict, btn) -> None:
 def dashboard_body() -> None:
     """看板主体（可局部刷新，不用 ui.update() 或整页跳转）。
 
-    布局：⭐ 收藏区置顶（前 20 + 共 N 篇计数）→ 📥 本周区在下按 source_project 分组。
+    布局：顶部总览条（本周篇数 / 来源数 / 收藏数）→ ⭐ 收藏区置顶（前 20 + 共 N 篇计数）
+    → 📥 本周区在下按 content_type 人话分类，两列等宽卡片。
     两区默认双显、各自 doc_id 去重；空态保留「📭 本周还没有新录入。」。
     """
     data = fetch_dashboard_docs()
@@ -209,7 +234,28 @@ def dashboard_body() -> None:
             ui.label("📭 本周还没有新录入。").classes("text-gray-400")
         return
 
-    # ⭐ 收藏区（置顶，前 20 + 计数）
+    # ── T1 顶部总览条：3 个等宽数字卡（本周篇数 / 来源数 / 收藏数）──
+    n_week = len(week_docs)
+    n_sources = len({
+        d.get("source_project") or d.get("source") or "未知来源"
+        for d in week_docs
+    })
+    n_starred = len(starred_docs)
+    with ui.grid(columns=3).classes("gap-4 w-full"):
+        with ui.card().classes("w-full"):
+            with ui.column().classes("items-center"):
+                ui.label(f"{n_week}").classes("text-2xl font-bold text-blue-300")
+                ui.label("本周篇数").classes("text-xs text-gray-400")
+        with ui.card().classes("w-full"):
+            with ui.column().classes("items-center"):
+                ui.label(f"{n_sources}").classes("text-2xl font-bold text-blue-300")
+                ui.label("来源数").classes("text-xs text-gray-400")
+        with ui.card().classes("w-full"):
+            with ui.column().classes("items-center"):
+                ui.label(f"{n_starred}").classes("text-2xl font-bold text-yellow-300")
+                ui.label("⭐ 收藏").classes("text-xs text-gray-400")
+
+    # ── T4 ⭐ 收藏区（置顶、全宽列表，保持现状：每行 _doc_row = ★ + 标题 + 👁）──
     if starred_docs:
         with ui.card().classes("w-full"):
             with ui.row().classes("w-full items-center gap-3"):
@@ -219,7 +265,7 @@ def dashboard_body() -> None:
             for d in starred_docs[:20]:
                 _doc_row(d, online)
 
-    # 📥 本周区（按来源项目分组，维持原样）
+    # ── T2/T3 📥 本周区：按 content_type 人话分类，两列等宽卡片 ──
     with ui.card().classes("w-full"):
         with ui.row().classes("w-full items-center gap-3"):
             ui.label("📥 本周新录入").classes("font-bold text-lg text-blue-300")
@@ -228,17 +274,20 @@ def dashboard_body() -> None:
         if not week_docs:
             ui.label("（本周暂无新录入）").classes("text-sm text-gray-400")
         else:
-            sources: dict = {}
+            # 分组键：content_type（缺失/未知 → "其他"），标题用人话 emoji 显示名
+            groups: dict = {}
             for d in week_docs:
-                key = d.get("source_project") or d.get("source") or "未知来源"
-                sources.setdefault(key, []).append(d)
-            with ui.row().classes("flex-wrap gap-4 mt-2"):
-                for src, items in sources.items():
-                    with ui.card().classes("w-80"):
-                        ui.label(src[:50]).classes("font-bold text-sm text-blue-200")
-                        ui.label(f"{len(items)} 篇").classes("text-xs text-gray-400")
-                        ui.separator()
-                        for d in items[:8]:
+                key = d.get("content_type")
+                label = CONTENT_TYPE_LABELS.get(key, "其他")
+                groups.setdefault((key, label), []).append(d)
+            for (key, label), items in groups.items():
+                with ui.row().classes("w-full items-center gap-3 mt-2"):
+                    ui.label(label).classes("font-bold text-sm text-blue-200")
+                    ui.label(f"{len(items)} 篇").classes("text-xs text-gray-400")
+                # 两列等宽卡片，每张卡片极简：★收藏 + 标题 + 👁本地预览（一行）
+                with ui.grid(columns=2).classes("gap-4 w-full"):
+                    for d in items[:8]:
+                        with ui.card().classes("w-full"):
                             _doc_row(d, online)
 
 
