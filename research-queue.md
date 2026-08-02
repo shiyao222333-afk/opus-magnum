@@ -1690,3 +1690,91 @@
   首段按「政策/安全新闻」剔除了联名减速，此处从赚钱视角重新收录：若前沿模型迭代放缓，①现有工具栈「保鲜期」变长，一人公司追新压力下降；②开源追赶窗口拉大，利好低成本自托管路线。和 7/26-7/27 开放权重政策博弈是方向相反的对照组，同属战略天气预报。
 
 ---
+
+## 2026-08-02
+
+### 🔴 本周可试
+
+- [ ] **【animated-voiceover 开源：一人干翻动画工作室，动画科普视频制片流程 90% 自动化】** | 来源：[X @AYi_AInotes](https://x.com/AYi_AInotes/status/2083221612778668388) | 🎯 Rubedo 凝华
+  前字节产品经理开源的一整套喂给 Codex/Claude Code 的动画视频生产 SOP，MIT 协议、可 90% 自动化。SSS 的结构/效果图讲解正好是"科普动画"品类——把这套流程改造成「设计知识科普号」的流水线，是目前最接近可直接跑通的内容变现管线，比通用 AI 视频工具落地性强得多。
+
+- [ ] **【MiniMax H3 开源全能多模态：2K 原生立体声视频，2K 单价低于主流三分之一，权重即将开源】** | 来源：[MiniMax 官方博客](https://www.minimax.io/blog/minimax-h3) | 🎯 Rubedo 凝华
+  文/图/视频/音频联合理解 + 生成，15 秒 2K 带原生立体声，768p 价格不到主流 720p 的一半，且官方称近日开源权重。对内容号意味着"配乐+画面"一次出，省掉后期对轨；权重开源后可本地跑，成本再降一档。本周可先用 API 试一条设计科普短片跑通流程。
+
+- [ ] **【AI 效果图工具链升级到"文生 3D / 图生 3D"，海外同类已跌到 $0.40 一张】** | 来源：[装修AI出图工具实测](https://goldenhome.cc/portal/news/detail/id/2115.html) + [Vizcraft 2026 工具与定价对比](https://vizcraft.ai/best-ai-visualization-tools) | 🎯 Rubedo 凝华
+  三维家 2026 新增文生 3D / 图生 3D 并可一键导施工图+物料清单；飞流 AI 打通"对话→平面+效果图+VR 全景+报价单+商城"全链路，核心设计功能免费。海外 Vizcraft $19/月 25 张、Studio 档单张摊到 $0.40，约 10 秒出图。这是 SSS 本行的报价锚：单纯"出图"正在被打到几毛钱，收入必须往"方案+落地+交付"上游走。
+
+### 🟡 关注
+
+- [ ] **【DeepSeek V4 Flash 0731 开源：MIT 许可、284B 总参/13B 激活、FP4-FP8 约 167GB，跻身开源模型前三】** | 来源：[Artificial Analysis](https://x.com/ArtificialAnlys/status/2083306229074739285) | 🎯 Citrinitas 熔知
+  MIT 许可意味着商用零授权成本，13B 激活让推理开销可控。熔知的"模型路由"里可以把它排进本地/私有化档位，作为对外做私有 RAG 项目时的默认底座候选，替换按量付费的闭源 API。
+
+- [ ] **【smevals：跑小型评测套件、模型与提示词横向打分，输出静态 HTML 报告】** | 来源：[Simon Willison](https://simonwillison.net/2026/Jul/31/smevals) | 🎯 Citrinitas 熔知
+  一条 `uvx` 命令就能跨模型跑同一批题并分离"运行"与"打分"。熔知一直缺一个轻量的"换模型会不会变差"回归工具，这个正好补位；顺带产出的 HTML 报告也能当交付物给客户看"我为什么选这个模型"。
+
+- [ ] **【设计公司的 AI 业务助理：会议纪录 → 简报+初步企划+渲染图 的整包提案自动生成】** | 来源：[AI 室内设计工具与 Agent 转型全攻略](https://www.dotbrand.design/post/ai-interior-master-tools-guide) | 🎯 Rubedo 凝华
+  国外已有专做 3–10 人设计公司的 Agent 产品，卖点不是"算图快"而是"砍掉前期做白工"。这条对 SSS 是双重价值：自己用能把提案时间砍半；产品化后可以卖给同行小设计公司，是把本行经验变成可复制资产的路径。
+
+- [ ] **【小红书 2026 内容算法硬指标细则：正文 600 字+原创度 60%、考核完播与收藏率、中长视频推荐期延至 90 天、月最高 8 万流量券】** | 来源：[2026 小红书达人投放与运营实战指南](https://diyixhs.com/%e5%91%8a%e5%88%ab%e9%93%ba%e9%87%8f%e6%97%b6%e4%bb%a3%ef%bc%8c2026%e5%b0%8f%e7%ba%a2%e4%b9%a6%e8%be%be%e4%ba%ba%e6%8a%95%e6%94%be%e4%b8%8e%e8%bf%90%e8%90%a5%e5%ae%9e%e6%88%98%e6%8c%87%e5%8d%97) + [500 亿中长视频扶持权益细则](https://www.toutiao.com/article/7644305246860083753) | 🎯 Rubedo 凝华
+  这是对已收录的「RED 精选 / 500 亿中长视频」的**参数补全**：50% 以上大盘流量给千粉以下账号、互动率过 5% 才进流量池、RED 精选篇均曝光 50 万→270 万、免费 4K 与官方 AI 创作工具（标注即可）。可直接翻译成内容 SOP 的硬性检查项，不用再靠感觉发内容。
+
+### ⚪ 了解
+
+- [ ] **【欧盟 AI 法透明度条款 8 月 2 日生效 + 国内平台三条红线：搬运、AI 不标注、带货虚假宣传一律限流封号】** | 来源：[IT之家](https://www.ithome.com/0/984/365.htm) + [2026 自媒体合规新规梳理](https://www.sohu.com/a/1040939872_122725103) | 🎯 Rubedo 凝华
+  欧盟侧：交互式 AI 须自报身份、深伪须加机器可识别标记，罚则最高全球营收 1%——只有接海外单时才需要在意。国内侧更实际：AI 生成内容必须显眼标注，否则判低质直接停推。做 AI 辅助内容时把"标注"当成固定动作，成本几乎为零，漏了代价是全站限流。
+
+- [ ] **【德国法院判 Suno 训练与输出双重侵权，且明确责任归平台而非用户】** | 来源：[The Decoder](https://the-decoder.com/german-court-rules-ai-music-generator-suno-violated-copyrights-rejects-fair-use-defense) | 🎯 Rubedo 凝华
+  慕尼黑法院认定 Suno 3.5/4 能复现六首知名歌曲的"记忆化"侵权，驳回合理使用抗辩，判决尚未终局。对创作者的实际含义：短期内 AI 配乐用于商单仍有版权尾巴，但责任主体被判在平台侧，用户风险相对可控；商单配乐仍建议优先用明确授权的曲库。
+
+### 💡 探索
+
+- [ ] **【算力现货价自 2 月低点已涨 40%+，长期可能贵 10 倍以上】** | 来源：[Dwarkesh Patel](https://www.dwarkesh.com/p/why-compute-might-get-10x-more-expensive) | 🎯 OpusMagnum 巨作
+  Google/Anthropic 从 SpaceX 租 11 万块 GPU 月付 9 亿美元、约为现货价 2 倍；若 AI 达到人类软件工程师水平，单卡年租金可达现货价 15 倍。这是巨作层面的成本天气预报：现在按 API 计价的所有商业模型（含私有 RAG 外卖、Agent 交付）都要预设"单位算力成本上行"这一情形，越早把可自托管的开源底座跑通，越不容易被上游涨价卡死。与 7/28「AI 减速」是同一张牌桌的两面。
+
+---
+
+> 📡 **机会雷达独立补扫（09:35）**：aihot 24h 窗口仅 2 条（Suno 判决 + Astra 数学）→ 按规则扩展到 7d 精选 50 条（覆盖 7/29–8/01）+ WebSearch 4 组（AI副业变现/一人公司收入 · AI设计接单平台红利 · 开源事实核查与转录 · AI Agent 做视频）。与本日主段 10 条及 6/23–7/31 全量三重去重后，净新增 **12 条主段未覆盖的新维度**：**①熔知检索层可能选错了路——BM25 在千万 token 以上语料反超所有 RAG 范式近 20 点；②Seedance 2.5 上了"白模参考"，效果图设计师的三维白模能直接驱动视频；③炼真久违命中——Veritas 开源幻觉检测七步流水线与证据链判定同构；④主段 animated-voiceover 的同类方案矩阵与踩坑清单已补齐**。项目分布：Rubedo 7 / Citrinitas 3 / Albedo 1 / Nigredo 1（视频生产线双标）。
+
+### 🔴 本周可试（补扫）
+
+- [ ] **【受控研究：BM25 在千万 token 以上语料反超所有 RAG 范式，全规模优势近 20 点】** | 来源：[aihot](https://aihot.virxact.com/items/cms8epxbt0auqrot06452whxb) | 🎯 Citrinitas 熔知
+  横跨约 450 倍、28 个严格嵌套的语料规模层级做对比，结论是**没有绝对赢家、只有规模依赖的交叉点**：File-System Agent 在最小规模领先，但约 1000 万语料 token 时 BM25 反超并在所有更大层级保持领先。更关键的是 BM25 锚定了"无需 LLM 参与构建"的低成本帕累托前沿。这条直接质疑熔知默认走向量嵌入的路线——本周该做的事很具体：统计熔知知识库当前语料 token 量，落在交叉点右侧就先跑一版纯 BM25 基线对比召回率，可能同时省掉嵌入模型的钱和入库时间。
+
+- [ ] **【字节 Seedance 2.5 上线"白模参考"：单次 30 秒视频、可多轮延长至数分钟，支持绿幕与时间戳精准编辑】** | 来源：[aihot](https://aihot.virxact.com/items/cms8f7n9q0bezrot06im88lqu) | 🎯 Rubedo 凝华
+  对普通创作者这是"生成时长翻倍"，但对 SSS 是另一回事：**白模参考意味着 SketchUp / 3ds Max 里现成的三维白模可以直接驱动视频生成**——方案漫游动画、施工工序演示这类以前要外包给动画团队的活，变成自己可交付的增值项。同时支持单次输入 30 张图 + 10 段视频 + 10 段音频做参考，风格一致性有保障。已上线即梦/豆包专业版，火山方舟 API 待发。本周先拿一个旧项目白模试跑一条 30 秒漫游，跑通就能进报价单。
+
+- [ ] **【Veritas 开源：FAISS 检索 + DeBERTa-v3 NLI + 迭代批判的幻觉检测与自校正七步流水线】** | 来源：[框架解析](https://www.zingnex.cn/forum/thread/veritas-nlillm) | 🎯 Albedo 炼真
+  炼真本轮唯一命中，而且撞得很正：Veritas 的七步闭环（生成 → 原子化声明抽取 → FAISS 证据检索 → NLI 判定蕴含/中立/矛盾/不确定 → 幻觉评分 → 批判指令生成 → 最多三轮自校正）几乎就是炼真证据链判定的参考实现。技术栈全本地可控：FastAPI + Ollama 本地推理（默认 Gemma3）+ Docker，阈值走环境变量（`MAX_CORRECTION_ITERATIONS=3`、`NLI_CONFIDENCE_THRESHOLD=0.65`）。重点抄两处：**用 DeBERTa-v3 交叉编码器做 NLI 判定，比让 LLM 自由生成判断稳定得多**（正好治炼真"LLM 自由文本字段不可复现"的老毛病）；以及"连续两轮改进低于阈值就退出"的收敛条件。
+
+### 🟡 关注（补扫）
+
+- [ ] **【AI Coding Agent 做视频的四条技术路线横评 + 渲染前四类自动质检 + 五大坑】** | 来源：[HyperFrames 实操](https://xmsumi.com/detail/3537) · [Manim Voice Kit](https://github.com/RJuro/manim-voice-kit) · [自动质检与踩坑](http://www.jxxy.net/ai/articles/codex-skill-article-to-digital-human-video) · [Remotion 教程](http://www.jxxy.net/ai/articles/claude-remotion-content-video-production/) | 🎯 Rubedo 凝华 · Nigredo 馏析
+  给主段 animated-voiceover 配齐"同类可选 + 避坑"：**HyperFrames**（HeyGen 4 月开源，HTML/CSS 写视频，可作 Codex 插件装）、**Manim Voice Kit**（自带 Claude Code skill 自动加载，Manim + Kokoro TTS **全本地、零 API 零订阅**，最适合成本敏感的起步阶段）、**Remotion**（React 系，中文教程最全）。真正值钱的是那份质检清单——渲染前查字体本地化、多时间点抽样查布局越界、色彩对比度、以及**渲染完必须用 FFmpeg 把音轨重新封装回 MP4**（漏了就得到"画面正常但没声音"）。五大坑里最狠的两条：别把字幕当动画（整屏逐字稿只增加阅读负担），以及别先追最强模型再验证选题。
+
+- [ ] **【小红书 AI 视觉号国产工具链打法 + 被低估的表情包/贴图 IP 变现渠道】** | 来源：[人人都是产品经理·12 条路拆解](https://www.woshipm.com/?p=6304504) | 🎯 Rubedo 凝华
+  和主段「小红书算法硬指标」互补——那条讲"怎么发"，这条讲"发什么、用什么工具"。三个可直接抄的动作：①选**"用户愿意保存"的垂类**而不是"好看"的垂类（壁纸/锁屏/聊天背景，以及**原木风、奶油风装修效果图**——正好是 SSS 本行）；②用即梦/通义万相的**风格参考码把画风锁死**，花一周只磨一套"账号专属画风"，让人一眼认出是你的号；③变现三段式：蒲公英商单 → 置顶笔记导私域 → 群里卖高清图包/定制头像/教程。另一条新渠道是表情包：微信/QQ 表情开放平台 + 剪映/智影做动态化，是国内最被低估的"软资产"，养成小 IP 后长期躺收。
+
+- [ ] **【面壁 ALIGN：只改写反馈措辞，Agent 成功率从 13.4% 拉到 31.3%，无效动作减少 65%】** | 来源：[aihot](https://aihot.virxact.com/items/cms8zb830079vro7v2z6a4btv) | 🎯 Rubedo 凝华 · Citrinitas 熔知
+  面壁 × 清华 NLP 提出自动生成对齐接口，解决 Agent 与环境之间的"话不投机"。数字很吓人：**仅仅改写环境返回给 Agent 的反馈措辞**，Qwen2.5-7B 在 ALFWorld 的成功率就翻了 2.3 倍，四个基准最高提升 45.67%，连续无效动作砍掉 65%，且接口可跨 Agent 架构和 LLM 骨干迁移。这是"框架/接口比换模型有用"这条主线迄今最硬的实证（延续 7/29 的结论和 7/31 的 API 调参三倍分）。对 Athanor 的直接启发：摄入管线里工具报错信息的措辞值得单独优化一轮——比升级模型便宜太多。
+
+- [ ] **【2026 已经死掉的 AI 副业清单：Etsy 提示词包月均不足 $50、AI 艺术印刷品价格崩、转售 API 被开源模型杀光 margin】** | 来源：[Datavook 14 位月入 $3k+ 操盘手访谈](https://datavook.com/post/ai-side-hustles-that-actually-pay-2026) + [7 条真实路径](https://datavook.com/post/earn-money-with-ai-tools-2026) | 🎯 Rubedo 凝华
+  之前收的都是"能赚钱的路"，这是第一份**反向清单**——四条已被证伪的路：Etsy 卖提示词包（市场饱和，平均月入不到 50 美元）、通用 AI 艺术印刷品（Midjourney 刷崩了价格）、低端 AI 代笔（Upwork 上纯粹比谁更便宜）、转售 API 访问（开源模型出来后毛利归零）。作者的判断值得记：**活下来的都是有真实客户关系的（工作流审计、定制自动化、按项目交付），死掉的都是追量的**。另外两个可参照的价格锚：本地 SEO 落地页 $40–80/页 × 每客户 30–80 页；给 10 人小公司做工作流落地 $2500/项目 + $500/月监控。
+
+- [ ] **【Antigravity SDK 多智能体教程：四 Agent 分工 + 金额门控自动升级人工】** | 来源：[aihot](https://aihot.virxact.com/items/cms91fj0j00qvro9k33a0agga) | 🎯 Rubedo 凝华
+  用财务对账做案例，但真正可复用的是编排结构：审计编排器 / 数据研究员 / 发票分析器 / 对账引擎四个角色各司其职，**并设人工合规门控——差异超过 $1,000 自动升级人工审核**。这个"自动跑 + 阈值触发人工"的模式正是 Rubedo 自动化 SOP 缺的安全带（对照 7/12 收录的 GPT-5.6 误删硬盘教训）：凡是涉及钱、删除、对外发布的 Agent 动作，都该配一个数值或类型门控，而不是全自动或全人工。
+
+### ⚪ 了解（补扫）
+
+- [ ] **【Perplexity 开源 Numbat：跨框架的智能体检测与响应层，可在动作执行前阻断】** | 来源：[aihot](https://aihot.virxact.com/items/cms6czboh031krotzmczxbw2v) | 🎯 Rubedo 凝华
+  给 Agent 活动提供可见性，并支持在执行前拦截选定操作，设计上跨多种 Agent 框架通用。和上面 Antigravity 的门控是同一件事的两个层次——一个在业务逻辑里设阈值，一个在执行层做拦截。等 Rubedo 的自动化任务真开始 24/7 跑起来时，这类"刹车"是必需品，先记下来。
+
+- [ ] **【GitHub Copilot 堆叠会话 + Plan 模式：把大改造拆成一串承接的会话，每个自动开 PR 防范围蔓延】** | 来源：[aihot](https://aihot.virxact.com/items/cms7t8vfu0365ropbxnkcx89n) | 🎯 Rubedo 凝华
+  作者用一个十余年的老项目演示：先用 Plan 模式做前端现代化计划，再用堆叠会话把"替换 React-Bootstrap"拆成独立会话，每个会话继承前一个的成果并自动建对应 PR。对 SSS 的 vibe coding 是直接可迁移的工作方法——**大重构不要一个会话干到底**，拆成串行小会话 + 每段独立提交，既控制 AI 跑偏范围，也让出错时能精确回滚。Claude Code 里可以用同样思路手工模拟。
+
+- [ ] **【一人公司营收样本补充：SiteGPT 30 天做到 $10k MRR、终身 $50 万零员工；Flibbo 无代码起家 $55k MRR → $120 万 ARR】** | 来源：[真实操盘手案例集](https://www.aicofounderstack.com/2026/07/02/7-ai-side-hustles-making-real-money-in-2026/) + [带出处的六套打法](https://artofthestart.com/ai-side-hustles) | 🎯 Rubedo 凝华
+  补两个此前未收的样本（Photo AI、Pep AI 已在 7/12 收录）：**SiteGPT** 印度独立开发者周末做原型、**上线即收费不设免费档**，30 天内 $10k MRR，到 2026 年累计营收破 50 万美元且始终零员工；**Flibbo** 创始人是不会写代码的前 Shopify 卖家，用无代码 + AI API 做短视频内容工具，$55k MRR / $1.2M ARR。共同点是"痛点极窄 + 上来就收费"。另一条冷静的注脚：这些故事天然幸存者偏差——每个 SiteGPT 背后是几百个悄无声息的放弃，选路时优先看"每周时间成本自己能不能长期扛住"。
+
+- [ ] **【llm-chat-completions-server：本地 9001 端口起一个 OpenAI 兼容端点，暴露所有已安装模型】** | 来源：[aihot](https://aihot.virxact.com/items/cms88a67t030srot0ull6ajb8) | 🎯 Citrinitas 熔知
+  Simon Willison 的 LLM 工具新插件，把本机所有已装模型统一成 OpenAI Chat Completions 格式对外提供。对熔知的实用价值：切换本地/云端模型时**不用改任何调用代码**，只换 base_url 即可，配合上面的 smevals 就能低成本做"换模型会不会变差"的回归对比。属于工具箱备件，用到再装。
+
+---
