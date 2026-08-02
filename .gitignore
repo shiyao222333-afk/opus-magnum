@@ -49,10 +49,13 @@ _entrytest_logs/
 _entrytest_result.json
 _recover_and_test.py
 _test_entry.py
+_compile_result.txt
+_pidfile_result.txt
 
 # 运行时日志（总管/服务运行日志，不入库）
 logs/
 launcher/logs/
+launcher/_doubleclick.log
 
 # 验收临时日志（_run_*.log 模式）
 acceptance/_run*.log
