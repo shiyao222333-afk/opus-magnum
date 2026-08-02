@@ -8,6 +8,9 @@
 
 未来用法：AI 在对话中拿到 B站 地址后，写一个 json 到这里，
 本监听进程会自动捡走并处理（等价于网页入口提交）。
+
+⚠️ AI 投递的正规方式 = 往 drop/inbox_drop/ 写 json，投递箱自动捡走交巨作路由；
+禁止绕过投递箱直写熔知收件箱或馏析队列。
 """
 from __future__ import annotations
 
