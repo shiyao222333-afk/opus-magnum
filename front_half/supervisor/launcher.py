@@ -13,6 +13,7 @@
 """
 from __future__ import annotations
 
+import json
 import logging
 import os
 import subprocess
@@ -37,6 +38,16 @@ _launcher_services = _ilu.module_from_spec(_spec)
 _spec.loader.exec_module(_launcher_services)
 SERVICES = _launcher_services.SERVICES  # 单一权威清单（list[dict]）
 
+# 净化子进程环境（与托盘 launcher/supervisor.py 同款）：WorkBuddy/CodeBuddy 终端
+# 会注入 ACC_PRODUCT_CONFIG_V3 等 300KB+ 巨型变量，被 subprocess 继承进子进程后，
+# 可能让 CreateProcess 失败或子进程 DLL 初始化失败（0xc0000142/进程直接消失）。
+# 复用托盘同一份 envutil.py，避免两处维护两份剥离逻辑。
+_ENVUTIL_FILE = OPUS_DIR / "launcher" / "envutil.py"
+_env_spec = _ilu.spec_from_file_location("opus_launcher_envutil", str(_ENVUTIL_FILE))
+_env_mod = _ilu.module_from_spec(_env_spec)
+_env_spec.loader.exec_module(_env_mod)
+clean_env = _env_mod.clean_env
+
 ROOT = OPUS_DIR.parent  # D:\
 LOGS_DIR = OPUS_DIR / "logs"
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
@@ -51,6 +62,34 @@ def _by_key(name: str) -> dict | None:
         if s.get("key") == name:
             return s
     return None
+
+
+def _read_pid_file(pf) -> int | None:
+    """读 PID 文件/锁文件，返回进程号；解析失败返回 None。
+
+    兼容两种格式（2026-08-02 修复：nigredo 的 queue_consumer.lock 与
+    albedo 的 .watcher.pid 都是 JSON（{"pid":..., "role":..., "hb":...}），
+    由服务自身管理；旧代码 int(整文件) 必抛 ValueError → 存活判定永远 False，
+    导致「已在跑仍被误判缺失 → 重复拉起」）。
+    """
+    try:
+        raw = Path(pf).read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not raw:
+        return None
+    try:
+        return int(raw)
+    except ValueError:
+        pass
+    try:
+        obj = json.loads(raw)
+        if not isinstance(obj, dict):
+            return None
+        pid = obj.get("pid")
+        return int(pid) if pid else None
+    except (ValueError, TypeError):
+        return None
 
 
 # ── 进程存活判定 ────────────────────────────────────────────
@@ -119,17 +158,18 @@ def _pid_on_port(port: int) -> int | None:
 
 
 def is_running(name: str) -> bool:
+    # 注意：不按 web_visible 过滤（2026-08-02 用户拍板：摄入自动拉起需要检测
+    # qdrant 等非面板服务）。网页面板本就只对 web_visible 服务调用本函数，行为不变。
     spec = _by_key(name)
-    if not spec or not spec.get("web_visible"):
+    if not spec:
         return False
     if spec.get("port") is not None:
         return _port_listening(spec["port"])
-    # 无端口：看 PID 文件
+    # 无端口：看 PID 文件（兼容 JSON 锁文件，见 _read_pid_file）
     pf = spec.get("pid_file")
     if pf and Path(pf).exists():
-        try:
-            pid = int(Path(pf).read_text(encoding="utf-8").strip())
-        except (ValueError, OSError):
+        pid = _read_pid_file(pf)
+        if pid is None:
             return False
         return _pid_alive(pid)
     return False
@@ -151,9 +191,13 @@ def _rotate_log(name: str) -> None:
 
 # ── 启动 / 停止 ─────────────────────────────────────────────
 def start_service(name: str) -> str:
-    """启动服务。已运行则返回 'already'，否则拉起返回 'started'。"""
+    """启动服务。已运行则返回 'already'，否则拉起返回 'started'。
+
+    注意：不按 web_visible 过滤（同 is_running，2026-08-02 摄入自动拉起需要
+    能启动 qdrant 等非面板服务）；「一键启动」仍由 start_all 按 web_visible 过滤。
+    """
     spec = _by_key(name)
-    if not spec or not spec.get("web_visible"):
+    if not spec:
         return f"未知服务: {name}"
     if is_running(name):
         return "already"
@@ -167,6 +211,9 @@ def start_service(name: str) -> str:
         "stdout": log_f,
         "stderr": log_f,
         "close_fds": True,
+        # 净化环境后传给子进程（同托盘）：避免 WorkBuddy 巨型环境变量导致
+        # CreateProcess/DLL 初始化失败（0xc0000142 一类问题）。
+        "env": clean_env(),
     }
     # 脱离父进程，关巨作后仍能独立存活（满足"关巨作不杀三器"）
     if sys.platform == "win32":
@@ -199,10 +246,7 @@ def stop_service(name: str) -> str:
     pid = None
     pf = spec.get("pid_file")
     if pf and Path(pf).exists():
-        try:
-            pid = int(Path(pf).read_text(encoding="utf-8").strip())
-        except (ValueError, OSError):
-            pid = None
+        pid = _read_pid_file(pf)
     if pid is None and spec.get("port") is not None:
         pid = _pid_on_port(spec["port"])
 

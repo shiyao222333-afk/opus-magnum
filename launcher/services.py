@@ -22,7 +22,6 @@ import SERVICES。两边只是读取同一份数据，避免再次出现「形�
 """
 
 import os
-import sys
 
 LAUNCHER_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -50,12 +49,6 @@ def _venv(py_dir: str) -> str:
 def _venvw(py_dir: str) -> str:
     """无窗口 Python 解释器（pythonw.exe），用于总管后台启动服务，不出黑框。"""
     return os.path.join(py_dir, "venv", "Scripts", "pythonw.exe")
-
-
-def _py(project_dir: str) -> str:
-    """优先用各自 venv 的 python.exe（与 run.bat 行为一致），缺失则退回系统 python。"""
-    v = os.path.join(project_dir, "venv", "Scripts", "python.exe")
-    return v if os.path.exists(v) else "python"
 
 
 SERVICES = [
@@ -109,7 +102,9 @@ SERVICES = [
         # 锁文件(data/queue_consumer.lock)由 run_queue.py 自己管理（单消费者防双开），
         # 启动器只"读"它做存活判定，不"写"，避免两个组件抢同一把锁导致消费器误判自杀。
         "pid_file": os.path.join(NIGREDO_DIR, "data", "queue_consumer.lock"),
-        "cmd": [_py(NIGREDO_DIR), os.path.join(NIGREDO_DIR, "run_queue.py")],
+        # 网页端 cmd 直接用 pythonw 拉起 run_queue.py（与托盘 spawn 一致），
+        # 不走 python.exe：避免后台监控器弹出控制台窗口（2026-08-02 修复）。
+        "cmd": [_venvw(NIGREDO_DIR), os.path.join(NIGREDO_DIR, "run_queue.py")],
         "cwd": NIGREDO_DIR,
         "launcher_writes_pid": False,
         # ── 托盘启动 / 健康 ──
@@ -138,9 +133,17 @@ SERVICES = [
         "label": "🔬 炼真",
         "port": None,
         "pid_file": os.path.join(ALBEDO_DIR, ".watcher.pid"),
-        "cmd": [os.path.join(ALBEDO_DIR, "run.bat")],
+        # 网页端 cmd 直接用 pythonw 拉起 watcher.run（与托盘 spawn 一致），
+        # 不走 run.bat：run.bat 内部 `start "" python.exe ...` 需新建控制台窗口，
+        # 在网页启动的 DETACHED_PROCESS 无控制台上下文里会失败（0xc0000142/拒绝访问），
+        # 导致「提示已启动、进程却没起来」。锁文件由 watcher.run 自管，launcher 只读。
+        "cmd": [_venvw(ALBEDO_DIR), "-m", "watcher.run"],
         "cwd": ALBEDO_DIR,
-        "launcher_writes_pid": True,
+        # 锁文件由 albedo 自身管理（run.bat 启动时 [CLEAN] 清理旧 pid，watcher.run 写入
+        # JSON 心跳锁）。若 launcher_writes_pid=True，launcher 会把刚 spawn 的 cmd 自身
+        # pid 写进 .watcher.pid，run.bat 的 [CLEAN] 读到后 taskkill 自己 → 自杀竞态。
+        # 与 nigredo 同款：False（服务自管锁文件，launcher 只读）。2026-08-02 修复。
+        "launcher_writes_pid": False,
         # ── 托盘启动 / 健康 ──
         "spawn": {
             "kind": "python",
@@ -164,7 +167,11 @@ SERVICES = [
         "label": "🏭 熔知",
         "port": 8080,
         "pid_file": None,
-        "cmd": [os.path.join(CITRINITAS_DIR, "run.bat")],
+        # 网页端 cmd 直接用 pythonw 拉起 main.py（与托盘 spawn 一致），
+        # 不走 run.bat：run.bat 尾部在无控制台的 DETACHED_PROCESS 上下文里
+        # 同样可能触发 0xc0000142（DLL 初始化失败），且 run.bat 会强杀 qdrant.exe、
+        # 抢占 8080，网页一键启动不该干这些；单实例锁 main.py 自管。
+        "cmd": [_venvw(CITRINITAS_DIR), "main.py"],
         "cwd": CITRINITAS_DIR,
         "launcher_writes_pid": True,
         # ── 托盘启动 / 健康 ──
@@ -261,7 +268,9 @@ SERVICES = [
         "label": "📥 AI 投递箱监听",
         "port": None,
         "pid_file": os.path.join(OPUS_DIR, "drop", "drop_watcher.lock"),
-        "cmd": [sys.executable, os.path.join(OPUS_DIR, "front_half", "drop_watcher.py")],
+        # 网页端 cmd 用 OPUS venv 的 pythonw 拉起（与 albedo/citrinitas 一致），
+        # 不依赖 sys.executable：若巨作以 python.exe 启动，sys.executable 会带出控制台窗口。
+        "cmd": [_venvw(OPUS_DIR), os.path.join(OPUS_DIR, "front_half", "drop_watcher.py")],
         "cwd": OPUS_DIR,
         "launcher_writes_pid": True,
     },

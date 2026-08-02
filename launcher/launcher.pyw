@@ -205,13 +205,14 @@ def main():
     icon = pystray.Icon("opus_magnum", make_grid_icon({}), "巨作 Opus Magnum")
     icon.menu = build_menu()
 
-    # 先同步拉起全部服务，再启动监控线程——
-    # 避免监控首轮在 start_all 未完成时把「尚未拉起」误判为「已退出」而双拉服务
-    # （缺陷 A 家族：启动竞态 → 双实例 → 角色锁接管 SIGKILL → 内部队列锁孤儿 → 崩溃循环）
-    SUP.start_all()
-    threading.Thread(target=SUP.run_monitor, daemon=True).start()
+    # 双击只启动「巨作入口 + 托盘」（用户 2026-08-01 拍板）：
+    # 不再一键拉起全部后台服务——馏析/炼真/熔知/Qdrant 需要时
+    # 通过托盘右键菜单或巨作网页「摄入入口」页手动启动，启动更快、按需开。
+    # 注意：不启动 run_monitor 自动恢复线程——它会因 enabled_by_default 把全套服务
+    # 自动拉起（违背"按需开"）；服务崩溃也改为用户手动重启，更可控。
+    SUP.start_service("opus")
 
-    threading.Thread(target=ticker, daemon=True).start()
+    threading.Thread(target=ticker, args=(icon,), daemon=True).start()
 
     icon.run()
 
