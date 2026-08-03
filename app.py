@@ -482,17 +482,18 @@ def page_hq():
 @ui.page("/wall")
 def page_wall():
     build_left_drawer("wall")
-    with ui.column().classes("w-full p-6 h-screen"):
+    with ui.column().classes("w-full p-6"):
         ui.markdown("## 🖥️ 显示墙")
         ui.label(
             "Dashy 聚合入口 — 熔知 / 周看板 / B站数据 / 研究报告 统一展示"
         ).classes("text-sm text-gray-400 mb-2")
-        # 内嵌 Dashy（独立服务 4000 端口；iframe 安全由 Dashy 侧 X-Frame-Options 控制）
-        ui.html(
-            '<iframe src="http://localhost:4000" '
-            'style="width:100%;height:calc(100vh - 150px);border:1px solid #333;'
-            'border-radius:8px;background:#1a1a1a;"></iframe>'
-        )
+        # 内嵌 Dashy（独立服务 4000 端口）
+        # ⚠️ 必须用 ui.element('iframe')：ui.html 注入的 iframe 会被 NiceGUI 3.14 DOMPurify
+        #    消毒删除（iframe 防 XSS 默认移除，sanitize 参数默认 True），导致 iframe 从未渲染
+        #    （BUGLOG-显示墙iframe空白-0803）；ui.element 直接建原生元素、不走 HTML 字符串，无 XSS 风险
+        ui.element("iframe").props('src="http://localhost:4000"').classes(
+            "w-full border border-gray-700 rounded-lg"
+        ).style("height: calc(100vh - 150px)")
 
 
 # ═══════════════════════════════════════════════════════════
