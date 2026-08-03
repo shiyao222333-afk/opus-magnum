@@ -6,9 +6,13 @@
 
 职责（严格按用户拍板）：
   - B站视频地址 → 展开 b23.tv 短链 → 投递到馏析队列(nigredo.core.queue.enqueue)
-  - 本地文件（白名单 md/pdf/txt/png/jpg）→ 复制到熔知收件箱（筐②）
+  - 本地文件（白名单对齐熔知 registry：epub/html/htm/pdf/txt/md/json/csv/srt/docx/pptx/
+    jpg/jpeg/png/tiff/bmp/webp，上限 50MB）→ 复制到熔知收件箱（筐②），由熔知自行校验/提取
   - 闪念笔记（纯文本）→ 生成标准头 .md 写入熔知收件箱（筐②）
   - 非 B站 链接 → 拒收（巨作只收 B站 视频）
+语义铁律（2026-08-02 用户拍板）：巨作的入口作用是「分类」——只有识别到 B站 网址才走
+馏析→炼真→熔知管线；其他一切输入（各种格式文件/笔记）都直接给熔知收件箱（熔知 watcher
+自己处理），不得走馏析管线。
 
 设计约束（来自用户硬约束）：
   - 队列不串 / 不误删 / 不残留（由 queue.py 三态+锁保证，这里只调用）
@@ -49,8 +53,21 @@ CITRINITAS_INBOX = r"D:\citrinitas\library\inbox"
 # 该目录摄入即入库即删源，警告文件也会被吃掉。所有投递必须走本文件的
 # route()/route_* 或巨作网页「摄入入口」页。
 
-# 文件白名单（巨作只收这些，避免把无关大文件丢进知识库）
-ALLOWED_EXT = {".md", ".pdf", ".txt", ".png", ".jpg", ".jpeg"}
+# 文件白名单（对齐熔知 utils/file_handler/registry.py 的 FILE_TYPE_REGISTRY，17 个扩展名 / 15 类格式）：
+#   层级1 自带元数据 : epub / html / htm
+#   层级2 纯文本     : pdf / txt / md / json / csv / srt / docx / pptx
+#   层级3 图片(OCR)  : jpg / jpeg / png / tiff / bmp / webp
+# 巨作只做「薄放行」：白名单内的文件复制进熔知收件箱，由熔知 watcher 自行校验/提取；
+# 不在白名单的格式拒收，避免把无关大文件丢进知识库。
+ALLOWED_EXT = {
+    ".epub", ".html", ".htm", ".pdf", ".txt", ".md",
+    ".json", ".csv", ".srt", ".docx", ".pptx",
+    ".jpg", ".jpeg", ".png", ".tiff", ".bmp", ".webp",
+}
+
+# 文件大小上限（对齐熔知 registry.SIZE_LIMIT_MB = 50）：超过拒收，防止超大文件涌入收件箱
+MAX_FILE_MB = 50
+MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024
 
 # 馏析项目根（用于调用其队列接口）
 NIGREDO_PATH = r"D:\nigredo"
@@ -185,6 +202,16 @@ def _safe_copy_to_inbox(src: Path) -> dict:
             "ok": False,
             "kind": "file",
             "message": f"不支持的文件类型 {ext}（仅允许 {sorted(ALLOWED_EXT)}）",
+        }
+    try:
+        size = src.stat().st_size
+    except OSError:
+        size = 0
+    if size > MAX_FILE_BYTES:
+        return {
+            "ok": False,
+            "kind": "file",
+            "message": f"文件超过 {MAX_FILE_MB}MB 上限（{size / 1024 / 1024:.1f}MB），已拒收",
         }
     inbox = Path(CITRINITAS_INBOX)
     inbox.mkdir(parents=True, exist_ok=True)

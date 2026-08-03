@@ -11,6 +11,24 @@
 
 ---
 
+## [Unreleased] - 2026-08-03
+
+### Added — 知识→行动回流系统（显示墙·行动清单）
+- ✨ **知识→行动回流系统 v1 + v2**（`wall/action-flow/`）：目标层 goals.md → 扫描员 scan.py（直连 Qdrant 增量盘点，防重复）→ 记账本 state.json（内容指纹，已提炼不重复推）→ 校验员 validate.py（坏格式拦截）→ 陈列架 serve.py（md→HTML 渲染，端口 5100）→ Dashy「📋 行动清单」分区（唯一入口）。首期 33 份全量提炼 → 16 条行动 + 最高杠杆一件事 + 知识缺口 4 条（weekly/2026W32.md）。
+- ✨ **v2 增强三件套**：① 播放关联（scan 带 `engagement.view_count`，高播放行动标 🔥市场验证 橙色高亮）；② 状态管理（`mark_status.py`：归档写熔知 `is_archived=true` + 写后读回确认 + 记账本同步 need_deep/done/archived + 幂等 + unarchive 撤销；扫描跳过归档/已完成、需深入置顶）；③ 检索排除（熔知 `search_engine/core.py` 加 `must_not` + `exclude_archived`，UI 搜索 3 处默认排除已归档，查询阶段过滤非搜完再滤，防静默失效告警）。
+- ✨ **显示墙 Dashy**（`wall/dashy/`，node.exe 托管，端口 4000）：深色主题三分区——🔗工具入口 / 📚研究报告 / 📋行动清单，核心条目 workspace 内嵌；巨作 `/wall` 子页面 iframe 内嵌。
+- ✨ **B站数据 Bili-Insights**（`wall/bili-insights/`，端口 8765）：B站 UID 2925080 投稿 30/30 快照抓取成功（粉丝 3932 / 总播放 6670），Dashy「📈B站数据」条目。
+
+### Fixed
+- 🔧 **git 敏感文件防护**：主仓库 .gitignore 排除 `wall/bili-insights/config.py`（含 B站 Cookie）、`pending_import.json`、`*.log`；清理 serve.log / pending_import.json 残留；action-flow 补 .gitignore。
+- 🔧 **action_flow 启动健壮性**：launcher/services.py 加 pre 端口清理（port_cleanup.ps1 -Port 5100），grace 15→30，防旧实例占用致重启失败循环。
+
+### Changed
+- 🔄 **53 字段最终文件**（`citrinitas_field_classification.md`）：`is_archived` 承担"行动归档"语义（知识→行动系统归档写 true，熔知检索 must_not 排除），两处字段表已留痕。
+- 🔄 熔知 `pages/search.py` 三处搜索调用默认 `exclude_archived=True`（LLM 问答/普通搜索/灵感浮现）。
+
+---
+
 ## [0.4.0] - 2026-07-12
 
 ### Added — 2026-08-01

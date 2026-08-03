@@ -62,3 +62,10 @@ acceptance/_run*.log
 
 # 运行时锁文件（drop_watcher 单例锁）
 drop/drop_watcher.lock
+
+# 显示墙：B站凭据与操作残留（不入库）
+wall/bili-insights/config.py
+wall/bili-insights/pending_import.json
+wall/bili-insights/*.log
+wall/action-flow/serve.log
+wall/action-flow/events.log

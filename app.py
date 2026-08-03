@@ -5,6 +5,7 @@ OpusMagnum · 巨作 / GreatWork — 一人公司总指挥部
   - /         → 周看板（本周新录入）
   - /ingest   → 摄入入口（投递 + 三器启停 + 队列 + 日志）
   - /hq       → 总指挥部（健康 / GitHub / 任务 / 路线）
+  - /wall     → 显示墙（内嵌 Dashy 4000，聚合所有工具/服务/研究报告）
 """
 from __future__ import annotations
 
@@ -91,6 +92,7 @@ def build_left_drawer(active_page: str = "") -> None:
         with ui.column().classes("w-full px-2 gap-1"):
             ui.link("📊 周看板", "/").classes(_nav_class(""))
             ui.link("📥 摄入入口", "/ingest").classes(_nav_class("ingest"))
+            ui.link("🖥️ 显示墙", "/wall").classes(_nav_class("wall"))
             ui.link("🎛️ 总指挥部", "/hq").classes(_nav_class("hq"))
 
         ui.separator()
@@ -335,7 +337,7 @@ def page_ingest():
                 _notify_res(route_file(str(_write_tmp(f))))
                 for f in e
             ], multiple=True).classes("w-full")
-            ui.label("支持 md / pdf / txt / png / jpg → 送入熔知收件箱").classes("text-xs text-gray-400")
+            ui.label("支持 epub / html / htm / pdf / txt / md / json / csv / srt / docx / pptx / 图片(jpg/jpeg/png/tiff/bmp/webp)，≤50MB → 送入熔知收件箱").classes("text-xs text-gray-400")
             ui.separator()
             note_area = ui.textarea("闪念笔记（生成标准 .md 送入熔知收件箱）").classes("w-full")
             ui.button("保存笔记",
@@ -472,6 +474,25 @@ def page_hq():
                 "| Phase 3 验证 | 🔬 炼真 | ✅ 可用 |\n"
                 "| Phase 4 输出 | ✨ 凝华 | 进行中 |"
             )
+
+
+# ═══════════════════════════════════════════════════════════
+# 页面: 显示墙 (/wall) — 内嵌 Dashy 4000（聚合所有工具/服务/研究报告）
+# ═══════════════════════════════════════════════════════════
+@ui.page("/wall")
+def page_wall():
+    build_left_drawer("wall")
+    with ui.column().classes("w-full p-6 h-screen"):
+        ui.markdown("## 🖥️ 显示墙")
+        ui.label(
+            "Dashy 聚合入口 — 熔知 / 周看板 / B站数据 / 研究报告 统一展示"
+        ).classes("text-sm text-gray-400 mb-2")
+        # 内嵌 Dashy（独立服务 4000 端口；iframe 安全由 Dashy 侧 X-Frame-Options 控制）
+        ui.html(
+            '<iframe src="http://localhost:4000" '
+            'style="width:100%;height:calc(100vh - 150px);border:1px solid #333;'
+            'border-radius:8px;background:#1a1a1a;"></iframe>'
+        )
 
 
 # ═══════════════════════════════════════════════════════════

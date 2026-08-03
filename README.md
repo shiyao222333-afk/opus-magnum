@@ -1,8 +1,9 @@
 # ⚛️ OpusMagnum · 巨作
 
-> 一人公司的 AI 炼金术总指挥部——把「学别人」到「赚到钱」拧成一条可拆、可卖的自动流水线。
+> 一人公司的 AI 炼金术总指挥部——把「学别人」到「赚到钱」拧成一条可拆、可卖的自动流水线，并统一管理五器 + 显示墙。
 
 [![Status](https://img.shields.io/badge/status-command--center-8A2BE2)](https://github.com/shiyao222333-afk/opus-magnum)
+![Stage](https://img.shields.io/badge/Stage-v0.4.0-blue?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.13+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 [![Stars](https://img.shields.io/github/stars/shiyao222333-afk/opus-magnum?style=social)](https://github.com/shiyao222333-afk/opus-magnum)
@@ -18,33 +19,37 @@
 | 四个仓库来回切看进度 | 一屏看全部 Issue / Stars / 在线状态 |
 | 贴链接后要手动一步步跑 | 总管一键跑完「采 → 验 → 存」 |
 | 不知道每天 AI 圈有什么新机会 | 战略雷达每日自动扫，分级进研究队列 |
-| 各器端口 / 启动各记各的 | 统一端口表 + 一键启动 |
+| 各器端口 / 启动各记各的 | 统一端口表 + 托盘启动器一键拉起 6+ 服务 |
 | 知识真伪靠自己盯 | 炼真把关 + 熔知标「可疑 / 虚假」 |
 | 攒了一堆却连不成闭环 | 模仿飞轮：采→验→存→赚→回流 |
+| 知识收了不知道下一步干啥 | 显示墙 + 行动清单：每周告诉你该做什么 |
 
 ---
 
 ## ✨ 项目亮点
 
-1. **统一仪表盘** — 各器在线状态、GitHub Issues / Stars / Forks / 最后提交一屏可见。
-2. **跨仓库 Issue 聚合** — 在 GitHub 建 / 关 Issue，巨作自动同步，不用四仓库来回切。
-3. **项目连接器** — 手动测试各器 API 是否打通（健康检测 / 搜知识库 / 投视频 / 触发精炼）。
-4. **战略雷达自动化** — 每日 AI 新闻扫描 → 四层过滤 → 按优先级写入 `research-queue.md`。
-5. **摄入入口一键跑流水线** — 在巨作「📥 摄入入口」标签页贴一个 B站 链接 / 上传文件 / 写笔记，点一下即自动跑完「下载字幕 → 炼真出鉴定报告 → 丢进熔知入库」。
-6. **五器可拆可卖** — 整合只加一层轻量传送带，每个器仍是独立仓库、独立可跑、独立可卖，随时能拆走。
+1. **托盘启动器（一键启停）** — 双击「启动巨作.bat」即拉起全部服务（Qdrant / 馏析 / 炼真 / 熔知 / 凝华 / 巨作 + 显示墙三件套），隐藏窗口、定时探活、死了自动重启、启前清理过期锁与端口，接管旧实例。
+2. **统一仪表盘** — 各器在线状态、GitHub Issues / Stars / Forks / 最后提交一屏可见。
+3. **摄入入口一键跑流水线** — 在巨作「📥 摄入入口」贴一个 B站 链接 / 上传文件 / 写笔记，即自动跑完「下载字幕 → 炼真出鉴定报告 → 丢进熔知入库」，全链路实测跑通（含收藏夹批量导入 20 条）。
+4. **显示墙（Dashy）** — 工具总集合页：🔗 工具入口 / 📚 研究报告 / 📋 行动清单 / 📈 B站数据 四分区，workspace 内嵌，巨作「🖥️ 显示墙」子页面直连。
+5. **知识→行动回流系统** — 每周把知识库新内容按目标（goals.md）提炼成行动清单（📋 5100），防重复提炼、高播放🔥标注、归档内容检索排除，显示墙上直接看。
+6. **战略雷达自动化** — 每日 AI 新闻扫描 → 四层过滤 → 按优先级写入 `research-queue.md`。
+7. **五器可拆可卖** — 整合只加一层轻量传送带，每个器仍是独立仓库、独立可跑、独立可卖，随时能拆走。
 
 ---
 
-## ⚔️ 核心能力 & 方案对比
+## 🎯 核心能力 & 方案对比
 
 | 对比维度 | 巨作 OpusMagnum | Obsidian 生态 | Notion AI | 自写脚本拼接 |
 |---|:--:|:--:|:--:|:--:|
 | 端到端闭环（采→验→存→赚） | ✅ | ~ | ~ | ~ |
 | 五器分工、可拆可单独卖 | ✅ | — | — | — |
 | 统一仪表盘 + 跨仓库 Issue 聚合 | ✅ | — | ~ | — |
+| 托盘启动器（一键启停 + 自愈） | ✅ | — | — | — |
 | 知识入库前真伪把关（炼真） | ✅ | — | — | ~ |
 | 战略雷达每日自动扫描情报 | ✅ | — | — | ~ |
 | B站 / 视频原生摄入（馏析） | ✅ | — | — | ~ |
+| 显示墙 + 行动清单（知识→行动） | ✅ | — | — | ~ |
 | 副业 SOP 自动化（凝华） | ✅ | — | ~ | ~ |
 | 全本地 / 自托管 | ✅ | ✅ | ~ | ✅ |
 | 开源但核心闭源可收费 | ✅ | — | — | — |
@@ -57,68 +62,77 @@
 
 ---
 
-## 🔄 巨作如何编排四器
+## 🏗️ 架构
 
 ```mermaid
 flowchart TB
     Radar["🛰️ 战略雷达<br/>每日 AI 新闻扫描 → research-queue.md"]
-    OM["⚛️ OpusMagnum · 总指挥部 :8501"]
+    OM["⚛️ OpusMagnum · 总指挥部 :8501<br/>仪表盘 / 摄入入口 / 显示墙"]
     Dash["🏠 总仪表盘<br/>健康检测 + GitHub 同步"]
-    Prog["📋 开发进度<br/>跨仓库 Issue 聚合"]
-    Hub["🔗 项目连接器<br/>API 连通性测试"]
-    N["⚗️ Nigredo 馏析（无头常驻）<br/>B站字幕 / 弹幕"]
+    Wall["🖥️ 显示墙 :4000<br/>Dashy 四分区"]
+    Act["📋 行动清单 :5100<br/>知识→行动回流系统"]
+    Bili["📈 B站数据 :8765<br/>Bili-Insights 快照"]
+    N["⚗️ Nigredo 馏析（无头常驻）<br/>B站字幕 / ASR"]
     A["🔬 Albedo 炼真（无头常驻）<br/>验真 + 提质"]
     C["🏭 Citrinitas 熔知 :8080<br/>知识引擎"]
-    R["✨ Rubedo 凝华 :8765<br/>副业 SOP 自动化"]
+    R["✨ Rubedo 凝华 :8081<br/>副业 SOP 自动化"]
 
-    OM --> Dash & Prog & Hub
+    OM --> Dash & Wall
+    Wall --> Act & Bili
     Radar -.每日.-> OM
     OM --> N --> A --> C
     R -.阶段 2 接入.-> C
 ```
 
----
-
-## 🏗️ 架构概览
-
-```mermaid
-flowchart LR
-    subgraph View[视图层 app.py]
-      T1[📊 周看板]
-      T2[📥 摄入入口]
-      T3[🎛️ 总指挥部]
-    end
-    subgraph Core[核心层 core/]
-      G[github_client]
-      H[health_check]
-      P[project_hub]
-      DB[dashboard]
-    end
-    subgraph Orch[编排层 front_half/]
-      IR[ingest_router]
-      LN[supervisor/launcher]
-    end
-    subgraph Tools[四器联接]
-      TN[nigredo] 
-      TA[albedo] 
-      TC[citrinitas] 
-      TR[rubedo]
-    end
-    View --> Core
-    Core --> Orch
-    Orch --> Tools
-```
-
 | 层 | 目录 | 职责 |
 |------|------|------|
-| 视图层 | `app.py` | NiceGUI 单页（周看板 / 摄入入口 / 总指挥部） |
+| 视图层 | `app.py` | NiceGUI 单页（周看板 / 摄入入口 / 显示墙 / 总指挥部） |
 | 核心层 | `core/` | GitHub 客户端、健康检测、项目连接器、数据聚合 |
-| 编排层 | `front_half/` | 投递路由 ingest_router + 启停 launcher（贴链接 → 馏析 → 炼真 → 熔知） |
-| 四器联接 | `front_half/{nigredo,albedo,citrinitas}` + 目录联接 | 指向真实仓库，统一传送 |
+| 编排层 | `front_half/` | 投递路由 ingest_router（贴链接 → 馏析 → 炼真 → 熔知） |
+| 启动层 | `launcher/` | 托盘启动器 + 总管 supervisor（services.py 托管 8 个服务） |
+| 显示墙 | `wall/` | Dashy（4000）+ Bili-Insights（8765）+ 行动清单（5100） |
+| 四器联接 | `front_half/{nigredo,albedo,citrinitas}` | 目录联接指向真实仓库，统一传送 |
 
 ---
 
-## 📁 目录结构
+## 🚀 快速开始
+
+```bash
+# 1. 克隆 + 安装依赖（首次）
+git clone https://github.com/shiyao222333-afk/opus-magnum.git
+cd opus-magnum
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+
+# 2. 配置环境变量（GitHub Token 只需 read 权限；没有也能用，只是仪表盘读不到 Issues）
+cp .env.example .env
+
+# 3. 一键启动（推荐）——托盘启动器拉起全部服务
+双击「启动巨作.bat」   # 或：python launcher/tray.py
+
+# 4. 打开浏览器
+#    总指挥部 http://localhost:8501
+#    显示墙    http://localhost:4000
+#    行动清单  http://localhost:5100
+```
+
+**单独启动**：`.\run.bat` 只起巨作本身（需先起熔知 `D:\citrinitas\run.bat`）。
+
+> 统一端口分配见 [docs/PORTS.md](docs/PORTS.md)。所有服务均监听 `127.0.0.1`（本机）。
+
+---
+
+## 📖 使用说明
+
+**① 摄入 B站视频（核心流程）**：打开巨作「📥 摄入入口」→ 贴 B站链接 → 点提交 → 自动跑完「馏析下载+ASR → 炼真精炼 → 熔知切块入库 Qdrant」→ 显示墙上看到新文档。
+**② 看显示墙**：巨作 →「🖥️ 显示墙」子页面（或直接 localhost:4000）→ Dashy 四分区：工具入口 / B站数据 / 研究报告 / 行动清单。
+**③ 每周行动清单**：对 AI 说一句「更新行动清单」→ 扫描知识库新内容 → 按目标提炼成行动（每周一份，模板固定只换内容）→ 行动清单页自动显示新版。
+**④ 统一启停**：托盘图标右键 → 查看/重启各服务；服务死了总管自动拉起。
+
+---
+
+## 📂 目录结构
 
 ```
 opus-magnum/
@@ -128,47 +142,38 @@ opus-magnum/
 ├── PROJECT_PLAN.md         # 详细路线图（阶段 0–4）
 ├── CHANGELOG.md            # 版本变更记录（Keep a Changelog）
 ├── api_spec.md             # 项目间通信规范（核心文档）
-├── .env.example            # 环境变量模板（复制为 .env 使用）
-├── .gitignore
-├── requirements.txt
-├── run.bat                 # 总指挥部启动（:8501）
-├── start_all.bat          # 一键启动器（先起熔知 → 起三器 + 巨作）
-├── app.py                  # NiceGUI 主入口（三标签：周看板 / 摄入入口 / 总指挥部）
-├── config/
-│   └── settings.py         # 全局配置（五器地址、API Key）
-├── core/                   # 核心逻辑层
-│   ├── github_client.py     # GitHub REST 客户端（无 PyGithub / LGPL）
-│   ├── health_check.py      # 服务健康检测（熔知 8080 NiceGUI）
-│   ├── project_hub.py       # 项目连接器客户端
-│   └── dashboard.py         # 仪表盘数据聚合
-├── front_half/             # 前半部分整合
-│   ├── launch.bat          # 总启动器（先起熔知 → 起三器 + 巨作）
-│   ├── ingest_router.py    # 投递路由（B站 / 文件 / 笔记 → 各器）
-│   ├── supervisor/         # 启停编排（launcher 拉起/停止三器，无界面）
-│   ├── nigredo/            # 目录联接 → D:\nigredo
-│   ├── albedo/             # 目录联接 → D:\albedo
-│   └── citrinitas/         # 目录联接 → D:\citrinitas
+├── research-queue.md       # 战略雷达产出（AI 新闻分级队列）
+├── .env.example / .gitignore / requirements.txt
+├── run.bat                 # 巨作单独启动（:8501）
+├── 启动巨作.bat            # 托盘启动器一键启停（推荐）
+├── app.py                  # NiceGUI 主入口（周看板 / 摄入入口 / 显示墙 / 总指挥部）
+├── config/settings.py      # 全局配置（五器地址、API Key）
+├── core/                   # 核心逻辑（github_client / health_check / project_hub / dashboard）
+├── front_half/             # 前半部分整合（ingest_router + nigredo/albedo/citrinitas 联接）
+├── launcher/               # 🆕 托盘启动器 + 总管（services.py 托管 8 服务 + supervisor 自愈）
+├── wall/                   # 🆕 显示墙（dashy 4000 / bili-insights 8765 / action-flow 5100）
 ├── schemas/                # 统一数据模型（5 个 JSON Schema）
 ├── workflow/               # 📐 项目管理流程 v4.0
-├── docs/                   # 审计 / 研究 / 模板 / 端口表
-│   └── PORTS.md            # 统一端口分配
+├── docs/                   # 审计 / 研究 / 模板（README-TEMPLATE.md）/ 端口表
 ├── strategy/               # 一人公司战略白皮书
 └── assets/                 # logo 等
 ```
 
 ---
 
-## 🛠️ 技术栈
+## 🧰 技术栈
 
-| 层 | 技术 | 授权 / 理由 |
-|---|------|------|
-| 前端（总指挥部 + 摄入入口）| **NiceGUI** | SPA 单页（周看板 / 摄入入口 / 总指挥部） |
-| 数据 | **pandas** | 表格展示 |
-| 外部 API | **requests（GitHub REST API）** | 读 Issues，无 PyGithub（LGPL） |
-| 项目间调用 | **requests** | HTTP REST 客户端 |
-| 启动 | Windows `run.bat` / `start_all.bat` | 一键启动 |
+| 用途 | 技术 | 授权 / 说明 |
+|------|------|------|
+| 前端（总指挥部） | NiceGUI | MIT（SPA：周看板 / 摄入入口 / 显示墙） |
+| 显示墙 | Dashy | MIT（自托管仪表盘，node.exe 托管） |
+| B站数据 | Bili-Insights | 开源快照工具（含本机 Cookie 配置，不入库） |
+| 数据 / 表格 | pandas | BSD |
+| GitHub 接口 | requests（REST API） | 无 PyGithub（LGPL） |
+| 托盘 / 总管 | pystray + psutil | MIT |
+| 启动 | Windows `.bat` / `pythonw` | 隐藏窗口 + 自愈 |
 
-> **注**：熔知、巨作均已迁移到 NiceGUI（SPA）；原 Streamlit 网页与独立 Supervisor(:8503) 已退役，摄入功能并入巨作「📥 摄入入口」标签页。馏析 / 炼真改为无头常驻（无 Web 端口）。
+> **注**：馏析 / 炼真改为无头常驻（无 Web 端口）；原 Streamlit 网页与独立 Supervisor(:8503) 已退役。
 
 ---
 
@@ -177,8 +182,8 @@ opus-magnum/
 | 阶段 | 一句话目标 | 关键交付 | 状态 |
 |------|-----------|---------|:--:|
 | **阶段 0** | 把独立项目用最轻方式绑成能统一管理的整体 | M0 整合骨架 | ✅ 完成 |
-| **阶段 1** | 贴链接自动跑完全程：采→验→存 | M1–M4 | 🔴 进行中 |
-| **阶段 2** | 把「知识→赚钱」后半截并进来统一管理 | 凝华接入 + 全链路看板 | ⚪ 待命 |
+| **阶段 1** | 贴链接自动跑完全程：采→验→存 | 摄入管线全链路实测 + 20 条收藏夹批量导入 | ✅ 基本完成 |
+| **阶段 2** | 知识消费侧：显示墙 + 知识→行动回流 | Dashy / B站数据 / 行动清单 5100 已上线 | 🔴 进行中 |
 | **阶段 3** | 落实「大部分开源、核心收费」 | 物理隔离 + 激活码 + 分层 | ⚪ 待命 |
 | **阶段 4** | 战略雷达调优 + 护城河能力 | 矛盾检测 / 关系网 / 多平台分发 | 🟡 持续 |
 
@@ -186,56 +191,15 @@ opus-magnum/
 
 ---
 
-## ⚡ 快速开始
+## 📚 文档导航
 
-### 1. 克隆项目
-
-```bash
-git clone https://github.com/shiyao222333-afk/opus-magnum.git
-cd opus-magnum
-```
-
-### 2. 安装依赖
-
-```bash
-python -m venv venv
-venv\Scripts\activate      # Windows
-pip install -r requirements.txt
-```
-
-### 3. 配置环境变量
-
-复制 `.env.example` 为 `.env`，填写你的 GitHub Token（只需要 **read 权限**）：
-
-```bash
-# .env
-GITHUB_TOKEN=ghp_xxxxxxxxxx
-```
-
-> ⚠️ 如果暂时没有 Token，仪表盘仍能工作，只是无法读取 GitHub Issues。
-
-### 4. 启动总指挥部（Windows）
-
-```bash
-.\run.bat
-```
-
-访问 [http://localhost:8501](http://localhost:8501)
-
-### 5. 跑前半流水线（摄入入口）
-
-巨作已内置「📥 摄入入口」标签页：贴 B站 链接 / 上传文件 / 写笔记，点一下即自动跑完「馏析 → 炼真 → 熔知入库」。
-先确保熔知已启动（收件箱在监听），再打开巨作即可。
-
-```bash
-# 终端一：先起熔知
-D:\citrinitas\run.bat
-
-# 终端二：再起巨作（总指挥部 + 摄入入口）
-D:\opus-magnum\run.bat
-```
-
-> 统一端口分配见 [docs/PORTS.md](docs/PORTS.md)。所有服务均监听 `127.0.0.1`（本机）。
+- 📜 项目宪法：[BLUEPRINT.md](BLUEPRINT.md)
+- 🗺️ 开发路线：[PROJECT_PLAN.md](PROJECT_PLAN.md)
+- 🔧 流程框图：[FLOWCHART.md](FLOWCHART.md)
+- 📄 端口分配：[docs/PORTS.md](docs/PORTS.md)
+- 📐 项目间通信规范：[api_spec.md](api_spec.md)
+- 📋 显示墙方案：[wall/显示墙方案.md](wall/显示墙方案.md)
+- 📋 知识→行动系统：[wall/知识行动系统-调研与设计.md](wall/知识行动系统-调研与设计.md)
 
 ---
 
@@ -253,10 +217,10 @@ D:\opus-magnum\run.bat
 ## ❓ 常见问题
 
 **Q1：五器一定要全用吗？**
-不必。每个器都是独立仓库、独立可跑、独立可卖；巨作目前只把「前半」（采→验→存）串起来，凝华（赚）等阶段 2 再接入。
+不必。每个器都是独立仓库、独立可跑、独立可卖；巨作目前把「采→验→存」串起来 + 显示墙，凝华（赚）阶段 2 接入。
 
 **Q2：端口冲突怎么办？**
-固定端口表见 [docs/PORTS.md](docs/PORTS.md)，全部监听 `127.0.0.1`，互不冲突。
+固定端口表见 [docs/PORTS.md](docs/PORTS.md)，全部监听 `127.0.0.1`；托盘启动器启前会自动清理旧端口，不怕残留实例。
 
 **Q3：战略雷达能关吗？**
 能。它是 WorkBuddy 里的自动化任务，暂停即可，不影响其他功能。
@@ -265,24 +229,22 @@ D:\opus-magnum\run.bat
 巨作 MIT 开源供参考；核心收费模块（跨源矛盾检测 / 知识关系网 / 高级语义搜索）走阶段 3 物理隔离闭源。
 
 **Q5：为什么不用 Docker？**
-单人本机，`run.bat` 足够；未来商业化再考虑容器化。
+单人本机，`启动巨作.bat` 足够；未来商业化再考虑容器化。
 
 ---
 
-## 🤝 贡献
+## 🤝 贡献 & 许可证
 
-欢迎提 Issue / PR。所有开发统一使用 [项目管理流程 v4.0](workflow/BLUEPRINT.md)——每次任务前读蓝图对齐，每步做完自审，改完翻译回自然语言。
-
-## 📄 许可证
-
-MIT License —— 自由使用、修改、分发。核心收费模块（阶段 3）将采用独立商业 EULA，物理隔离在 `core/premium/`。
+- **许可证**：MIT License —— 自由使用、修改、分发。核心收费模块（阶段 3）将采用独立商业 EULA，物理隔离在 `core/premium/`。
+- **参与方式**：欢迎提 Issue / PR。所有开发统一使用 [项目管理流程 v4.0](workflow/BLUEPRINT.md)——每次任务前读蓝图对齐，每步做完自审，改完翻译回自然语言。
 
 ## 🙏 致谢
 
 - **Vikunja**：开源自托管任务管理（多视图、API-first）
 - **Building a Second Brain**（Tiago Forte）：知识 / 任务组织方法论
 - **The Personal MBA**（Josh Kaufman）：一人企业系统思维
+- **Dashy**：自托管仪表盘显示墙
 
 ---
 
-*Build in public. Think in private. Ship relentlessly.*
+*本文件遵循 `docs/README-TEMPLATE.md` 标准结构生成。*

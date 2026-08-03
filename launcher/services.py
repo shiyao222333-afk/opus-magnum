@@ -34,12 +34,21 @@ RUBEDO_DIR = r"D:\rubedo"
 OPUS_DIR = r"D:\opus-magnum"
 OPUS_VENVW = os.path.join(OPUS_DIR, "venv", "Scripts", "pythonw.exe")
 
+# 显示墙 Dashy（Node 项目，D:\opus-magnum\wall\dashy，默认端口 4000）
+DASHY_DIR = os.path.join(OPUS_DIR, "wall", "dashy")
+# managed node.exe（Dashy engines 要求 ^22.18.0，managed 22.22.2 满足）
+NODE_EXE = r"C:\Users\Lenovo\.workbuddy\binaries\node\versions\22.22.2\node.exe"
+
+# B站数据分析（Bili-Insights，D:\opus-magnum\wall\bili-insights，端口 8765 写死 app.py）
+BILI_INSIGHTS_DIR = os.path.join(OPUS_DIR, "wall", "bili-insights")
+
 # 炼金四相主题色（黑化/白化/黄化/红化）+ 总指挥部紫（底层库用）
 COLOR_NIGREDO = (43, 43, 43, 255)      # 黑化 → 深黑灰（纯黑看不见，用深灰）
 COLOR_ALBEDO = (240, 240, 240, 255)    # 白化 → 白
 COLOR_CITRINITAS = (241, 196, 15, 255) # 黄化 → 金黄
 COLOR_RUBEDO = (231, 76, 60, 255)      # 红化 → 红
 COLOR_OPUS = (155, 89, 182, 255)       # 总指挥部 → 紫（底层库）
+COLOR_BILI = (251, 114, 153, 255)      # B站数据 → B站粉
 
 
 def _venv(py_dir: str) -> str:
@@ -273,5 +282,111 @@ SERVICES = [
         "cmd": [_venvw(OPUS_DIR), os.path.join(OPUS_DIR, "front_half", "drop_watcher.py")],
         "cwd": OPUS_DIR,
         "launcher_writes_pid": True,
+    },
+    {
+        # 显示墙 Dashy（成熟聚合仪表盘，Node 项目，D:\opus-magnum\wall\dashy）
+        # 关键技巧：spawn.kind=python 的 "python" 字段只是"解释器路径"，
+        # 填入 node.exe 即可零改动 supervisor 托管 Node 服务（proc 直接跟踪 node，
+        # 停止干净不留孤儿；对比 qdrant 的 powershell ephemeral 更优）。
+        # 生产启动 = `node server`（server.js），默认端口 4000（非 Docker 模式）。
+        # 2026-08-03 用户拍板：纳入启动器统一管理（托盘/网页可见、死了自动重启）。
+        "key": "dashy",
+        "name": "显示墙 Dashy（聚合仪表盘）",
+        "ui": "http://127.0.0.1:4000",
+        "color": COLOR_OPUS,
+        "is_phase": False,
+        "enabled_by_default": True,      # 显示墙是总入口，跟巨作一起起来
+        # ── 网页端字段 ──
+        "web_visible": True,
+        "label": "🖥️ 显示墙",
+        "port": 4000,
+        "pid_file": None,
+        # 网页端 cmd 用 managed node.exe 拉起 server.js（与托盘 spawn 一致）
+        "cmd": [NODE_EXE, "server.js"],
+        "cwd": DASHY_DIR,
+        "launcher_writes_pid": True,
+        # ── 托盘启动 / 健康 ──
+        "spawn": {
+            "kind": "python",
+            "cwd": DASHY_DIR,
+            "python": NODE_EXE,
+            "args": ["server.js"],
+        },
+        "health": {"type": "tcp", "host": "127.0.0.1", "port": 4000},
+        "depends_on": [],
+        "grace": 30,
+    },
+    {
+        # B站数据分析（Bili-Insights，Python/Flask 项目，D:\opus-magnum\wall\bili-insights）
+        # 端口 8765 在 app.py 写死（app.run(host="0.0.0.0", port=8765)）。
+        # 配置 config.py：BILI_COOKIE 来自 nigredo yt-dlp --cookies-from-browser firefox 导出
+        # （2026-08-03，本地注入，绝不外传）；MY_MID=2925080（用户 UID）。
+        # 快照：venv python snapshot_job.py（每日，后续挂定时任务）。
+        "key": "bili_insights",
+        "name": "B站数据（Bili-Insights）",
+        "ui": "http://127.0.0.1:8765",
+        "color": COLOR_BILI,
+        "is_phase": False,
+        "enabled_by_default": True,      # 显示墙的 B站数据分区，随托盘一起起来
+        # ── 网页端字段 ──
+        "web_visible": True,
+        "label": "📈 B站数据",
+        "port": 8765,
+        "pid_file": None,
+        "cmd": [_venvw(BILI_INSIGHTS_DIR), "app.py"],
+        "cwd": BILI_INSIGHTS_DIR,
+        "launcher_writes_pid": True,
+        # ── 托盘启动 / 健康 ──
+        "spawn": {
+            "kind": "python",
+            "cwd": BILI_INSIGHTS_DIR,
+            "python": _venvw(BILI_INSIGHTS_DIR),
+            "args": ["app.py"],
+        },
+        "health": {"type": "tcp", "host": "127.0.0.1", "port": 8765},
+        # 启动前释放 8765 端口（接管之前手动开的旧实例），复用熔知的端口清理脚本
+        "pre": [
+            "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", os.path.join(CITRINITAS_DIR, "scripts", "port_cleanup.ps1"),
+            "-Port", "8765",
+        ],
+        "depends_on": [],
+        "grace": 30,
+    },
+    {
+        # 行动清单陈列架（知识→行动回流系统，D:\opus-magnum\wall\action-flow）
+        # 极简 md→HTML 渲染服务（serve.py），读 weekly/ 最新清单，端口 5100。
+        # 模板固定只换内容：每周只更新 weekly/*.md，代码永不改动。
+        # Dashy 行动清单分区卡片 target=workspace 内嵌本服务。
+        "key": "action_flow",
+        "name": "行动清单（知识→行动）",
+        "ui": "http://127.0.0.1:5100",
+        "color": COLOR_OPUS,
+        "is_phase": False,
+        "enabled_by_default": True,      # 随托盘一起起来，行动清单常驻可看
+        # ── 网页端字段 ──
+        "web_visible": True,
+        "label": "📋 行动清单",
+        "port": 5100,
+        "pid_file": None,
+        "cmd": [_venvw(OPUS_DIR), os.path.join(OPUS_DIR, "wall", "action-flow", "serve.py"), "--port", "5100"],
+        "cwd": os.path.join(OPUS_DIR, "wall", "action-flow"),
+        "launcher_writes_pid": True,
+        # ── 托盘启动 / 健康 ──
+        "spawn": {
+            "kind": "python",
+            "cwd": os.path.join(OPUS_DIR, "wall", "action-flow"),
+            "python": _venvw(OPUS_DIR),
+            "args": ["serve.py", "--port", "5100"],
+        },
+        "health": {"type": "tcp", "host": "127.0.0.1", "port": 5100},
+        # 启动前释放 5100 端口（接管之前手动开的旧实例，防重启失败循环），复用熔知的端口清理脚本
+        "pre": [
+            "powershell", "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", os.path.join(CITRINITAS_DIR, "scripts", "port_cleanup.ps1"),
+            "-Port", "5100",
+        ],
+        "depends_on": [],
+        "grace": 30,
     },
 ]

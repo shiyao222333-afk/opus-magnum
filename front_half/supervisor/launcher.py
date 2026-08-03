@@ -55,6 +55,11 @@ LOGS_DIR.mkdir(parents=True, exist_ok=True)
 LOG_MAX_BYTES = 5 * 1024 * 1024
 LOG_KEEP = 3
 
+# 心跳新鲜阈值（秒）：与 nigredo.run_queue.HB_TIMEOUT / albedo.watcher.run.HB_TIMEOUT
+# 对齐（两服务内部都是 60s）。锁文件里 hb 超过此时长未刷新 → 判定进程僵尸/孤儿锁
+# → 视为未运行（根治 PID 复用导致的假在线）。
+HB_FRESH_SECONDS = 60.0
+
 
 def _by_key(name: str) -> dict | None:
     """按 key 在权威清单中查服务（SERVICES 现为 list[dict]）。"""
@@ -88,6 +93,40 @@ def _read_pid_file(pf) -> int | None:
             return None
         pid = obj.get("pid")
         return int(pid) if pid else None
+    except (ValueError, TypeError):
+        return None
+
+
+def _read_lock_info(pf) -> dict | None:
+    """读锁文件完整信息，返回 {"pid": int|None, "role": str|None, "hb": float|None}。
+
+    与 nigredo/albedo 的心跳锁结构对齐：JSON 锁 {"pid","role","hb"}（服务自管）；
+    旧式纯整数 PID 文件（如 drop_watcher 由 launcher 写裸 PID）兼容为
+    {"pid":..., "role": None, "hb": None}；文件缺失/格式坏返回 None。
+    """
+    try:
+        raw = Path(pf).read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    if not raw:
+        return None
+    try:
+        return {"pid": int(raw), "role": None, "hb": None}
+    except ValueError:
+        pass
+    try:
+        obj = json.loads(raw)
+        if not isinstance(obj, dict):
+            return None
+        try:
+            pid = int(obj.get("pid")) if obj.get("pid") else None
+        except (TypeError, ValueError):
+            pid = None
+        try:
+            hb = float(obj.get("hb")) if obj.get("hb") is not None else None
+        except (TypeError, ValueError):
+            hb = None
+        return {"pid": pid, "role": obj.get("role"), "hb": hb}
     except (ValueError, TypeError):
         return None
 
@@ -165,13 +204,30 @@ def is_running(name: str) -> bool:
         return False
     if spec.get("port") is not None:
         return _port_listening(spec["port"])
-    # 无端口：看 PID 文件（兼容 JSON 锁文件，见 _read_pid_file）
+    # 无端口：看 PID 文件/锁文件（JSON 心跳锁或纯整数 PID 均兼容）
     pf = spec.get("pid_file")
     if pf and Path(pf).exists():
-        pid = _read_pid_file(pf)
-        if pid is None:
+        info = _read_lock_info(pf)
+        if info is None:
             return False
-        return _pid_alive(pid)
+        pid = info.get("pid")
+        if pid is None or not _pid_alive(pid):
+            return False
+        # 「角色 + 心跳」语义校验（根治 PID 复用导致的假在线）：
+        # 自管锁服务（launcher_writes_pid=False，即 nigredo/albedo）的锁文件由服务
+        # 自身写成 JSON 心跳锁，**必须**满足「角色匹配 + 心跳新鲜」才算真在跑；
+        # 裸 PID / 角色不符 / 心跳缺失或超时 → 孤儿锁或外来进程复用 PID → 视为未运行。
+        # 由 launcher 写裸 PID 的服务（launcher_writes_pid=True，如 drop_watcher）
+        # 无 role/hb 语义，回退为进程存活判定。
+        if not spec.get("launcher_writes_pid", True):
+            if info.get("role") != spec.get("key"):
+                # 角色不符：外来进程复用 PID 占用了锁文件 → 假在线，视为未运行
+                return False
+            hb = info.get("hb")
+            if hb is None or (time.time() - hb) > HB_FRESH_SECONDS:
+                # 心跳缺失/超时（孤儿锁/僵尸）→ 假在线，视为未运行
+                return False
+        return True
     return False
 
 
@@ -205,6 +261,25 @@ def start_service(name: str) -> str:
     _rotate_log(name)
     log_path = LOGS_DIR / f"{name}.log"
     log_f = open(log_path, "ab", buffering=0)
+
+    # 启动探针日志：先写一条启动标记，便于失败层定位。
+    # 炼真（albedo）以 pythonw 无控制台启动，且启动即 fail-fast（如 Layer2 模型
+    # warmup 失败 SystemExit(1)），失败时日志可能为空 → 无法区分「launcher 没拉起」
+    # 与「拉起后进程秒退」。有探针后：若日志只剩探针而无后续输出 → 失败发生在
+    # 服务进程内部启动阶段（import/warmup），问题在服务侧而非启动器侧。
+    probe = f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] [probe] launcher 开始启动 {name}…\n"
+    log_f.write(probe.encode("utf-8"))
+
+    # 启动前清理服务声明的孤儿锁（bootstrap_locks，如 nigredo 的 data/queue.lock）：
+    # 消费进程被强杀时 finally 不执行会遗留文件锁，不清会导致新进程抢锁超时崩溃
+    # → 启动死循环。与托盘 supervisor._clear_stale_lock 的行为对齐（网页端补齐）。
+    for lk in (spec.get("bootstrap_locks") or []):
+        try:
+            if Path(lk).exists():
+                Path(lk).unlink()
+                logger.info("已清理孤儿锁: %s", lk)
+        except OSError as e:
+            logger.warning("清理孤儿锁失败 %s: %s", lk, e)
 
     kwargs = {
         "cwd": spec["cwd"],
