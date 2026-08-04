@@ -1,11 +1,11 @@
 """
 OpusMagnum · 巨作 / GreatWork — 一人公司总指挥部
 
-布局对齐熔知（Citrinitas）：左侧抽屉导航 + 页面路由 + 深色主题。
+门户化布局（2026-08-03 重构）：顶部导航条（品牌 + 图标页签 + 系统状态 + 外链 + 🏠总指挥部跳 Dashy）。
   - /         → 周看板（本周新录入）
   - /ingest   → 摄入入口（投递 + 三器启停 + 队列 + 日志）
   - /hq       → 总指挥部（健康 / GitHub / 任务 / 路线）
-  - /wall     → 显示墙（内嵌 Dashy 4000，聚合所有工具/服务/研究报告）
+  - 🏠 总指挥部 → Dashy 4000（唯一大门，承接原 /wall 显示墙功能）
 """
 from __future__ import annotations
 
@@ -54,53 +54,55 @@ def _notify_res(res: dict) -> None:
 
 
 # ═══════════════════════════════════════════════════════════
-# 左侧抽屉（所有页面共用，对齐熔知 ui_shared.build_left_drawer）
+# 顶部导航条（门户化后取代左抽屉，对齐熔知风格）
+# 品牌 + 图标页签（周看板/摄入/总指挥）+ 系统状态徽章 + 外链 + 🏠总指挥部(Dashy 大门)
 # ═══════════════════════════════════════════════════════════
-def _nav_class(page_key) -> str:
-    """当前页高亮（蓝紫），其他页悬停变深。对齐熔知 _nav_class。"""
+def _nav_class_top(page_key) -> str:
+    """当前页高亮（蓝紫），其他页悬停变深。"""
     active = getattr(ui, "_active_opus_page", "")
     if active == page_key:
-        return "w-full text-left p-2 rounded bg-blue-700 no-underline text-white font-bold"
-    return "w-full text-left p-2 rounded hover:bg-blue-700 transition no-underline text-white"
+        return "px-3 py-1.5 rounded bg-blue-700 no-underline text-white font-bold"
+    return "px-3 py-1.5 rounded hover:bg-blue-700 transition no-underline text-white/85"
 
 
-def build_left_drawer(active_page: str = "") -> None:
-    # 存当前页面标识，供 _nav_class 使用
+def build_top_bar(active_page: str = "") -> None:
+    """顶部导航条：品牌 + 图标页签 + 系统状态 + 外链 + 🏠 总指挥部（跳 Dashy 大门）。"""
+    # 存当前页面标识，供 _nav_class_top 使用
     ui._active_opus_page = active_page
 
-    with ui.left_drawer(value=True, fixed=False, bordered=True).classes("bg-gray-900 text-white") as drawer:
-        with ui.column().classes("w-full items-center p-4"):
-            ui.markdown("## ⚛️ OpusMagnum")
-            ui.markdown("##### 巨作 · GreatWork")
-            ui.label("一人公司总指挥部").classes("text-sm text-gray-400")
-            ui.separator()
+    with ui.header().classes("bg-gray-900 text-white") as header:
+        with ui.row().classes("w-full items-center px-4 py-2 gap-3"):
+            # 品牌
+            ui.markdown("**⚛️ 巨作**").classes("text-lg mr-1")
 
-        # 系统状态
-        with ui.column().classes("w-full px-4"):
-            ui.markdown("### 📊 系统状态")
+            # 图标页签（业务页面入口；显示墙由 🏠 总指挥部 = Dashy 承担）
+            with ui.row().classes("items-center gap-1"):
+                ui.link("📊 周看板", "/").classes(_nav_class_top(""))
+                ui.link("📥 摄入", "/ingest").classes(_nav_class_top("ingest"))
+                ui.link("🎛️ 总指挥", "/hq").classes(_nav_class_top("hq"))
+
+            # 弹性空隙，把右侧信息推到最右
+            ui.space()
+
+            # 系统状态（每页可见，保持抽屉时代的"随时看状态"）
             _qdrant_ok = qdrant_reachable()
-            ui.badge("Qdrant 在线" if _qdrant_ok else "Qdrant 离线",
+            ui.badge("Qdrant " + ("在线" if _qdrant_ok else "离线"),
                      color="green" if _qdrant_ok else "red")
-            # 服务运行数（只统计在网页面板展示的服务）
             _web_keys = [s["key"] for s in SERVICES if s.get("web_visible")]
             _running = sum(1 for k in _web_keys if is_running(k))
             _total = len(_web_keys)
-            ui.label(f"服务: {_running}/{_total} 运行中").classes("text-sm")
-            ui.separator()
+            ui.label(f"服务 {_running}/{_total}").classes("text-xs text-gray-300")
 
-        # 导航链接（配合 @ui.page 路由，对齐熔知导航）
-        with ui.column().classes("w-full px-2 gap-1"):
-            ui.link("📊 周看板", "/").classes(_nav_class(""))
-            ui.link("📥 摄入入口", "/ingest").classes(_nav_class("ingest"))
-            ui.link("🖥️ 显示墙", "/wall").classes(_nav_class("wall"))
-            ui.link("🎛️ 总指挥部", "/hq").classes(_nav_class("hq"))
-
-        ui.separator()
-        with ui.column().classes("w-full px-4"):
+            # 外链（保留抽屉时代的外链）
             ui.link("🔗 熔知", settings.citrinitas.endpoint("/")).classes("text-xs text-blue-300")
             ui.link("🔗 GitHub", "https://github.com/shiyao222333-afk/OpusMagnum").classes("text-xs text-blue-300")
 
-        return drawer
+            # 🏠 总指挥部 = Dashy 大门（新标签打开，替代原"显示墙"巨作内嵌）
+            ui.link("🏠 总指挥部", "http://localhost:4000", new_tab=True).classes(
+                "px-3 py-1 rounded bg-amber-600 text-white text-sm font-bold no-underline"
+            )
+
+        return header
 
 
 # ═══════════════════════════════════════════════════════════
@@ -298,7 +300,7 @@ def dashboard_body() -> None:
 # ═══════════════════════════════════════════════════════════
 @ui.page("/")
 def page_dashboard():
-    build_left_drawer("")
+    build_top_bar("")
     with ui.column().classes("w-full p-6"):
         ui.markdown("## 📊 周看板")
         monday, now = week_bounds()
@@ -318,7 +320,7 @@ def page_dashboard():
 # ═══════════════════════════════════════════════════════════
 @ui.page("/ingest")
 def page_ingest():
-    build_left_drawer("ingest")
+    build_top_bar("ingest")
     with ui.column().classes("w-full p-6"):
         ui.markdown("## 📥 摄入入口")
 
@@ -413,7 +415,7 @@ def _write_tmp(f):
 # ═══════════════════════════════════════════════════════════
 @ui.page("/hq")
 def page_hq():
-    build_left_drawer("hq")
+    build_top_bar("hq")
     with ui.column().classes("w-full p-6"):
         ui.markdown("## 🎛️ 总指挥部")
 
@@ -477,28 +479,11 @@ def page_hq():
 
 
 # ═══════════════════════════════════════════════════════════
-# 页面: 显示墙 (/wall) — 内嵌 Dashy 4000（聚合所有工具/服务/研究报告）
-# ═══════════════════════════════════════════════════════════
-@ui.page("/wall")
-def page_wall():
-    build_left_drawer("wall")
-    with ui.column().classes("w-full p-6"):
-        ui.markdown("## 🖥️ 显示墙")
-        ui.label(
-            "Dashy 聚合入口 — 熔知 / 周看板 / B站数据 / 研究报告 统一展示"
-        ).classes("text-sm text-gray-400 mb-2")
-        # 内嵌 Dashy（独立服务 4000 端口）
-        # ⚠️ 必须用 ui.element('iframe')：ui.html 注入的 iframe 会被 NiceGUI 3.14 DOMPurify
-        #    消毒删除（iframe 防 XSS 默认移除，sanitize 参数默认 True），导致 iframe 从未渲染
-        #    （BUGLOG-显示墙iframe空白-0803）；ui.element 直接建原生元素、不走 HTML 字符串，无 XSS 风险
-        ui.element("iframe").props('src="http://localhost:4000"').classes(
-            "w-full border border-gray-700 rounded-lg"
-        ).style("height: calc(100vh - 150px)")
-
-
-# ═══════════════════════════════════════════════════════════
 # 路由兜底 & 启动
 # ═══════════════════════════════════════════════════════════
+# 注：原 /wall（显示墙页，iframe 内嵌 Dashy）已按门户化方案删除——
+#     🏠 总指挥部 = Dashy 4000 直接承担显示墙功能（顶部条橙色按钮跳转），
+#     避免"巨作内嵌 Dashy"的循环嵌套。BUGLOG-显示墙iframe空白-0803 已归档。
 @ui.page("/health")
 def page_health():
     """总管探活端点"""

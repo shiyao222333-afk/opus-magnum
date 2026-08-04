@@ -10,9 +10,10 @@
 """
 
 import os
-import webbrowser
 import threading
 import time
+import webbrowser
+from pathlib import Path
 
 from PIL import Image, ImageDraw
 import pystray
@@ -20,8 +21,30 @@ from pystray import Menu, MenuItem
 
 import services as SVC
 from supervisor import Supervisor
+from health import pid_alive
 
 SUP = Supervisor()
+
+# 单例锁文件：防止多实例托盘启动器 supervisor 互殴（BUGLOG-服务全掉-0803）
+SINGLETON_LOCK = Path(__file__).parent / "launcher.pid"
+
+
+def _acquire_singleton() -> bool:
+    """单例锁：PID 文件 + 存活检查。已有存活实例 → 本实例退出；否则接管。
+
+    僵尸残留（进程被杀但文件还在）时，PID 不存活 → 接管并覆盖文件，自愈。
+    """
+    try:
+        if SINGLETON_LOCK.exists():
+            old = int(SINGLETON_LOCK.read_text(encoding="utf-8").strip())
+            if pid_alive(old):
+                print(f"[单例] 巨作启动器已在运行 (PID {old})，本实例退出。")
+                return False
+        SINGLETON_LOCK.write_text(str(os.getpid()), encoding="utf-8")
+        return True
+    except Exception:
+        # 锁异常不阻塞启动（保守：宁可多实例也先能用）
+        return True
 
 COLORS = {
     "green": (46, 204, 113, 255),
@@ -202,6 +225,10 @@ def ticker(icon):
 
 
 def main():
+    # 单例锁：防止多实例 supervisor 互殴（BUGLOG-服务全掉-0803）
+    if not _acquire_singleton():
+        return
+
     icon = pystray.Icon("opus_magnum", make_grid_icon({}), "巨作 Opus Magnum")
     icon.menu = build_menu()
 
@@ -215,6 +242,12 @@ def main():
     threading.Thread(target=ticker, args=(icon,), daemon=True).start()
 
     icon.run()
+
+    # 正常退出时清理单例锁（被强杀时残留由下次启动的存活检查自愈）
+    try:
+        SINGLETON_LOCK.unlink(missing_ok=True)
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":
