@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-mark_status.py — 状态管理器（知识→行动回流系统）
-职责：给知识库文档标记状态（需深入 / 已完成 / 已归档），
-      归档状态同步写熔知 is_archived 字段（检索时直接排除），
-      其余状态记在记账本 state.json（行动系统内部状态）。
+mark_status.py — 状态管理器（知识→行动回流系统 · 第6类字段管理台）
+职责：给知识库文档管理「第6类（使用期手动填）」字段：
+  - 行动状态：need_deep（📌需深入）/ done（✅已完成）/ archived（📦归档）
+  - 收藏：star / unstar（写熔知 stats.starred）
+  - 工作流阶段：lifecycle <六档>（写熔知 lifecycle）
+归档与熔知 is_archived 同步（检索时直接排除）；其余状态记记账本 state.json。
 架构边界：只通过 Qdrant HTTP 交互，不依赖熔知代码路径。
 
 用法：
-  python mark_status.py <doc_id> need_deep    # 📌 需深入（只记记账本）
-  python mark_status.py <doc_id> done         # ✅ 已完成（只记记账本）
-  python mark_status.py <doc_id> archived     # 📦 已归档（写熔知 is_archived=true + 记账本）
-  python mark_status.py <doc_id> unarchive    # 取消归档（写熔知 is_archived=false + 记账本清状态）
-  python mark_status.py --list                # 列出当前所有状态
+  python mark_status.py <doc_id> need_deep          # 📌 需深入（只记记账本）
+  python mark_status.py <doc_id> done               # ✅ 已完成（只记记账本）
+  python mark_status.py <doc_id> archived           # 📦 已归档（写熔知 is_archived=true + 记账本）
+  python mark_status.py <doc_id> unarchive          # 取消归档（写熔知 is_archived=false + 记账本清状态）
+  python mark_status.py <doc_id> star               # ★ 收藏（写熔知 stats.starred=true + 记账本）
+  python mark_status.py <doc_id> unstar             # 取消收藏（写熔知 stats.starred=false + 记账本）
+  python mark_status.py <doc_id> lifecycle <阶段>    # 📅 工作流阶段（写熔知 lifecycle；六档见下）
+  python mark_status.py --list                      # 列出当前所有状态
 """
 import json
 import os
@@ -28,6 +33,10 @@ COLLECTION = "athanor_v1"
 VALID_STATUS = {"need_deep", "done", "archived", "unarchive"}
 # 归档类状态（熔知侧要写 is_archived）
 ARCHIVED_FLAG = {"archived": True, "unarchive": False}
+# 收藏类状态（熔知侧要写 stats.starred）
+STARRED_FLAG = {"star": True, "unstar": False}
+# lifecycle 六档（第6类使用期字段，与熔知 classifications.LIFECYCLE_OPTIONS 对齐）
+LIFECYCLE_STAGES = ["idea", "draft", "in_progress", "review", "published", "archived"]
 
 
 def load_state():
@@ -79,12 +88,33 @@ def get_doc_title(points):
     return ""
 
 
-def set_qdrant_archived(point_ids, archived):
-    """写熔知 is_archived（key-level merge，不碰其他字段）"""
+def set_qdrant_payload(point_ids, payload):
+    """写熔知 payload（key-level merge，不碰其他字段）"""
     _http_post(
         f"/collections/{COLLECTION}/points/payload",
-        {"payload": {"is_archived": bool(archived)}, "points": point_ids},
+        {"payload": payload, "points": point_ids},
     )
+
+
+def set_qdrant_archived(point_ids, archived):
+    """写熔知 is_archived（顶层 key merge）"""
+    set_qdrant_payload(point_ids, {"is_archived": bool(archived)})
+
+
+def set_qdrant_starred(point_ids, starred, points=None):
+    """写熔知 stats.starred（统一 payload 一次写入全部点）
+
+    ⚠️ 实测：本 Qdrant 版本不支持 per-point payload 映射（acknowledged 但静默不写），
+    必须用统一 payload + points。stats 为嵌套对象，整体覆盖；access_count 仅在摄入时
+    初始化 0、无运行时写入（grep 熔知代码实证），覆盖无损。
+    """
+    want = bool(starred)
+    set_qdrant_payload(point_ids, {"stats": {"access_count": 0, "starred": want}})
+
+
+def set_qdrant_lifecycle(point_ids, stage):
+    """写熔知 lifecycle（顶层 key merge，第6类使用期字段）"""
+    set_qdrant_payload(point_ids, {"lifecycle": stage})
 
 
 def read_back_archived(doc_id):
@@ -96,6 +126,49 @@ def read_back_archived(doc_id):
     return False
 
 
+def read_back_starred(doc_id):
+    """写后读回确认：返回该文档实际 stats.starred 值（任一 chunk 为准）"""
+    pts = find_points(doc_id)
+    for p in pts:
+        if (p.get("payload") or {}).get("stats", {}).get("starred"):
+            return True
+    return False
+
+
+def read_back_lifecycle(doc_id):
+    """写后读回确认：返回该文档实际 lifecycle 值（非空任一 chunk 为准）"""
+    pts = find_points(doc_id)
+    for p in pts:
+        lc = (p.get("payload") or {}).get("lifecycle")
+        if lc:
+            return lc
+    return ""
+
+
+def write_backend(doc_id, kind, want, point_ids, points=None):
+    """写熔知 + 写后读回确认；失败抛异常"""
+    if kind == "archived":
+        set_qdrant_archived(point_ids, want)
+        actual = read_back_archived(doc_id)
+        if actual != want:
+            raise RuntimeError(f"is_archived 读回校验失败：期望 {want}，实际 {actual}")
+        return f"熔知 is_archived={want}（{len(point_ids)} 块）"
+    if kind == "starred":
+        set_qdrant_starred(point_ids, want, points=points)
+        time.sleep(0.5)  # Qdrant per-point 写入异步，读回前稍等防读到旧值
+        actual = read_back_starred(doc_id)
+        if actual != want:
+            raise RuntimeError(f"stats.starred 读回校验失败：期望 {want}，实际 {actual}")
+        return f"熔知 stats.starred={want}（{len(point_ids)} 块）"
+    if kind == "lifecycle":
+        set_qdrant_lifecycle(point_ids, want)
+        actual = read_back_lifecycle(doc_id)
+        if actual != want:
+            raise RuntimeError(f"lifecycle 读回校验失败：期望 {want}，实际 {actual}")
+        return f"熔知 lifecycle={want}（{len(point_ids)} 块）"
+    return ""
+
+
 def main():
     args = sys.argv[1:]
     if not args or args[0] in ("-h", "--help"):
@@ -104,21 +177,46 @@ def main():
 
     if args[0] == "--list":
         state = load_state()
-        rows = [(did, d.get("status", "未动")) for did, d in state.get("docs", {}).items() if d.get("status")]
+        rows = []
+        for did, d in state.get("docs", {}).items():
+            marks = []
+            if d.get("status"):
+                marks.append(d["status"])
+            if d.get("starred"):
+                marks.append("★收藏")
+            if d.get("lifecycle"):
+                marks.append(f"阶段:{d['lifecycle']}")
+            if marks:
+                rows.append((",".join(marks), did))
         if not rows:
             print("暂无状态记录")
             return
-        for did, st in sorted(rows, key=lambda x: x[1]):
-            print(f"{st:>10} | {did}")
+        for st, did in sorted(rows, key=lambda x: x[0]):
+            print(f"{st:<28} | {did}")
         return
 
     if len(args) < 2:
-        print("❌ 用法：mark_status.py <doc_id> <need_deep|done|archived|unarchive>")
+        print("❌ 用法：mark_status.py <doc_id> <need_deep|done|archived|unarchive|star|unstar|lifecycle>")
         sys.exit(1)
 
     doc_id, status = args[0], args[1]
-    if status not in VALID_STATUS:
-        print(f"❌ 无效状态: {status}（可选: need_deep / done / archived / unarchive）")
+
+    # lifecycle 需要第三个参数（阶段；"" 表示清除还原）
+    lifecycle_stage = None
+    if status == "lifecycle":
+        if len(args) < 3:
+            print(f"❌ lifecycle 需要阶段参数：{LIFECYCLE_STAGES}")
+            sys.exit(1)
+        lifecycle_stage = args[2]
+    elif status not in VALID_STATUS and status not in STARRED_FLAG:
+        print(f"❌ 无效状态: {status}（可选: need_deep / done / archived / unarchive / star / unstar / lifecycle）")
+        sys.exit(1)
+
+    # lifecycle 允许 "" 表示清除还原（写空字符串）
+    if status == "lifecycle" and lifecycle_stage == "":
+        pass  # 合法：清除
+    elif lifecycle_stage is not None and lifecycle_stage not in LIFECYCLE_STAGES:
+        print(f"❌ 无效阶段: {lifecycle_stage}（可选: {LIFECYCLE_STAGES}，或空串清除）")
         sys.exit(1)
 
     # ── 1. 查文档是否存在（不存在直接报错，不静默成功）──
@@ -131,24 +229,24 @@ def main():
         print(f"❌ 未找到 doc_id={doc_id} 的记录（知识库中不存在）")
         sys.exit(1)
     title = get_doc_title(points)
+    point_ids = [p["id"] for p in points]
 
-    # ── 2. 写熔知 is_archived（仅 archived/unarchive 需要）──
-    if status in ARCHIVED_FLAG:
-        want = ARCHIVED_FLAG[status]
-        point_ids = [p["id"] for p in points]
-        try:
-            set_qdrant_archived(point_ids, want)
-        except Exception as e:
-            print(f"❌ 写熔知 is_archived 失败: {e}")
-            sys.exit(1)
-        # 写后读回确认（防静默失败）
-        actual = read_back_archived(doc_id)
-        if actual != want:
-            print(f"❌ 读回校验失败：期望 is_archived={want}，实际={actual}")
-            sys.exit(1)
-        print(f"✅ 熔知 is_archived={want} 已写并读回确认（{len(point_ids)} 块）")
+    # ── 2. 写熔知（archived / star / lifecycle 需要）──
+    backend_msg = ""
+    try:
+        if status in ARCHIVED_FLAG:
+            backend_msg = write_backend(doc_id, "archived", ARCHIVED_FLAG[status], point_ids)
+        elif status in STARRED_FLAG:
+            backend_msg = write_backend(doc_id, "starred", STARRED_FLAG[status], point_ids, points=points)
+        elif status == "lifecycle":
+            backend_msg = write_backend(doc_id, "lifecycle", lifecycle_stage, point_ids)
+    except Exception as e:
+        print(f"❌ 写熔知失败: {e}")
+        sys.exit(1)
+    if backend_msg:
+        print(f"✅ {backend_msg}")
 
-    # ── 3. 记账本同步状态（幂等：重复标记同一状态无害）──
+    # ── 3. 记账本同步（幂等：重复标记同一状态无害）──
     state = load_state()
     docs = state.setdefault("docs", {})
     entry = docs.setdefault(doc_id, {})
@@ -156,16 +254,27 @@ def main():
     if status == "unarchive":
         entry.pop("status", None)
         entry["status_at"] = ""
-        print(f"✅ 已取消归档（熔知 is_archived=false，记账本状态已清）")
+        print("✅ 已取消归档（熔知 is_archived=false，记账本状态已清）")
+    elif status == "unstar":
+        entry["starred"] = False
+        print("✅ 已取消收藏（熔知 stats.starred=false）")
+    elif status == "star":
+        entry["starred"] = True
+        print("✅ 已收藏（熔知 stats.starred=true）")
+    elif status == "lifecycle":
+        entry["lifecycle"] = lifecycle_stage
+        print(f"✅ 工作流阶段已记：{lifecycle_stage}")
     else:
         entry["status"] = status
         entry["status_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
-        print(f"✅ 状态已记：{status} | {title[:40]}")
+        print(f"✅ 状态已记：{status}")
     save_state(state)
 
     # ── 4. 事件日志 ──
     append_event(
-        f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] mark_status: {doc_id} → {status} ({title[:30]})"
+        f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] mark_status: {doc_id} → {status}"
+        + (f" {lifecycle_stage}" if lifecycle_stage else "")
+        + f" ({title[:30]})"
     )
     print(f"标题：{title[:50]}")
     print(f"doc_id：{doc_id}")
