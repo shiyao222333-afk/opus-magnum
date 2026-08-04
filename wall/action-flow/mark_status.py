@@ -30,7 +30,7 @@ EVENTS_LOG = os.path.join(BASE_DIR, "events.log")
 QDRANT_URL = "http://localhost:6333"
 COLLECTION = "athanor_v1"
 
-VALID_STATUS = {"need_deep", "done", "archived", "unarchive"}
+VALID_STATUS = {"need_deep", "done", "archived", "unarchive", "undone", "unneed_deep"}
 # 归档类状态（熔知侧要写 is_archived）
 ARCHIVED_FLAG = {"archived": True, "unarchive": False}
 # 收藏类状态（熔知侧要写 stats.starred）
@@ -232,10 +232,16 @@ def main():
     point_ids = [p["id"] for p in points]
 
     # ── 2. 写熔知（archived / star / lifecycle 需要）──
+    # 三段互斥：标 need_deep/done 时若熔知仍 is_archived=true → 自动取消归档（否则
+    # scan 先按归档跳过，置顶失效，出现"既归档又需深入"矛盾态）
     backend_msg = ""
     try:
         if status in ARCHIVED_FLAG:
             backend_msg = write_backend(doc_id, "archived", ARCHIVED_FLAG[status], point_ids)
+        elif status in ("need_deep", "done"):
+            if read_back_archived(doc_id):
+                write_backend(doc_id, "archived", False, point_ids)
+                backend_msg = "（已自动取消归档，保持三段互斥）"
         elif status in STARRED_FLAG:
             backend_msg = write_backend(doc_id, "starred", STARRED_FLAG[status], point_ids, points=points)
         elif status == "lifecycle":
@@ -251,10 +257,11 @@ def main():
     docs = state.setdefault("docs", {})
     entry = docs.setdefault(doc_id, {})
     entry["title"] = entry.get("title") or title
-    if status == "unarchive":
+    if status in ("unarchive", "undone", "unneed_deep"):
         entry.pop("status", None)
         entry["status_at"] = ""
-        print("✅ 已取消归档（熔知 is_archived=false，记账本状态已清）")
+        labels = {"unarchive": "已取消归档", "undone": "已取消已完成", "unneed_deep": "已取消需深入"}
+        print(f"✅ {labels.get(status, '状态已清')}（状态已清）")
     elif status == "unstar":
         entry["starred"] = False
         print("✅ 已取消收藏（熔知 stats.starred=false）")

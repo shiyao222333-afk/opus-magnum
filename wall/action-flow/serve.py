@@ -343,7 +343,9 @@ def query_states(doc_ids):
 def apply_action(doc_id, action, value):
     """执行第6类操作，返回 (ok, msg)。复用 mark_status 写入+读回+记账本。
 
-    action 支持：need_deep / done（只记记账本）/ archive / unarchive（写熔知 is_archived）
+    action 支持：need_deep / done（只记记账本；若熔知已归档自动取消，保持三段互斥）
+                / undone / unneed_deep（清记账本状态）
+                / archive / unarchive（写熔知 is_archived）
                 / star / unstar（写熔知 stats.starred）/ lifecycle（写熔知 lifecycle）
     """
     # 1. 查文档（need_deep/done 也要求 doc 存在，防孤儿标记）
@@ -356,10 +358,17 @@ def apply_action(doc_id, action, value):
     point_ids = [p["id"] for p in points]
     title = MS.get_doc_title(points)
 
-    # 2. 写熔知（带读回确认）；need_deep/done 只记记账本、不写熔知
+    # 2. 写熔知（带读回确认）；need_deep/done 只记记账本、不写熔知（但自动取消归档保持互斥）
     try:
         if action in ("need_deep", "done"):
-            msg = f"行动状态已记：{action}（记账本，不写熔知）"
+            extra = ""
+            if MS.read_back_archived(doc_id):
+                MS.write_backend(doc_id, "archived", False, point_ids)
+                extra = "（已自动取消归档，三段互斥）"
+            msg = f"行动状态已记：{action}{extra}"
+        elif action in ("undone", "unneed_deep"):
+            label = "已完成" if action == "undone" else "需深入"
+            msg = f"已取消{label}状态（回到未动）"
         elif action in ("star", "unstar"):
             want = (action == "star")
             msg = MS.write_backend(doc_id, "starred", want, point_ids, points=points)
@@ -380,7 +389,7 @@ def apply_action(doc_id, action, value):
     docs = state.setdefault("docs", {})
     entry = docs.setdefault(doc_id, {})
     entry["title"] = entry.get("title") or title
-    if action == "unarchive":
+    if action in ("unarchive", "undone", "unneed_deep"):
         entry.pop("status", None)
         entry["status_at"] = ""
     elif action in ("star", "unstar"):
@@ -421,7 +430,7 @@ class Handler(BaseHTTPRequestHandler):
                 md_text = f.read()
             body_html = md_to_html(md_text)
             fname = os.path.basename(latest)
-            body = f'<p class="meta">📄 {fname} | 自动渲染 · 第6类管理（收藏/阶段/归档）</p>' + body_html
+            body = f'<p class="meta">📄 {fname} | 自动渲染 · 第6类管理（📌需深入/✅已完成/📦归档 + 收藏/阶段）</p>' + body_html
         page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
         data = page.encode("utf-8")
         self.send_response(200)
