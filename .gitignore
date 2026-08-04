@@ -70,3 +70,21 @@ wall/bili-insights/*.log
 wall/action-flow/serve.log
 wall/action-flow/events.log
 launcher.pid
+
+# ── 行动清单/审核清单：个人数据不上传（工具代码上传，清单数据自建）──
+wall/action-flow/state.json
+wall/action-flow/state.json.bak-*
+wall/action-flow/events.log
+wall/action-flow/events.jsonl
+wall/action-flow/pending/
+wall/action-flow/weekly/
+wall/action-flow/projects.json
+wall/action-flow/goals.md
+wall/action-flow/docs/feedback-log.md
+wall/action-flow/skills_candidates.json
+wall/action-flow/skills_catalog.json
+wall/action-flow/plugins/cangjie-skill/
+# 小工具（个人清单管理脚本，绑定个人清单结构，不推送；别人自建清单自配脚本）
+wall/action-flow/mark_pending.py
+wall/action-flow/skill_candidates.py
+wall/action-flow/skill_assets.py

@@ -15,6 +15,7 @@ import html
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.request
@@ -96,6 +97,14 @@ async function api(path, body) {{
     body: JSON.stringify(body),
   }});
   return r.json();
+}}
+async function cangjieUpdate() {{
+  const btn = event.target, msg = document.getElementById('cj-msg');
+  btn.classList.add('busy'); msg.textContent = '更新中…';
+  const res = await api('/api/cangjie-update', {{}});
+  btn.classList.remove('busy');
+  msg.textContent = res.ok ? ('✅ ' + res.msg) : ('❌ ' + res.msg);
+  if (res.ok) setTimeout(() => location.reload(), 1200);
 }}
 async function refreshAll() {{
   const rows = document.querySelectorAll('[data-did]');
@@ -190,8 +199,9 @@ def action_bar_html(doc_id):
     )
 
 
-def md_to_html(md_text):
-    """极简 markdown → HTML（只支持本模板用到的语法；行动项带 doc_id 时追加第6类管理栏）"""
+def md_to_html(md_text, with_action_bar=True):
+    """极简 markdown → HTML（只支持本模板用到的语法；行动项带 doc_id 时追加第6类管理栏）
+    with_action_bar=False 时跳过管理栏（审核清单页用——审核在对话里做，页面只读）"""
     lines = md_text.splitlines()
     out = []
     in_table = False
@@ -237,16 +247,19 @@ def md_to_html(md_text):
             checked = m.group(1).lower() == 'x'
             done_cls = ' class="done"' if checked else ''
             content = m.group(2)
-            # 提取 doc_id（第6类管理的前提）
-            doc_id = None
-            dm = re.search(r"\|\s*doc_id[:：]\s*([A-Za-z0-9_-]+)", content)
+            # 提取 doc_id（第6类管理的前提；v3.5 支持多值 doc_id：doc_a、doc_b）
+            doc_ids = []
+            dm = re.search(r"\|\s*doc_id[:：]\s*([A-Za-z0-9_\-、,，]+)", content)
             if dm:
-                doc_id = dm.group(1)
+                raw = dm.group(1)
+                doc_ids = [d.strip() for d in re.split(r"[、,，]+", raw) if d.strip()]
                 content = content.replace(dm.group(0), "").rstrip(" |")
-            bar = action_bar_html(doc_id) if doc_id else ""
+            main_doc_id = doc_ids[0] if doc_ids else None
+            bar = action_bar_html(main_doc_id) if (main_doc_id and with_action_bar) else ""
+            meta = f' <span class="meta">({", ".join(doc_ids)})</span>' if doc_ids else ""
             out.append(
                 f'<li{done_cls}><input type="checkbox"{" checked" if checked else ""} disabled> '
-                f'{render_inline(content)}{bar}</li>'
+                f'{render_inline(content)}{meta}{bar}</li>'
             )
             i += 1
             continue
@@ -301,6 +314,108 @@ def latest_weekly():
 def latest_pending():
     files = sorted(glob.glob(os.path.join(PENDING_DIR, "*.md")))
     return files[-1] if files else None
+
+
+CANGJIE_DIR = os.path.join(BASE_DIR, "plugins", "cangjie-skill")
+
+
+def cangjie_commit():
+    """仓颉插件本地版本（commit 短哈希 + 日期）；未安装返回空串"""
+    if not os.path.exists(os.path.join(CANGJIE_DIR, ".git")):
+        return ""
+    try:
+        r = subprocess.run(
+            ["git", "-C", CANGJIE_DIR, "log", "-1", "--format=%h %cd", "--date=short"],
+            capture_output=True, text=True, timeout=15,
+        )
+        return r.stdout.strip()
+    except Exception:
+        return "(读取失败)"
+
+
+def cangjie_update():
+    """git pull 更新仓颉插件（/skills 页「更新仓颉」按钮）"""
+    if not os.path.exists(os.path.join(CANGJIE_DIR, ".git")):
+        return False, "仓颉插件未安装（plugins/cangjie-skill/ 不存在）"
+    try:
+        r = subprocess.run(["git", "-C", CANGJIE_DIR, "pull"], capture_output=True, text=True, timeout=120)
+        if r.returncode == 0:
+            lines = [l for l in r.stdout.strip().splitlines() if l.strip()]
+            return True, (lines[-1] if lines else "已是最新")
+        return False, (r.stderr or r.stdout).strip()[-300:]
+    except Exception as e:
+        return False, f"更新失败: {e}"
+
+
+def render_skills_html():
+    """技能封装工作台（/skills，与 /pending 平行）：
+    ① 仓颉插件状态（本地 commit + 更新按钮）
+    ② 技能封装清单（skills_candidates.json：pending/doing/done/abandoned）"""
+    parts = ['<h3>🔌 仓颉插件</h3>']
+    if not os.path.exists(os.path.join(CANGJIE_DIR, "SKILL.md")):
+        parts.append('<p class="meta">⚠️ 仓颉插件未安装（plugins/cangjie-skill/ 不存在，需 git clone）</p>')
+    else:
+        parts.append(f'<p class="meta">📦 本地版本：<code>{html.escape(cangjie_commit() or "(未知)")}</code></p>')
+        parts.append(
+            '<div class="act"><button onclick="cangjieUpdate()">🔄 更新仓颉（git pull）</button>'
+            '<span class="st" id="cj-msg"></span></div>'
+        )
+    parts.append('<h3>🧩 技能封装清单</h3>')
+    cand_file = os.path.join(BASE_DIR, "skills_candidates.json")
+    if not os.path.exists(cand_file):
+        parts.append('<p class="meta">技能封装清单为空（你说「把 XX 加进技能封装清单」才有条目）</p>')
+    else:
+        with open(cand_file, encoding="utf-8") as f:
+            book = json.load(f)
+        skills = book.get("skills", {})
+        if not skills:
+            parts.append('<p class="meta">技能封装清单为空（你说「把 XX 加进技能封装清单」才有条目）</p>')
+        else:
+            badge = {"pending": "🟡 待封装", "doing": "🔵 封装中", "done": "✅ 已完成", "abandoned": "⚪ 已放弃"}
+            parts.append('<ul>')
+            for key, s in sorted(skills.items(), key=lambda x: x[1].get("created_at", "")):
+                st = s.get("status", "")
+                st_badge = badge.get(st, st)
+                extra = f' <span class="meta">（理由：{html.escape(s.get("reason",""))}）</span>' if s.get("reason") else ""
+                parts.append(
+                    f'<li><strong>{render_inline(s.get("title",""))}</strong> '
+                    f'<span class="meta">[{st_badge}] {html.escape(key)}</span>{extra}</li>'
+                )
+            parts.append('</ul>')
+            parts.append(
+                '<p class="meta">操作在对话里：说「开始封装清单第 X 条」→ 按仓颉插件 SKILL.md 执行封装；'
+                '完成回写清单 + 进技能资产清单。</p>'
+            )
+    return "\n".join(parts)
+
+
+def render_pending_html():
+    """审核清单页（v3.4 双账本版）：读审核清单账本 pending/state.json 的 pending 条目，
+    每条拼调研笔记 pending/items/{doc_id}.md（无笔记只显示标题）。只读，无管理栏——
+    批准/打回在对话里完成（mark_pending.py approved/rejected，反哺行动清单记账本）。"""
+    book_path = os.path.join(PENDING_DIR, "state.json")
+    if not os.path.exists(book_path):
+        return '<p class="meta">暂无待审批条目（审核清单账本为空）</p>'
+    with open(book_path, encoding="utf-8") as f:
+        book = json.load(f)
+    docs = book.get("docs", {})
+    pendings = {did: d for did, d in docs.items() if d.get("status") == "pending"}
+    if not pendings:
+        return '<p class="meta">审核清单为空（无待审批条目）</p>'
+    parts = ['<ul>']
+    for did in sorted(pendings):
+        d = pendings[did]
+        title = d.get("title", "")
+        parts.append(f'<li><strong>{render_inline(title)}</strong> <span class="meta">({did})</span>')
+        note_path = os.path.join(PENDING_DIR, "items", f"{did}.md")
+        if os.path.exists(note_path):
+            with open(note_path, encoding="utf-8") as nf:
+                parts.append(md_to_html(nf.read(), with_action_bar=False))
+        else:
+            parts.append('<blockquote>（暂无调研笔记，以记账本标题为准）</blockquote>')
+        parts.append('</li>')
+    parts.append('</ul>')
+    return '\n'.join(parts)
 
 
 def query_states(doc_ids):
@@ -419,21 +534,31 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
-        # /pending → 待审批清单（项目反哺调研产出，用户逐条批准/打回）
+        # /pending → 审核清单（v3.4 双账本：审核清单账本 pending 条目 + 调研笔记，只读）
         if path == "/pending":
-            pf = latest_pending()
-            if not pf:
-                body = '<p class="meta">暂无待审批清单（pending/ 为空）</p>'
-            else:
-                with open(pf, encoding="utf-8") as f:
-                    md_text = f.read()
-                body_html = md_to_html(md_text)
-                fname = os.path.basename(pf)
-                body = (
-                    f'<p><a href="/" style="color:#9cdcfe;font-size:13px;">← 返回行动清单</a></p>'
-                    f'<p class="meta">📋 {fname} | 项目反哺调研产出 · 你在对话里逐条说"批准/打回"</p>'
-                    + body_html
-                )
+            body_html = render_pending_html()
+            body = (
+                f'<p><a href="/" style="color:#9cdcfe;font-size:13px;">← 返回行动清单</a></p>'
+                f'<p class="meta">📋 项目反哺 · 审核清单 | 页面只读，批准/打回在对话里说「批准 X / 打回 X」</p>'
+                + body_html
+            )
+            page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
+            data = page.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("X-Frame-Options", "ALLOWALL")
+            self.end_headers()
+            self.wfile.write(data)
+            return
+        # /skills → 技能封装工作台（仓颉插件 + 封装清单，与 /pending 平行）
+        if path == "/skills":
+            body_html = render_skills_html()
+            body = (
+                f'<p><a href="/" style="color:#9cdcfe;font-size:13px;">← 返回行动清单</a></p>'
+                f'<p class="meta">🧩 技能封装工作台 | 仓颉插件（直接引用，git pull 即升级）+ 技能封装清单 | 批准/开始封装在对话里操作</p>'
+                + body_html
+            )
             page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
             data = page.encode("utf-8")
             self.send_response(200)
@@ -487,6 +612,10 @@ class Handler(BaseHTTPRequestHandler):
             action = str(body.get("action", ""))
             value = str(body.get("value", ""))
             ok, msg = apply_action(doc_id, action, value)
+            self._send_json({"ok": ok, "msg": msg})
+            return
+        if path == "/api/cangjie-update":
+            ok, msg = cangjie_update()
             self._send_json({"ok": ok, "msg": msg})
             return
         self._send_json({"ok": False, "msg": "未知端点"}, 404)

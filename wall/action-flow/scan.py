@@ -128,6 +128,11 @@ def main():
         if st in ("archived", "done"):
             skipped.append((did, info, "已归档" if st == "archived" else "已完成"))
             continue
+        # need_deep = 已调研待审批，不在候选池（置顶列表单独统计，见下）
+        # （2026-08-04 修复：mark_status 不写 fingerprint，need_deep 条目指纹缺失
+        #   会恒判 changed → 下轮被重复调研。候选语义=无状态未调研，need_deep 直接跳过）
+        if st == "need_deep":
+            continue
         if did not in known:
             new_docs.append((did, info))
         elif known[did].get("fingerprint") != info["fingerprint"]:
