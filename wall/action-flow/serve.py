@@ -105,9 +105,17 @@ async function refreshAll() {{
   for (const row of rows) {{
     const did = row.dataset.did;
     const s = st[did] || {{}};
+    const status = s.status || '';
     const star = row.querySelector('.act-star');
     const lcSel = row.querySelector('.act-lc');
     const arch = row.querySelector('.act-arch');
+    const stBtns = row.querySelectorAll('.act-st');
+    // 三段行动状态：当前状态按钮高亮，其余取消
+    for (const b of stBtns) {{
+      const on = b.dataset.st === status;
+      b.classList.toggle('on', on);
+      b.dataset.next = on ? 'un' + b.dataset.st : b.dataset.st;
+    }}
     if (star) {{
       star.textContent = s.starred ? '★ 已收藏' : '☆ 收藏';
       star.classList.toggle('on', !!s.starred);
@@ -115,8 +123,10 @@ async function refreshAll() {{
     }}
     if (lcSel) lcSel.value = s.lifecycle || '';
     if (arch) {{
-      arch.textContent = s.is_archived ? '↺ 还原' : '📦 归档';
-      arch.dataset.next = s.is_archived ? 'unarchive' : 'archive';
+      const archived = status === 'archived' || s.is_archived;
+      arch.textContent = archived ? '↺ 还原' : '📦 归档';
+      arch.dataset.next = archived ? 'unarchive' : 'archive';
+      arch.classList.toggle('on', archived);
     }}
   }}
 }}
@@ -132,7 +142,7 @@ async function doAction(btn) {{
   refreshAll();
 }}
 document.addEventListener('click', e => {{
-  const btn = e.target.closest('.act-star, .act-arch');
+  const btn = e.target.closest('.act-star, .act-arch, .act-st');
   if (btn) doAction(btn);
 }});
 document.addEventListener('change', e => {{
@@ -162,16 +172,18 @@ def render_inline(text):
 
 
 def action_bar_html(doc_id):
-    """第6类管理栏：★收藏 / 📅阶段 / 📦归档（状态由前端 JS 查询填充）"""
+    """第6类管理栏：📌需深入 / ✅已完成 / 📦归档（三段行动状态）+ ★收藏 / 📅阶段（状态由前端 JS 查询填充）"""
     opts = "".join(
         f'<option value="{k}">{v}</option>' for k, v in LIFECYCLE_LABELS.items()
     )
     return (
         f'<div class="act" data-did="{html.escape(doc_id)}">'
+        f'<button class="act-st" data-st="need_deep" data-next="need_deep">📌 需深入</button>'
+        f'<button class="act-st" data-st="done" data-next="done">✅ 已完成</button>'
+        f'<button class="act-arch" data-next="archive">📦 归档</button>'
         f'<button class="act-star" data-next="star">☆ 收藏</button>'
         f'<select class="act-lc" title="工作流阶段（第6类）">'
         f'<option value="">— 阶段 —</option>{opts}</select>'
-        f'<button class="act-arch" data-next="archive">📦 归档</button>'
         f'</div>'
     )
 
@@ -285,10 +297,20 @@ def latest_weekly():
 
 
 def query_states(doc_ids):
-    """批量查第6类状态（starred / lifecycle / is_archived）。Qdrant 单次 scroll + match any。"""
+    """批量查第6类状态（starred / lifecycle / is_archived 来自熔知；status 三段来自记账本）。"""
     if not doc_ids:
         return {}
-    states = {did: {"starred": False, "lifecycle": "", "is_archived": False} for did in doc_ids}
+    states = {did: {"starred": False, "lifecycle": "", "is_archived": False, "status": ""} for did in doc_ids}
+    # 1. 记账本：三段行动状态（need_deep / done / archived 的真相源）
+    try:
+        book = MS.load_state().get("docs", {})
+        for did in doc_ids:
+            st = (book.get(did) or {}).get("status")
+            if st:
+                states[did]["status"] = st
+    except Exception:
+        pass
+    # 2. 熔知：starred / lifecycle / is_archived（Qdrant 单次 scroll + match any）
     try:
         data = MS._http_post(
             f"/collections/{MS.COLLECTION}/points/scroll",
@@ -313,12 +335,18 @@ def query_states(doc_ids):
             st["lifecycle"] = pl["lifecycle"]
         if pl.get("is_archived"):
             st["is_archived"] = True
+            if not st["status"]:
+                st["status"] = "archived"
     return states
 
 
 def apply_action(doc_id, action, value):
-    """执行第6类操作，返回 (ok, msg)。复用 mark_status 写入+读回+记账本。"""
-    # 1. 查文档
+    """执行第6类操作，返回 (ok, msg)。复用 mark_status 写入+读回+记账本。
+
+    action 支持：need_deep / done（只记记账本）/ archive / unarchive（写熔知 is_archived）
+                / star / unstar（写熔知 stats.starred）/ lifecycle（写熔知 lifecycle）
+    """
+    # 1. 查文档（need_deep/done 也要求 doc 存在，防孤儿标记）
     try:
         points = MS.find_points(doc_id)
     except Exception as e:
@@ -328,9 +356,11 @@ def apply_action(doc_id, action, value):
     point_ids = [p["id"] for p in points]
     title = MS.get_doc_title(points)
 
-    # 2. 写熔知（带读回确认）
+    # 2. 写熔知（带读回确认）；need_deep/done 只记记账本、不写熔知
     try:
-        if action in ("star", "unstar"):
+        if action in ("need_deep", "done"):
+            msg = f"行动状态已记：{action}（记账本，不写熔知）"
+        elif action in ("star", "unstar"):
             want = (action == "star")
             msg = MS.write_backend(doc_id, "starred", want, point_ids, points=points)
         elif action == "lifecycle":
@@ -357,8 +387,8 @@ def apply_action(doc_id, action, value):
         entry["starred"] = (action == "star")
     elif action == "lifecycle":
         entry["lifecycle"] = value
-    elif action == "archive":
-        entry["status"] = "archived"
+    elif action in ("need_deep", "done", "archive"):
+        entry["status"] = action
         entry["status_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
     MS.save_state(state)
     MS.append_event(

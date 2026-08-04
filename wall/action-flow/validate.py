@@ -38,8 +38,12 @@ def validate(path):
             has_basis = "依据：" in l
             has_week = re.search(r"创建周：[A-Za-z]*\d+", l)
             has_pri = "优先：" in l
+            has_docid = re.search(r"\|\s*doc_id[:：]\s*[A-Za-z0-9_-]+", l)
             if not all([has_color, has_source, has_basis, has_week, has_pri]):
                 errors.append(f"行动项格式缺字段(需四色+来源+依据+创建周+优先): {l.strip()[:50]}")
+            # doc_id 必填（第6类管理的前提；缺了清单页不渲染管理栏=静默失效）
+            if not has_docid:
+                errors.append(f"行动项缺 doc_id（第6类管理必填，从 scan.py --json 的 docs 里取）: {l.strip()[:50]}")
             # 可选字段：🔥市场验证（有则校验格式：X万播放）
             for m in re.finditer(r"🔥市场验证：([^|]+)", l):
                 if not re.match(r"^\s*\d+(\.\d+)?万播放\s*$", m.group(1)):

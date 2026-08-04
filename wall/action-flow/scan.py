@@ -136,10 +136,12 @@ def main():
         else:
             unchanged_docs.append(did)
 
-    # 需深入 → 置顶推荐（记账本状态 need_deep）
+    # 需深入 → 置顶推荐（记账本状态 need_deep；排除已归档/已完成，避免重复出现）
     need_deep = [
         (did, info) for did, info in live_docs.items()
         if (known.get(did) or {}).get("status") == "need_deep"
+        and not info["is_archived"]
+        and (known.get(did) or {}).get("status") != "done"
     ]
 
     # 记账本里有但库里已不存在的（孤儿记录，保留不删，仅提示）
