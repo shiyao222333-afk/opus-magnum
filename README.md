@@ -28,7 +28,7 @@
 
 ## ✨ 项目亮点
 
-1. **托盘启动器（一键启停）** — 双击「启动巨作.bat」即拉起全部服务（Qdrant / 馏析 / 炼真 / 熔知 / 凝华 / 巨作 + 显示墙三件套），隐藏窗口、定时探活、死了自动重启、启前清理过期锁与端口，接管旧实例。
+1. **托盘启动器（一键启停）** — 双击 `launcher\启动巨作.bat` 即出托盘图标 + 启动巨作（其余服务按需经托盘右键菜单启停；单例锁防多实例互殴），隐藏窗口、定时探活、死了自动重启、启前清理过期锁与端口，接管旧实例。
 2. **统一仪表盘** — 各器在线状态、GitHub Issues / Stars / Forks / 最后提交一屏可见。
 3. **摄入入口一键跑流水线** — 在巨作「📥 摄入入口」贴一个 B站 链接 / 上传文件 / 写笔记，即自动跑完「下载字幕 → 炼真出鉴定报告 → 丢进熔知入库」，全链路实测跑通（含收藏夹批量导入 20 条）。
 4. **显示墙（Dashy）** — 工具总集合页：🔗 工具入口 / 📚 研究报告 / 📋 行动清单 / 📈 B站数据 四分区，workspace 内嵌，巨作「🖥️ 显示墙」子页面直连。
@@ -108,8 +108,8 @@ pip install -r requirements.txt
 # 2. 配置环境变量（GitHub Token 只需 read 权限；没有也能用，只是仪表盘读不到 Issues）
 cp .env.example .env
 
-# 3. 一键启动（推荐）——托盘启动器拉起全部服务
-双击「启动巨作.bat」   # 或：python launcher/tray.py
+# 3. 一键启动（推荐）——托盘启动器（出托盘图标 + 启动巨作，其余服务托盘右键按需开）
+双击 launcher\启动巨作.bat   # 或：python launcher/launcher.pyw
 
 # 4. 打开浏览器
 #    总指挥部 http://localhost:8501
@@ -145,7 +145,7 @@ opus-magnum/
 ├── research-queue.md       # 战略雷达产出（AI 新闻分级队列）
 ├── .env.example / .gitignore / requirements.txt
 ├── run.bat                 # 巨作单独启动（:8501）
-├── 启动巨作.bat            # 托盘启动器一键启停（推荐）
+├── launcher/启动巨作.bat    # 托盘启动器一键启停（推荐，双击出托盘+起巨作）
 ├── app.py                  # NiceGUI 主入口（周看板 / 摄入入口 / 显示墙 / 总指挥部）
 ├── config/settings.py      # 全局配置（五器地址、API Key）
 ├── core/                   # 核心逻辑（github_client / health_check / project_hub / dashboard）

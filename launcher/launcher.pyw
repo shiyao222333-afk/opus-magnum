@@ -30,18 +30,32 @@ SINGLETON_LOCK = Path(__file__).parent / "launcher.pid"
 
 
 def _acquire_singleton() -> bool:
-    """单例锁：PID 文件 + 存活检查。已有存活实例 → 本实例退出；否则接管。
+    """单例锁：原子独占创建（open 'x'，OS 级原子）防并发双击竞态 + PID 存活检查 + 僵尸自愈。
 
-    僵尸残留（进程被杀但文件还在）时，PID 不存活 → 接管并覆盖文件，自愈。
+    并发双击 N 次时，N 个进程同时争抢：只有 1 个能成功创建锁文件，其余抛
+    FileExistsError → 检查锁内 PID 存活 → 存活则退出（BUGLOG-服务全掉-0803 教训：
+    先检查后写入的旧写法在并发下会全部通过，导致多实例互殴）。
     """
     try:
-        if SINGLETON_LOCK.exists():
-            old = int(SINGLETON_LOCK.read_text(encoding="utf-8").strip())
-            if pid_alive(old):
-                print(f"[单例] 巨作启动器已在运行 (PID {old})，本实例退出。")
-                return False
-        SINGLETON_LOCK.write_text(str(os.getpid()), encoding="utf-8")
-        return True
+        while True:
+            try:
+                with open(SINGLETON_LOCK, "x", encoding="utf-8") as f:
+                    f.write(str(os.getpid()))
+                return True
+            except FileExistsError:
+                # 锁已存在：检查 PID 是否存活
+                try:
+                    old = int(SINGLETON_LOCK.read_text(encoding="utf-8").strip())
+                except Exception:
+                    old = None
+                if old is not None and pid_alive(old):
+                    print(f"[单例] 巨作启动器已在运行 (PID {old})，本实例退出。")
+                    return False
+                # 僵尸锁（PID 不存活）：删掉重试
+                try:
+                    SINGLETON_LOCK.unlink(missing_ok=True)
+                except Exception:
+                    return True  # 删不掉 → 保守放行
     except Exception:
         # 锁异常不阻塞启动（保守：宁可多实例也先能用）
         return True
