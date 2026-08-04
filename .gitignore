@@ -69,3 +69,4 @@ wall/bili-insights/pending_import.json
 wall/bili-insights/*.log
 wall/action-flow/serve.log
 wall/action-flow/events.log
+launcher.pid
