@@ -22,6 +22,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 WEEKLY_DIR = os.path.join(BASE_DIR, "weekly")
+PENDING_DIR = os.path.join(BASE_DIR, "pending")
 
 # 复用 mark_status 的 Qdrant 写入/读回/记账本逻辑（同目录，架构边界一致）
 sys.path.insert(0, BASE_DIR)
@@ -297,6 +298,11 @@ def latest_weekly():
     return files[-1] if files else None
 
 
+def latest_pending():
+    files = sorted(glob.glob(os.path.join(PENDING_DIR, "*.md")))
+    return files[-1] if files else None
+
+
 def query_states(doc_ids):
     """批量查第6类状态：status 三段来自记账本；starred / lifecycle 来自熔知。"""
     if not doc_ids:
@@ -413,6 +419,30 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
+        # /pending → 待审批清单（项目反哺调研产出，用户逐条批准/打回）
+        if path == "/pending":
+            pf = latest_pending()
+            if not pf:
+                body = '<p class="meta">暂无待审批清单（pending/ 为空）</p>'
+            else:
+                with open(pf, encoding="utf-8") as f:
+                    md_text = f.read()
+                body_html = md_to_html(md_text)
+                fname = os.path.basename(pf)
+                body = (
+                    f'<p><a href="/" style="color:#9cdcfe;font-size:13px;">← 返回行动清单</a></p>'
+                    f'<p class="meta">📋 {fname} | 项目反哺调研产出 · 你在对话里逐条说"批准/打回"</p>'
+                    + body_html
+                )
+            page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
+            data = page.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("X-Frame-Options", "ALLOWALL")
+            self.end_headers()
+            self.wfile.write(data)
+            return
         if path not in ("/", "/index.html"):
             self.send_error(404)
             return
@@ -424,7 +454,11 @@ class Handler(BaseHTTPRequestHandler):
                 md_text = f.read()
             body_html = md_to_html(md_text)
             fname = os.path.basename(latest)
-            body = f'<p class="meta">📄 {fname} | 自动渲染 · 第6类管理（📌需深入/✅已完成/📦归档 + 收藏/阶段）</p>' + body_html
+            body = (
+                f'<p><a href="/pending" style="color:#9cdcfe;font-size:13px;">📋 查看待审批清单 →</a></p>'
+                f'<p class="meta">📄 {fname} | 自动渲染 · 第6类管理（📌需深入/✅已完成/📦归档 + 收藏/阶段）</p>'
+                + body_html
+            )
         page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
         data = page.encode("utf-8")
         self.send_response(200)
