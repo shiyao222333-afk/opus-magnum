@@ -42,7 +42,7 @@ python mark_status.py --list                # 查看当前所有状态
 
 1. **跑扫描**：`python scan.py` → 自动挑出"新增/变更"的内容（记账本对比指纹，已提炼的跳过）
 2. **我提炼**：读新内容，对照 goals.md 目标，写成新周清单 `weekly/2026WXX.md`
-3. **校验+记账**：`python validate.py` 查格式（坏了当场报错重写）→ 记账本记一笔 → 页面自动显示新版
+3. **校验+标记**：`python validate.py` 查格式（坏了当场报错重写）→ **`python mark_refined.py --new` 把本次提炼的文档标记为"已提炼"**（写指纹，否则下次 scan 会重复报新增）→ 页面自动显示新版
 
 ## 清单五节
 
