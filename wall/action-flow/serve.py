@@ -386,6 +386,36 @@ def render_skills_html():
                 '<p class="meta">操作在对话里：说「开始封装清单第 X 条」→ 按仓颉插件 SKILL.md 执行封装；'
                 '完成回写清单 + 进技能资产清单。</p>'
             )
+    # ③ 技能资产清单（资产台账：在用/闲置/淘汰）
+    parts.append('<h3>🧰 技能资产清单</h3>')
+    asset_file = os.path.join(BASE_DIR, "skills_catalog.json")
+    if not os.path.exists(asset_file):
+        parts.append('<p class="meta">技能资产清单为空（封装完成或新增技能时录入）</p>')
+    else:
+        with open(asset_file, encoding="utf-8") as f:
+            abook = json.load(f)
+        assets = abook.get("skills", {})
+        if not assets:
+            parts.append('<p class="meta">技能资产清单为空（我新增/使用/淘汰技能时顺手记）</p>')
+        else:
+            badge = {"active": "✅ 在用", "idle": "🟡 闲置", "retired": "⚪ 已淘汰"}
+            order = {"active": 0, "idle": 1, "retired": 2}
+            parts.append('<ul>')
+            for key, s in sorted(assets.items(), key=lambda x: order.get(x[1].get("status", ""), 9)):
+                st = s.get("status", "")
+                st_badge = badge.get(st, st)
+                typ = "自建" if s.get("type") == "self" else "外部"
+                extra = f' <span class="meta">（理由：{html.escape(s.get("reason", ""))}）</span>' if s.get("reason") else ""
+                last = (s.get("last_used_at") or "")[:10]
+                parts.append(
+                    f'<li><strong>{render_inline(s.get("name", ""))}</strong> '
+                    f'<span class="meta">[{st_badge}] {typ} | 最近用: {last}</span>{extra}'
+                    f'<br><span class="meta">{html.escape(s.get("desc", ""))}</span></li>'
+                )
+            parts.append('</ul>')
+            parts.append(
+                '<p class="meta">维护在对话里：我新增/使用/淘汰技能时顺手记（use 自动回春 active；淘汰必须带理由）。</p>'
+            )
     return "\n".join(parts)
 
 
@@ -556,7 +586,7 @@ class Handler(BaseHTTPRequestHandler):
             body_html = render_skills_html()
             body = (
                 f'<p><a href="/" style="color:#9cdcfe;font-size:13px;">← 返回行动清单</a></p>'
-                f'<p class="meta">🧩 技能封装工作台 | 仓颉插件（直接引用，git pull 即升级）+ 技能封装清单 | 批准/开始封装在对话里操作</p>'
+                f'<p class="meta">🧰 技能工作台 | 仓颉插件（直接引用，git pull 即升级）+ 技能封装清单 + 技能资产清单 | 操作在对话里完成</p>'
                 + body_html
             )
             page = PAGE_TEMPLATE.format(content=body, lc_labels=json.dumps(LIFECYCLE_LABELS, ensure_ascii=False))
