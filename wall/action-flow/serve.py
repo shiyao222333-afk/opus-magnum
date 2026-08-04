@@ -2,9 +2,10 @@
 """
 serve.py — 陈列架（知识→行动回流系统 · 第6类管理台）
 职责：把 weekly/ 下最新的周清单 md 渲染成网页，供 Dashy 内嵌展示；
-     每条行动项若带 doc_id，渲染「第6类管理栏」：★收藏 / 📅工作流阶段 / 📦归档，
-     点击直接写熔知（stats.starred / lifecycle / is_archived），复用 mark_status.py 逻辑。
-模板固定只换内容：每次请求自动读最新清单，代码永不改动。
+     每条行动项若带 doc_id，渲染「第6类管理栏」：★收藏 / 📅工作流阶段 / 三段行动状态，
+     点击直接写熔知（stats.starred / lifecycle）；三段状态（含归档）只写记账本，
+     不写熔知 is_archived——归档是本清单本地偏好，熔知搜索默认包含归档。
+     模板固定只换内容：每次请求自动读最新清单，代码永不改动。
 
 用法：python serve.py [--port 5100]
 """
@@ -123,7 +124,7 @@ async function refreshAll() {{
     }}
     if (lcSel) lcSel.value = s.lifecycle || '';
     if (arch) {{
-      const archived = status === 'archived' || s.is_archived;
+      const archived = status === 'archived';
       arch.textContent = archived ? '↺ 还原' : '📦 归档';
       arch.dataset.next = archived ? 'unarchive' : 'archive';
       arch.classList.toggle('on', archived);
@@ -297,11 +298,11 @@ def latest_weekly():
 
 
 def query_states(doc_ids):
-    """批量查第6类状态（starred / lifecycle / is_archived 来自熔知；status 三段来自记账本）。"""
+    """批量查第6类状态：status 三段来自记账本；starred / lifecycle 来自熔知。"""
     if not doc_ids:
         return {}
-    states = {did: {"starred": False, "lifecycle": "", "is_archived": False, "status": ""} for did in doc_ids}
-    # 1. 记账本：三段行动状态（need_deep / done / archived 的真相源）
+    states = {did: {"starred": False, "lifecycle": "", "status": ""} for did in doc_ids}
+    # 1. 记账本：三段行动状态（need_deep / done / archived 的真相源，单值互斥）
     try:
         book = MS.load_state().get("docs", {})
         for did in doc_ids:
@@ -310,7 +311,7 @@ def query_states(doc_ids):
                 states[did]["status"] = st
     except Exception:
         pass
-    # 2. 熔知：starred / lifecycle / is_archived（Qdrant 单次 scroll + match any）
+    # 2. 熔知：starred / lifecycle（Qdrant 单次 scroll + match any）
     try:
         data = MS._http_post(
             f"/collections/{MS.COLLECTION}/points/scroll",
@@ -333,20 +334,17 @@ def query_states(doc_ids):
             st["starred"] = True
         if pl.get("lifecycle"):
             st["lifecycle"] = pl["lifecycle"]
-        if pl.get("is_archived"):
-            st["is_archived"] = True
-            if not st["status"]:
-                st["status"] = "archived"
     return states
 
 
 def apply_action(doc_id, action, value):
     """执行第6类操作，返回 (ok, msg)。复用 mark_status 写入+读回+记账本。
 
-    action 支持：need_deep / done（只记记账本；若熔知已归档自动取消，保持三段互斥）
+    action 支持：need_deep / done / archive / unarchive（三段行动状态，只记记账本）
                 / undone / unneed_deep（清记账本状态）
-                / archive / unarchive（写熔知 is_archived）
                 / star / unstar（写熔知 stats.starred）/ lifecycle（写熔知 lifecycle）
+    归档只记本清单记账本（每个仪表盘独立管理自己的偏好），不写熔知 is_archived——
+    熔知搜索默认包含归档内容。
     """
     # 1. 查文档（need_deep/done 也要求 doc 存在，防孤儿标记）
     try:
@@ -358,17 +356,15 @@ def apply_action(doc_id, action, value):
     point_ids = [p["id"] for p in points]
     title = MS.get_doc_title(points)
 
-    # 2. 写熔知（带读回确认）；need_deep/done 只记记账本、不写熔知（但自动取消归档保持互斥）
+    # 2. 执行动作：三段行动状态（含归档）只记记账本，不写熔知；
+    #    star/lifecycle 才写熔知（带读回确认）
     try:
-        if action in ("need_deep", "done"):
-            extra = ""
-            if MS.read_back_archived(doc_id):
-                MS.write_backend(doc_id, "archived", False, point_ids)
-                extra = "（已自动取消归档，三段互斥）"
-            msg = f"行动状态已记：{action}{extra}"
-        elif action in ("undone", "unneed_deep"):
-            label = "已完成" if action == "undone" else "需深入"
-            msg = f"已取消{label}状态（回到未动）"
+        labels = {"need_deep": "需深入", "done": "已完成", "archive": "归档",
+                  "undone": "已完成", "unneed_deep": "需深入", "unarchive": "归档"}
+        if action in ("need_deep", "done", "archive"):
+            msg = f"行动状态已记：{labels[action]}（本清单，不影响熔知搜索）"
+        elif action in ("undone", "unneed_deep", "unarchive"):
+            msg = f"已取消{labels[action]}状态（回到未动）"
         elif action in ("star", "unstar"):
             want = (action == "star")
             msg = MS.write_backend(doc_id, "starred", want, point_ids, points=points)
@@ -376,9 +372,6 @@ def apply_action(doc_id, action, value):
             if value not in MS.LIFECYCLE_STAGES and value != "":
                 return False, f"无效阶段: {value}"
             msg = MS.write_backend(doc_id, "lifecycle", value, point_ids)
-        elif action in ("archive", "unarchive"):
-            want = (action == "archive")
-            msg = MS.write_backend(doc_id, "archived", want, point_ids)
         else:
             return False, f"无效操作: {action}"
     except Exception as e:
@@ -397,7 +390,8 @@ def apply_action(doc_id, action, value):
     elif action == "lifecycle":
         entry["lifecycle"] = value
     elif action in ("need_deep", "done", "archive"):
-        entry["status"] = action
+        # 统一写规范值：archive → "archived"（与 CLI/scan 判断一致，防 "archive" 不匹配）
+        entry["status"] = "archived" if action == "archive" else action
         entry["status_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
     MS.save_state(state)
     MS.append_event(

@@ -28,12 +28,12 @@ action-flow/
 ```
 python mark_status.py <doc_id> need_deep    # 📌 需深入（下期清单置顶）
 python mark_status.py <doc_id> done         # ✅ 已完成（不再推荐）
-python mark_status.py <doc_id> archived     # 📦 已归档（不再推荐 + 熔知检索排除）
+python mark_status.py <doc_id> archived     # 📦 已归档（不再推荐，仅本清单记账本）
 python mark_status.py <doc_id> unarchive    # 取消归档（恢复）
 python mark_status.py --list                # 查看当前所有状态
 ```
 
-- 归档 = 写熔知 `is_archived=true`（现成字段，检索查询阶段直接排除），其余状态记记账本
+- 三段行动状态（需深入/已完成/已归档）只记本清单记账本（state.json），**不写熔知**——归档是本清单的本地偏好，熔知搜索默认仍能搜到归档内容（2026-08-04 起；未来各仪表盘各自管理）
 - 高播放来源提炼时标 **🔥市场验证：X万播放**（橙色高亮，推荐权重加分）
 
 ## 每周更新流程（3 步，代码 0 改动）

@@ -69,7 +69,7 @@ def aggregate_docs(points):
             vc = eng.get("view_count")
             if vc and int(vc) > entry["view_count"]:
                 entry["view_count"] = int(vc)
-        # 归档标记（任一 chunk 标记归档即文档归档）
+        # 归档标记（仅信息输出用；过滤判断以记账本 status 为准，见 main）
         if pl.get("is_archived"):
             entry["is_archived"] = True
         h = pl.get("content_hash")
@@ -122,12 +122,11 @@ def main():
     for did in sorted(live_docs):
         info = live_docs[did]
         st = (known.get(did) or {}).get("status")
-        # 状态过滤：熔知已归档 / 记账本已完成 → 不再推荐
-        if info["is_archived"]:
-            skipped.append((did, info, "已归档"))
-            continue
-        if st == "done":
-            skipped.append((did, info, "已完成"))
+        # 状态过滤：记账本已归档 / 已完成 → 不再推荐
+        # （2026-08-04 起只看记账本，不再看熔知 is_archived——归档是本仪表盘偏好，
+        #   熔知搜索仍能搜到归档内容；熔知 is_archived 仅为历史只读标记）
+        if st in ("archived", "done"):
+            skipped.append((did, info, "已归档" if st == "archived" else "已完成"))
             continue
         if did not in known:
             new_docs.append((did, info))
@@ -136,12 +135,10 @@ def main():
         else:
             unchanged_docs.append(did)
 
-    # 需深入 → 置顶推荐（记账本状态 need_deep；排除已归档/已完成，避免重复出现）
+    # 需深入 → 置顶推荐（记账本状态 need_deep；status 单值天然排除 archived/done）
     need_deep = [
         (did, info) for did, info in live_docs.items()
         if (known.get(did) or {}).get("status") == "need_deep"
-        and not info["is_archived"]
-        and (known.get(did) or {}).get("status") != "done"
     ]
 
     # 记账本里有但库里已不存在的（孤儿记录，保留不删，仅提示）

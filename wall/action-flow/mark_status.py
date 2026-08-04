@@ -5,14 +5,16 @@ mark_status.py — 状态管理器（知识→行动回流系统 · 第6类字�
   - 行动状态：need_deep（📌需深入）/ done（✅已完成）/ archived（📦归档）
   - 收藏：star / unstar（写熔知 stats.starred）
   - 工作流阶段：lifecycle <六档>（写熔知 lifecycle）
-归档与熔知 is_archived 同步（检索时直接排除）；其余状态记记账本 state.json。
+三段行动状态（含归档）只记记账本 state.json，不写熔知——归档是本清单的本地偏好，
+每个仪表盘各自管理；熔知搜索默认包含归档（2026-08-04 起）。熔知 is_archived 保留为
+历史只读标记，不再由本清单写入。
 架构边界：只通过 Qdrant HTTP 交互，不依赖熔知代码路径。
 
 用法：
   python mark_status.py <doc_id> need_deep          # 📌 需深入（只记记账本）
   python mark_status.py <doc_id> done               # ✅ 已完成（只记记账本）
-  python mark_status.py <doc_id> archived           # 📦 已归档（写熔知 is_archived=true + 记账本）
-  python mark_status.py <doc_id> unarchive          # 取消归档（写熔知 is_archived=false + 记账本清状态）
+  python mark_status.py <doc_id> archived           # 📦 已归档（只记记账本，不写熔知）
+  python mark_status.py <doc_id> unarchive          # 取消归档（清记账本状态）
   python mark_status.py <doc_id> star               # ★ 收藏（写熔知 stats.starred=true + 记账本）
   python mark_status.py <doc_id> unstar             # 取消收藏（写熔知 stats.starred=false + 记账本）
   python mark_status.py <doc_id> lifecycle <阶段>    # 📅 工作流阶段（写熔知 lifecycle；六档见下）
@@ -31,8 +33,6 @@ QDRANT_URL = "http://localhost:6333"
 COLLECTION = "athanor_v1"
 
 VALID_STATUS = {"need_deep", "done", "archived", "unarchive", "undone", "unneed_deep"}
-# 归档类状态（熔知侧要写 is_archived）
-ARCHIVED_FLAG = {"archived": True, "unarchive": False}
 # 收藏类状态（熔知侧要写 stats.starred）
 STARRED_FLAG = {"star": True, "unstar": False}
 # lifecycle 六档（第6类使用期字段，与熔知 classifications.LIFECYCLE_OPTIONS 对齐）
@@ -96,11 +96,6 @@ def set_qdrant_payload(point_ids, payload):
     )
 
 
-def set_qdrant_archived(point_ids, archived):
-    """写熔知 is_archived（顶层 key merge）"""
-    set_qdrant_payload(point_ids, {"is_archived": bool(archived)})
-
-
 def set_qdrant_starred(point_ids, starred, points=None):
     """写熔知 stats.starred（统一 payload 一次写入全部点）
 
@@ -115,15 +110,6 @@ def set_qdrant_starred(point_ids, starred, points=None):
 def set_qdrant_lifecycle(point_ids, stage):
     """写熔知 lifecycle（顶层 key merge，第6类使用期字段）"""
     set_qdrant_payload(point_ids, {"lifecycle": stage})
-
-
-def read_back_archived(doc_id):
-    """写后读回确认：返回该文档实际 is_archived 值（任一 chunk 为准）"""
-    pts = find_points(doc_id)
-    for p in pts:
-        if (p.get("payload") or {}).get("is_archived"):
-            return True
-    return False
 
 
 def read_back_starred(doc_id):
@@ -146,13 +132,7 @@ def read_back_lifecycle(doc_id):
 
 
 def write_backend(doc_id, kind, want, point_ids, points=None):
-    """写熔知 + 写后读回确认；失败抛异常"""
-    if kind == "archived":
-        set_qdrant_archived(point_ids, want)
-        actual = read_back_archived(doc_id)
-        if actual != want:
-            raise RuntimeError(f"is_archived 读回校验失败：期望 {want}，实际 {actual}")
-        return f"熔知 is_archived={want}（{len(point_ids)} 块）"
+    """写熔知 + 写后读回确认；失败抛异常。仅 starred / lifecycle 用（归档只记记账本）"""
     if kind == "starred":
         set_qdrant_starred(point_ids, want, points=points)
         time.sleep(0.5)  # Qdrant per-point 写入异步，读回前稍等防读到旧值
@@ -231,18 +211,13 @@ def main():
     title = get_doc_title(points)
     point_ids = [p["id"] for p in points]
 
-    # ── 2. 写熔知（archived / star / lifecycle 需要）──
-    # 三段互斥：标 need_deep/done 时若熔知仍 is_archived=true → 自动取消归档（否则
-    # scan 先按归档跳过，置顶失效，出现"既归档又需深入"矛盾态）
+    # ── 2. 写熔知（仅 star / lifecycle 需要；三段行动状态含归档只记记账本）──
+    # 2026-08-04 起：归档改为清单本地偏好（每个仪表盘各管各的），不再写熔知 is_archived，
+    # 熔知搜索默认包含归档。三段状态在记账本是单值字段（need_deep/done/archived 天然互斥），
+    # 无需"自动取消归档"分支。
     backend_msg = ""
     try:
-        if status in ARCHIVED_FLAG:
-            backend_msg = write_backend(doc_id, "archived", ARCHIVED_FLAG[status], point_ids)
-        elif status in ("need_deep", "done"):
-            if read_back_archived(doc_id):
-                write_backend(doc_id, "archived", False, point_ids)
-                backend_msg = "（已自动取消归档，保持三段互斥）"
-        elif status in STARRED_FLAG:
+        if status in STARRED_FLAG:
             backend_msg = write_backend(doc_id, "starred", STARRED_FLAG[status], point_ids, points=points)
         elif status == "lifecycle":
             backend_msg = write_backend(doc_id, "lifecycle", lifecycle_stage, point_ids)
