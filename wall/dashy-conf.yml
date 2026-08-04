@@ -1,56 +1,110 @@
 ---
-# 显示墙配置 — 巨作统一显示区（2026-08-03）
-# 阶段一：工具入口 + 研究报告占位
-# 阶段二：B站数据分区（Bili-Insights 8765）
-# 阶段三：周看板条目（巨作 / 工作区视图内嵌）— 2026-08-03 激活
+# 总指挥部门户配置 — Dashy 当唯一大门（2026-08-04 门户化）
+# 五器 = 服务开关（开关在控制台 8501/control）；卡片带在线状态点
+# 巨作/熔知/凝华 有网页 → 点开网页；馏析/炼真 无网页 → 点开控制台
 pageInfo:
-  title: 显示墙
-  description: 巨作显示墙 — 所有工具的聚合入口
+  title: 总指挥部
+  description: 五器门户 — 所有工具统一入口 · 开关服务进控制台
   navLinks:
   - title: 巨作
     path: http://localhost:8501
+  - title: 控制台
+    path: http://localhost:8501/control
   - title: 文档
     path: https://dashy.to/docs
 
 appConfig:
   theme: dark
   layout: auto
-  iconSize: medium
-  enableMultiTasking: true   # 工作区视图保留多个应用同时开（官方 workspace 特性）
+  iconSize: large
+  enableMultiTasking: true   # workspace 视图保留多个应用同时开
+  customColors:
+    primary: '#d4af37'       # 炼金金
+    background: '#0d1220'    # 深蓝黑
+  customCss: |
+    .section-title { color: #d4af37 !important; font-weight: 700; }
+    .item { border-radius: 12px; }
+    .item:hover { transform: translateY(-2px); }
 
 sections:
-  - name: 🔗 工具入口
-    icon: fas fa-tools
+  - name: ⏰ 此刻
+    icon: fas fa-clock
     items:
-      - title: 巨作（总指挥部）
-        description: 摄入 / 周看板 / 总指挥
+      - type: clock
+        options:
+          timeZone: Asia/Shanghai
+          format: 'h:mm:ss a'
+
+  - name: ⚗️ 五器核心
+    icon: fas fa-atom
+    items:
+      - title: 巨作
+        description: 摄入 / 队列 / 健康 / 日志
         url: http://localhost:8501
         icon: fas fa-crown
-      - title: 熔知（知识库）
-        description: 搜索 / 摄入 / 知识管理
+        color: gold
+        target: workspace
+        statusCheck: true
+      - title: 熔知
+        description: 知识库 · 搜索 / 摄入 / 管理
         url: http://localhost:8080
         icon: fas fa-book
+        color: yellow
         target: workspace
+        statusCheck: true
+      - title: 凝华
+        description: SOP 平台 · 副业流水线
+        url: http://localhost:8081
+        icon: fas fa-fire
+        color: red
+        target: workspace
+        statusCheck: true
+      - title: 馏析
+        description: 采集 · 无网页，开关在控制台
+        url: http://localhost:8501/control
+        icon: fas fa-moon
+        color: grey
+        target: workspace
+      - title: 炼真
+        description: 验真 · 无网页，开关在控制台
+        url: http://localhost:8501/control
+        icon: fas fa-sun
+        color: white
+        target: workspace
+
+  - name: ⚙️ 控制台
+    icon: fas fa-sliders-h
+    items:
+      - title: 五器控制台
+        description: 一键开关五器服务 · 动态状态灯
+        url: http://localhost:8501/control
+        icon: fas fa-toggle-on
+        color: gold
+        target: workspace
+        statusCheck: true
+
+  - name: 🔧 辅助工具
+    icon: fas fa-tools
+    items:
       - title: B站数据
         description: UP主数据分析（Bili-Insights）
         url: http://localhost:8765
         icon: fas fa-chart-line
         target: workspace
-      - title: 周看板
-        description: 本周摄入与收藏
-        url: http://localhost:8501/
-        icon: fas fa-calendar-week
-        target: workspace
-
-  - name: 📚 研究报告
-    icon: fas fa-flask
-    items: []
-
-  - name: 📋 行动清单
-    icon: fas fa-clipboard-list
-    items:
-      - title: 本周行动清单
-        description: 知识→行动回流（每周更新）
+        statusCheck: true
+      - title: 行动清单
+        description: 知识→行动（每周更新，周看板升级）
         url: http://localhost:5100
         icon: fas fa-list-check
         target: workspace
+        statusCheck: true
+      - title: GitHub
+        description: 五器源码
+        url: https://github.com/shiyao222333-afk/OpusMagnum
+        icon: fab fa-github
+        target: newtab
+      - title: 文档
+        description: Dashy 使用文档
+        url: https://dashy.to/docs
+        icon: fas fa-book-open
+        target: newtab

@@ -2,8 +2,9 @@
 OpusMagnum · 巨作 / GreatWork — 一人公司总指挥部
 
 门户化布局（2026-08-03 重构）：顶部导航条（品牌 + 图标页签 + 系统状态 + 外链 + 🏠总指挥部跳 Dashy）。
-  - /         → 周看板（本周新录入）
+  - /         → 周看板（本周新录入；2026-08-04 起入口让位行动清单，页面保留无入口）
   - /ingest   → 摄入入口（投递 + 三器启停 + 队列 + 日志）
+  - /control  → 五器控制台（一键开关五器服务 + 动态状态灯）
   - /hq       → 总指挥部（健康 / GitHub / 任务 / 路线）
   - 🏠 总指挥部 → Dashy 4000（唯一大门，承接原 /wall 显示墙功能）
 """
@@ -55,7 +56,7 @@ def _notify_res(res: dict) -> None:
 
 # ═══════════════════════════════════════════════════════════
 # 顶部导航条（门户化后取代左抽屉，对齐熔知风格）
-# 品牌 + 图标页签（周看板/摄入/总指挥）+ 系统状态徽章 + 外链 + 🏠总指挥部(Dashy 大门)
+# 品牌 + 图标页签（摄入/总指挥，周看板已让位行动清单）+ 系统状态徽章 + 外链 + 🏠总指挥部(Dashy 大门)
 # ═══════════════════════════════════════════════════════════
 def _nav_class_top(page_key) -> str:
     """当前页高亮（蓝紫），其他页悬停变深。"""
@@ -75,9 +76,9 @@ def build_top_bar(active_page: str = "") -> None:
             # 品牌
             ui.markdown("**⚛️ 巨作**").classes("text-lg mr-1")
 
-            # 图标页签（业务页面入口；显示墙由 🏠 总指挥部 = Dashy 承担）
+            # 图标页签（业务页面入口；周看板 2026-08-04 起让位行动清单，页面保留无入口；
+            # 显示墙由 🏠 总指挥部 = Dashy 承担）
             with ui.row().classes("items-center gap-1"):
-                ui.link("📊 周看板", "/").classes(_nav_class_top(""))
                 ui.link("📥 摄入", "/ingest").classes(_nav_class_top("ingest"))
                 ui.link("🎛️ 总指挥", "/hq").classes(_nav_class_top("hq"))
 
@@ -408,6 +409,80 @@ def _write_tmp(f):
     tmp = UPLOAD_TMP / f.name
     tmp.write_bytes(f.content)
     return str(tmp)
+
+
+# ═══════════════════════════════════════════════════════════
+# 五器定义（控制台用）：key → (显示名, 图标, 网页URL or None)
+# ═══════════════════════════════════════════════════════════
+FIVE_VESSELS = [
+    ("opus",       "巨作", "👑", "http://localhost:8501"),
+    ("citrinitas", "熔知", "📖", "http://localhost:8080"),
+    ("rubedo",     "凝华", "✨", "http://localhost:8081"),
+    ("nigredo",    "馏析", "⚫", None),
+    ("albedo",     "炼真", "🤍", None),
+]
+
+
+# ═══════════════════════════════════════════════════════════
+# 页面: 五器控制台 (/control) — Dashy 门户的服务开关面板
+# 复用 supervisor 启停接口；动态状态灯：🟢运行 / ⚪停止 / 🟡切换中
+# ═══════════════════════════════════════════════════════════
+@ui.page("/control")
+def page_control():
+    build_top_bar("control")
+    with ui.column().classes("w-full p-6"):
+        ui.markdown("## ⚙️ 五器控制台")
+        ui.label("一键开关五器服务；状态灯实时刷新：🟢 运行 / ⚪ 停止 / 🟡 切换中。").classes("text-sm text-gray-400 mb-2")
+
+        badges: dict = {}
+        on_btns: dict = {}
+        off_btns: dict = {}
+
+        with ui.column().classes("w-full gap-2"):
+            for key, name, icon, url in FIVE_VESSELS:
+                with ui.card().classes("w-full"):
+                    with ui.row().classes("w-full items-center justify-between"):
+                        badge = ui.label("⏳").classes("text-xl w-8 text-center")
+                        with ui.column().classes("gap-0"):
+                            ui.label(f"{icon} {name}").classes("font-bold text-sm")
+                            ui.label("有网页" if url else "仅服务（无网页）").classes("text-xs text-gray-500")
+                        with ui.row().classes("gap-2 items-center"):
+                            on_btn = ui.button("启动").props("outline size=sm color=positive")
+                            off_btn = ui.button("停止").props("outline size=sm color=negative")
+                            if url:
+                                ui.link("打开网页", url).classes("text-blue-300 text-sm")
+                        badges[key] = badge
+                        on_btns[key] = on_btn
+                        off_btns[key] = off_btn
+
+        def refresh():
+            for key, _n, _i, _u in FIVE_VESSELS:
+                running = is_running(key)
+                badges[key].text = "🟢" if running else "⚪"
+                on_btns[key].props(f"disable={running}")
+                off_btns[key].props(f"disable={not running}")
+
+        def toggle(key: str, action: str):
+            # 置切换中 + 禁按钮防连点
+            badges[key].text = "🟡"
+            on_btns[key].props("disable=True")
+            off_btns[key].props("disable=True")
+            try:
+                if action == "start":
+                    start_service(key)
+                else:
+                    stop_service(key)
+            except Exception:
+                badges[key].text = "⚠️"
+            # 服务启停需要时间，稍后刷新状态
+            ui.timer(2.5, refresh, once=True)
+
+        for key, _n, _i, _u in FIVE_VESSELS:
+            on_btns[key].on("click", lambda k=key: toggle(k, "start"))
+            off_btns[key].on("click", lambda k=key: toggle(k, "stop"))
+
+        refresh()              # 首屏状态
+        ui.timer(5.0, refresh)  # 周期轮询（同步外部状态变化）
 
 
 # ═══════════════════════════════════════════════════════════
