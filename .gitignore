@@ -88,3 +88,8 @@ wall/action-flow/plugins/cangjie-skill/
 wall/action-flow/mark_pending.py
 wall/action-flow/skill_candidates.py
 wall/action-flow/skill_assets.py
+# B站收藏夹同步小工具（个人工具，绑定个人 cookie/收藏夹 id，不推送）
+front_half/bili_fav_sync.py
+
+# 个人变现规划（个人业务数据，不推送）
+docs/变现路径.md

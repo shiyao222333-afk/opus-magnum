@@ -65,6 +65,10 @@ PAGE_TEMPLATE = """<!DOCTYPE html>
   .tag {{ display:inline-block; margin-right:6px; }}
   .hot {{ color: #ff9e3d; font-weight: bold; }}
   li.done {{ color: #6a6b73; text-decoration: line-through; }}
+  li.archived {{ opacity: .4; }}
+  li.archived strong {{ color: #6a6b73; }}
+  .tag-arch {{ display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 10px;
+               font-size: 11px; color: #9a9ba3; background: #2a2b31; border: 1px solid #3a3b42; }}
   strong {{ color: #f0f0f4; }}
   hr {{ border: none; border-top: 1px solid #3a3b42; margin: 24px 0; }}
   .meta {{ color: #7a7b83; font-size: 12px; margin-bottom: 16px; }}
@@ -199,6 +203,19 @@ def action_bar_html(doc_id):
     )
 
 
+def _load_action_book():
+    """读行动清单记账本 state.json，返回 {doc_id: status}。文件不存在返回空 dict。"""
+    try:
+        p = os.path.join(BASE_DIR, "state.json")
+        if not os.path.exists(p):
+            return {}
+        with open(p, encoding="utf-8") as f:
+            docs = json.load(f).get("docs", {})
+        return {did: (d.get("status") or "") for did, d in docs.items()}
+    except Exception:
+        return {}
+
+
 def md_to_html(md_text, with_action_bar=True):
     """极简 markdown → HTML（只支持本模板用到的语法；行动项带 doc_id 时追加第6类管理栏）
     with_action_bar=False 时跳过管理栏（审核清单页用——审核在对话里做，页面只读）"""
@@ -257,6 +274,11 @@ def md_to_html(md_text, with_action_bar=True):
             main_doc_id = doc_ids[0] if doc_ids else None
             bar = action_bar_html(main_doc_id) if (main_doc_id and with_action_bar) else ""
             meta = f' <span class="meta">({", ".join(doc_ids)})</span>' if doc_ids else ""
+            # 2026-08-05 根因修复：archived 条目由行动清单执行时从 weekly 清除（记账本归档=源头排除），
+            # 渲染层无需任何归档特殊处理——weekly 里有的就是未归档的活条目。
+            if not in_list:
+                out.append("<ul>")
+                in_list = True
             out.append(
                 f'<li{done_cls}><input type="checkbox"{" checked" if checked else ""} disabled> '
                 f'{render_inline(content)}{meta}{bar}</li>'
